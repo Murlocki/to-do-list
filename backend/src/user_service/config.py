@@ -8,8 +8,10 @@ class Settings(BaseSettings):
     postgres_user: str = ""
     postgres_password: str = ""
     postgres_db: str = ""
+    redis_host: str = ""
+    redis_port: int = 6379
+    redis_password: str = ""
+    redis_db: str = ""
 settings = Settings()
-print(settings.postgres_db)
-print(settings.postgres_user)
-print(settings.postgres_password)
+
 

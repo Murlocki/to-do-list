@@ -3,7 +3,7 @@ from multiprocessing import connection
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-from src.auth.config import settings
+from src.user_service.config import settings
 
 
 # Создаем движок для подключения к базе данных PostgreSQL
