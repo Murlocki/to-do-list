@@ -18,6 +18,13 @@ class Settings(BaseSettings):
     redis_db: str = ""
     log_dir: str = os.path.join(BASE_DIR, "logs")
     log_file: str = os.path.join(log_dir, "app.log")
-
+    jwt_secret: str = ""
+    jwt_secret_refresh: str = ""
+    jwt_algorithm: str = "HS256"
+    access_token_expire_seconds: int = 15
+    access_token_expire_minutes: int = 0
+    access_token_expire_hours: int = 0
+    refresh_token_expire_days: int = 0
 
 settings = Settings()
+print(settings.refresh_token_expire_days)
