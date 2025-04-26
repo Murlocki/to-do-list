@@ -126,11 +126,11 @@ def update_session_access_token(old_token: str, new_token: str, session_obj: dic
 
 
 
-def verify_and_refresh_access_token(token: str)->dict[str, any] | None:
+def verify_and_refresh_access_token(token: str)->str | None:
     """
     Verify and refresh access token
     :param token: Access token
-    :return: dict[str, any] | None: Decoded token payload or None if error
+    :return:str | None: New access token or None if error
     """
     try:
 
@@ -151,7 +151,7 @@ def verify_and_refresh_access_token(token: str)->dict[str, any] | None:
         logger.info(f"Token expires at: {exp_time}")
         about_to_expire: bool = is_about_to_expire(exp_time)
 
-        if about_to_expire or exp_time >= datetime.now():
+        if about_to_expire or exp_time <= datetime.now():
             logger.warning("Token is about to expire" if about_to_expire else f"Token expired at: {exp_time}")
             # Check if we have refresh token
             if "refresh_token" in session:
@@ -162,7 +162,7 @@ def verify_and_refresh_access_token(token: str)->dict[str, any] | None:
                 if new_token:
                     logger.info("Token refreshed successfully")
                     update_session_access_token(token, new_token, session)
-                    return decode_token(new_token)
+                    return new_token
                 else:
                     logger.warning("Failed to refresh token")
             else:
@@ -170,8 +170,9 @@ def verify_and_refresh_access_token(token: str)->dict[str, any] | None:
                 logger.info("Creating new access token")
                 new_access_token = create_new_token(payload['sub'])
                 update_session_access_token(token, new_access_token, session)
-                return decode_token(new_access_token)
-
+                return new_access_token
+        logger.info("Token is valid")
+        return token
     except JWTError as e:
         logger.warning(f"JWTError: {e}")
         return None
@@ -207,6 +208,7 @@ def refresh_access_token(refresh_token: str):
     except JWTError as e:
         logger.warning(f"refresh_access_token - JWT Error: {e}")
         return None
+
 
 
 def validate_password(password: str) -> bool:

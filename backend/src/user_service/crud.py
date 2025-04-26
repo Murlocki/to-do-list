@@ -60,6 +60,20 @@ def get_sessions(user_id: int):
                 sessions.append(session_data)
     return sessions
 
+def delete_inactive_sessions(user_id: int)->list[str]:
+    """
+    Delete inactive sessions
+    :param user_id: User ID
+    :return: list[str]: list of deleted sessions
+    """
+    result = []
+    session_ids = redis_client.smembers(f"user:{user_id}:sessions")
+    for session_id in session_ids:
+        session_data = redis_client.hgetall(f"session:{session_id}")
+        if not session_data:
+            redis_client.srem(f"user:{user_id}:sessions", session_id)
+            result.append(session_id)
+    return result
 
 def revoke_session(access_token: str):
     session = redis_client.hgetall(f"session:{access_token}")

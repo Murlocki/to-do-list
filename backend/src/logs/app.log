@@ -1,0 +1,154 @@
+2025-04-27 01:49:06,599 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-26 22:49:06.599701
+Server timestamp: 1745707746
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-27 01:49:12,604 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-27 02:49:42.604422
+2025-04-27 01:49:12,606 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImNhZTUyMTM1LWY1ODMtNGZjZi1hYTI3LTdlMTg4NTIxY2JhOSIsImV4cCI6MTc0NTcxMTM4Mi42MDQ0MjIsImlhdCI6MTc0NTcwNzc1Mn0.GKykUUbpTNE7iCJQ9_RVlaRNVpUyP8gwxkOOPPCSIGM
+2025-04-27 01:49:12,607 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImNhZTUyMTM1LWY1ODMtNGZjZi1hYTI3LTdlMTg4NTIxY2JhOSIsImV4cCI6MTc0NTcxMTM4Mi42MDQ0MjIsImlhdCI6MTc0NTcwNzc1Mn0.GKykUUbpTNE7iCJQ9_RVlaRNVpUyP8gwxkOOPPCSIGM
+2025-04-27 01:49:12,607 - src.user_service.router - INFO - True
+2025-04-27 01:49:12,607 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '72dbf3cc-8777-4861-b1cd-b787893b9d53'}
+2025-04-27 01:49:12,607 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '72dbf3cc-8777-4861-b1cd-b787893b9d53'}
+2025-04-27 01:49:12,607 - src.user_service.auth_functions - INFO - Refresh token created for user: john.doe@example.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjcyZGJmM2NjLTg3NzctNDg2MS1iMWNkLWI3ODc4OTNiOWQ1MyIsImV4cCI6MTc0ODI5OTc1Mi42MDcwMzJ9._zYI5GeosSCo4RKPYUifdGjq3ovXVxjym_6mcAX6ufs
+2025-04-27 01:49:12,607 - src.user_service.crud - INFO - Storing session with expires_at: 2025-05-27 01:49:12.607032
+2025-04-27 01:49:12,607 - src.user_service.crud - WARNING - {'session_id': '40af485c-f972-467f-89dc-47140aead334', 'user_id': '2', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImNhZTUyMTM1LWY1ODMtNGZjZi1hYTI3LTdlMTg4NTIxY2JhOSIsImV4cCI6MTc0NTcxMTM4Mi42MDQ0MjIsImlhdCI6MTc0NTcwNzc1Mn0.GKykUUbpTNE7iCJQ9_RVlaRNVpUyP8gwxkOOPPCSIGM', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-27T01:49:12.607032', 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjcyZGJmM2NjLTg3NzctNDg2MS1iMWNkLWI3ODc4OTNiOWQ1MyIsImV4cCI6MTc0ODI5OTc1Mi42MDcwMzJ9._zYI5GeosSCo4RKPYUifdGjq3ovXVxjym_6mcAX6ufs', 'expires_at': '2025-05-27T01:49:12.607032'}
+2025-04-27 01:49:12,612 - src.user_service.router - INFO - User logged in (rem mode): john.doe@example.com
+2025-04-27 01:49:33,913 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': 'cae52135-f583-4fcf-aa27-7e188521cba9', 'exp': 1745711382.604422, 'iat': 1745707752}
+2025-04-27 01:49:33,913 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': 'cae52135-f583-4fcf-aa27-7e188521cba9', 'exp': 1745711382.604422, 'iat': 1745707752}
+2025-04-27 01:49:33,915 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:49:33,916 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': 'cae52135-f583-4fcf-aa27-7e188521cba9', 'exp': 1745711382.604422, 'iat': 1745707752}
+2025-04-27 01:49:33,917 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:49:42.604422
+2025-04-27 01:49:33,917 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3608.686485 seconds
+2025-04-27 01:49:33,917 - src.user_service.auth_functions - WARNING - Token expired at: 2025-04-27 02:49:42.604422
+2025-04-27 01:49:33,917 - src.user_service.auth_functions - INFO - Refreshing token using refresh token
+2025-04-27 01:49:33,917 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '72dbf3cc-8777-4861-b1cd-b787893b9d53', 'exp': 1748299752.607032}
+2025-04-27 01:49:33,918 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '170c5e3a-f981-4b9f-92cc-5c4a69391ead'}
+2025-04-27 01:49:33,918 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '170c5e3a-f981-4b9f-92cc-5c4a69391ead'}
+2025-04-27 01:49:33,918 - src.user_service.auth_functions - INFO - Refresh token created for user: john.doe@example.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjE3MGM1ZTNhLWY5ODEtNGI5Zi05MmNjLTVjNGE2OTM5MWVhZCIsImV4cCI6MTc0ODI5OTc3My45MTg5ODZ9.Ml_rIvL_jumZ3qzX-HHlJjUuACY6a49NcAuFN8cJ6Gw
+2025-04-27 01:49:33,920 - src.user_service.auth_functions - INFO - Token refreshed successfully
+2025-04-27 01:50:09,342 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-26 22:50:09.342079
+Server timestamp: 1745707809
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-27 01:50:11,695 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-26 22:50:11.695613
+Server timestamp: 1745707811
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-27 01:50:21,184 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-27 02:50:51.184133
+2025-04-27 01:50:21,186 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhjZmQzODM2LTBiN2ItNDUwNC1hY2FkLTQ1MzI3NzI5OGZlZCIsImV4cCI6MTc0NTcxMTQ1MS4xODQxMzMsImlhdCI6MTc0NTcwNzgyMX0.enCoZlOnbxKJytbUxNPukX4EbaACHKdeIR_AOa9brwE
+2025-04-27 01:50:21,186 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhjZmQzODM2LTBiN2ItNDUwNC1hY2FkLTQ1MzI3NzI5OGZlZCIsImV4cCI6MTc0NTcxMTQ1MS4xODQxMzMsImlhdCI6MTc0NTcwNzgyMX0.enCoZlOnbxKJytbUxNPukX4EbaACHKdeIR_AOa9brwE
+2025-04-27 01:50:21,186 - src.user_service.router - INFO - True
+2025-04-27 01:50:21,186 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '06c45da5-6118-475a-a929-e330eb4dd0b7'}
+2025-04-27 01:50:21,186 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '06c45da5-6118-475a-a929-e330eb4dd0b7'}
+2025-04-27 01:50:21,186 - src.user_service.auth_functions - INFO - Refresh token created for user: john.doe@example.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjA2YzQ1ZGE1LTYxMTgtNDc1YS1hOTI5LWUzMzBlYjRkZDBiNyIsImV4cCI6MTc0ODI5OTgyMS4xODYxMzN9.JODInWJD4WqxZNItsDpePP0jwm5AOiL5XfIUY3tm_yc
+2025-04-27 01:50:21,186 - src.user_service.crud - INFO - Storing session with expires_at: 2025-05-27 01:50:21.186133
+2025-04-27 01:50:21,186 - src.user_service.crud - WARNING - {'session_id': 'fefe6ae2-e33d-462f-9d95-e13c6ca7b232', 'user_id': '2', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhjZmQzODM2LTBiN2ItNDUwNC1hY2FkLTQ1MzI3NzI5OGZlZCIsImV4cCI6MTc0NTcxMTQ1MS4xODQxMzMsImlhdCI6MTc0NTcwNzgyMX0.enCoZlOnbxKJytbUxNPukX4EbaACHKdeIR_AOa9brwE', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-27T01:50:21.186133', 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjA2YzQ1ZGE1LTYxMTgtNDc1YS1hOTI5LWUzMzBlYjRkZDBiNyIsImV4cCI6MTc0ODI5OTgyMS4xODYxMzN9.JODInWJD4WqxZNItsDpePP0jwm5AOiL5XfIUY3tm_yc', 'expires_at': '2025-05-27T01:50:21.186133'}
+2025-04-27 01:50:21,191 - src.user_service.router - INFO - User logged in (rem mode): john.doe@example.com
+2025-04-27 01:50:34,332 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:34,333 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:34,335 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:50:34,335 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:34,336 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:50:34,336 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3616.847799 seconds
+2025-04-27 01:50:34,336 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:50:35,966 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:35,966 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:35,968 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:50:35,968 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:35,969 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:50:35,969 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3615.215013 seconds
+2025-04-27 01:50:35,969 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:50:36,667 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:36,667 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:36,670 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:50:36,670 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:36,672 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:50:36,672 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3614.511988 seconds
+2025-04-27 01:50:36,672 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:50:37,305 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:37,305 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:37,307 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:50:37,307 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:37,308 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:50:37,308 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3613.875737 seconds
+2025-04-27 01:50:37,308 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:50:37,970 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:37,970 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:37,974 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:50:37,974 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:37,975 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:50:37,975 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3613.208508 seconds
+2025-04-27 01:50:37,975 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:50:41,155 - src.user_service.auth_functions - WARNING - JWTError: Signature verification failed.
+2025-04-27 01:50:41,155 - src.user_service.router - INFO - Token decoded successfully None
+2025-04-27 01:50:41,155 - src.user_service.router - WARNING - Invalid token
+2025-04-27 01:50:45,555 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:45,555 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:45,557 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:50:45,558 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:50:45,558 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:50:45,559 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3605.625519 seconds
+2025-04-27 01:50:45,559 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:51:23,779 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:51:23,779 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:51:23,782 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:51:23,782 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:51:23,783 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:51:23,783 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3567.400652 seconds
+2025-04-27 01:51:23,783 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:51:27,672 - src.user_service.auth_functions - WARNING - JWTError: Invalid header string: 'utf-8' codec can't decode byte 0x8b in position 13: invalid start byte
+2025-04-27 01:51:27,672 - src.user_service.router - INFO - Token decoded successfully None
+2025-04-27 01:51:27,672 - src.user_service.router - WARNING - Invalid token
+2025-04-27 01:51:55,274 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:51:55,274 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:51:55,277 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:51:55,277 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:51:55,278 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:51:55,278 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3535.906031 seconds
+2025-04-27 01:51:55,278 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:52:02,033 - src.user_service.auth_functions - WARNING - JWTError: Invalid header string: 'utf-8' codec can't decode byte 0x8b in position 13: invalid start byte
+2025-04-27 01:52:02,033 - src.user_service.router - INFO - Token decoded successfully None
+2025-04-27 01:52:02,033 - src.user_service.router - WARNING - Invalid token
+2025-04-27 01:52:15,337 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-26 22:52:15.337986
+Server timestamp: 1745707935
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-27 01:52:19,264 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-26 22:52:19.264513
+Server timestamp: 1745707939
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-27 01:52:21,900 - src.user_service.auth_functions - WARNING - JWTError: Invalid header string: 'utf-8' codec can't decode byte 0x8b in position 13: invalid start byte
+2025-04-27 01:52:21,900 - src.user_service.router - INFO - Token decoded successfully None
+2025-04-27 01:52:21,900 - src.user_service.router - WARNING - Invalid token
+2025-04-27 01:52:33,447 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:52:33,447 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:52:33,485 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:52:33,485 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:52:33,486 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:52:33,486 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3497.697986 seconds
+2025-04-27 01:52:33,486 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:57:02,398 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-26 22:57:02.398262
+Server timestamp: 1745708222
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-27 01:57:06,003 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:57:06,003 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:57:06,044 - src.user_service.router - INFO - Deleted inactive sessions: []
+2025-04-27 01:57:06,045 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8cfd3836-0b7b-4504-acad-453277298fed', 'exp': 1745711451.184133, 'iat': 1745707821}
+2025-04-27 01:57:06,045 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-27 02:50:51.184133
+2025-04-27 01:57:06,045 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3225.138597 seconds
+2025-04-27 01:57:06,045 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-27 01:57:26,184 - src.user_service.auth_functions - WARNING - JWTError: Invalid header string: 'utf-8' codec can't decode byte 0x88 in position 6: invalid start byte
+2025-04-27 01:57:26,184 - src.user_service.router - INFO - Token decoded successfully None
+2025-04-27 01:57:26,184 - src.user_service.router - WARNING - Invalid token
