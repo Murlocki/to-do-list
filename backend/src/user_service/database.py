@@ -21,5 +21,6 @@ def check_database_connection():
         return response
     except:
         return False
-print(check_database_connection())
+if __name__ == '__main__':
+    print(check_database_connection())
 

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, EmailStr, Field
 
 
@@ -14,3 +16,19 @@ class UserUpdate(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
     is_active: bool = Field(True)
+
+class AuthForm(BaseModel):
+    identifier: str
+    password: str
+    device: Optional[str] = "unknown"
+    ip_address: Optional[str] = "unknown"
+    remember_me: Optional[bool] = Field(False)
+
+class Token(BaseModel):
+    access_token: str
+    refresh_token: Optional[str] = None
+    token_type: str
+    session_id: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
