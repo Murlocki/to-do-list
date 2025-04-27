@@ -55,8 +55,8 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     return HTTPException(status_code=status.HTTP_201_CREATED, detail=result)
 
 
-@user_router.post("/user/login", response_model=Token)
-def login_user(auth_form: AuthForm, db: Session = Depends(get_db)) -> HTTPException:
+@user_router.post("/user/login")
+def login_user(auth_form: AuthForm, db: Session = Depends(get_db)):
     user = crud.authenticate_user(db=db, identifier=auth_form.identifier, password=auth_form.password)
     if not user:
         logger.warning("Invalid credentials")
@@ -78,7 +78,7 @@ def login_user(auth_form: AuthForm, db: Session = Depends(get_db)) -> HTTPExcept
                                      "token_type": "bearer",
                                      "session_id": session_data["session_id"]})
     else:
-        session_data = crud.create_and_store_session(user.id, access_token, remember=False)
+        session_data = crud.create_and_store_session(user.id, access_token)
         logger.info(f"User logged in: {user.email}")
         return HTTPException(status_code=status.HTTP_200_OK,
                              detail={"access_token": access_token, "token_type": "bearer",

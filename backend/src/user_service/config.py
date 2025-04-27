@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 0
     access_token_expire_hours: int = 0
     refresh_token_expire_days: int = 0
-
+    session_cleanup_seconds: int = 3600
+    session_cleanup_minutes: int = 0
+    session_cleanup_hours: int = 0
+    session_cleanup_days: int = 0
 settings = Settings()
 print(settings.refresh_token_expire_days)
