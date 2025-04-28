@@ -8,7 +8,6 @@ load_dotenv(verbose=True)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file="src/user_service/.env")
     postgres_user: str = ""
@@ -31,9 +30,7 @@ class Settings(BaseSettings):
     session_cleanup_minutes: int = 0
     session_cleanup_hours: int = 0
     session_cleanup_days: int = 0
-    session_service_url: str = Field("http://127.0.0.1:8000")
-
-
+    profile_service_url: str = Field("http://127.0.0.1:8000")
 settings = Settings()
 print(settings.refresh_token_expire_days)
 print(settings.postgres_db)

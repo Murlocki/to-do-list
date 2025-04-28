@@ -1,532 +1,100 @@
-2025-04-28 00:02:53,390 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 21:02:53.390852
-Server timestamp: 1745787773
+2025-04-29 01:20:57,294 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:20:57.294407
+Server timestamp: 1745878857
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 00:02:53,398 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 00:02:53,405 - src.user_service.as_tasks - INFO - Celery worker PID: 286364
-2025-04-28 00:02:53,405 - src.user_service.as_tasks - INFO - Celery beat PID: 288216
-2025-04-28 00:02:55,461 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:03:02,449 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-28 01:03:32.449993
-2025-04-28 00:03:02,452 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImU2ZWIxZWIzLTFmMTEtNDNkOS05NmYwLTcxMDUwMzNiMmFlYyIsImV4cCI6MTc0NTc5MTQxMi40NDk5OTMsImlhdCI6MTc0NTc4Nzc4Mn0.ZgMsTIBD2syYLPUqpTbmGie1WnrLgeXBCYFqtn2FKkM
-2025-04-28 00:03:02,452 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImU2ZWIxZWIzLTFmMTEtNDNkOS05NmYwLTcxMDUwMzNiMmFlYyIsImV4cCI6MTc0NTc5MTQxMi40NDk5OTMsImlhdCI6MTc0NTc4Nzc4Mn0.ZgMsTIBD2syYLPUqpTbmGie1WnrLgeXBCYFqtn2FKkM
-2025-04-28 00:03:02,452 - src.user_service.router - INFO - True
-2025-04-28 00:03:02,452 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '868f43bb-17d1-4141-be94-8865626d0139'}
-2025-04-28 00:03:02,452 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '868f43bb-17d1-4141-be94-8865626d0139'}
-2025-04-28 00:03:02,452 - src.user_service.auth_functions - INFO - Refresh token created for user: john.doe@example.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6Ijg2OGY0M2JiLTE3ZDEtNDE0MS1iZTk0LTg4NjU2MjZkMDEzOSIsImV4cCI6MTc0ODM3OTc4Mi40NTI5OTN9.UnhUy0OS4eOraM-l_6LFiIuIx1I7JcKKX8ITKfvOeGM
-2025-04-28 00:03:02,452 - src.user_service.crud - INFO - Storing session with expires_at: 2025-05-28 00:03:02.452993
-2025-04-28 00:03:02,452 - src.user_service.crud - WARNING - {'session_id': '234d48c8-f530-4f98-bb6d-ab2afb037694', 'user_id': '2', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImU2ZWIxZWIzLTFmMTEtNDNkOS05NmYwLTcxMDUwMzNiMmFlYyIsImV4cCI6MTc0NTc5MTQxMi40NDk5OTMsImlhdCI6MTc0NTc4Nzc4Mn0.ZgMsTIBD2syYLPUqpTbmGie1WnrLgeXBCYFqtn2FKkM', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-28T00:03:02.452993', 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6Ijg2OGY0M2JiLTE3ZDEtNDE0MS1iZTk0LTg4NjU2MjZkMDEzOSIsImV4cCI6MTc0ODM3OTc4Mi40NTI5OTN9.UnhUy0OS4eOraM-l_6LFiIuIx1I7JcKKX8ITKfvOeGM', 'expires_at': '2025-05-28T00:03:02.452993'}
-2025-04-28 00:03:02,458 - src.user_service.router - INFO - User logged in (rem mode): john.doe@example.com
-2025-04-28 00:03:15,435 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': 'e6eb1eb3-1f11-43d9-96f0-7105033b2aec', 'exp': 1745791412.449993, 'iat': 1745787782}
-2025-04-28 00:03:15,435 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': 'e6eb1eb3-1f11-43d9-96f0-7105033b2aec', 'exp': 1745791412.449993, 'iat': 1745787782}
-2025-04-28 00:03:15,440 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:03:15,440 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': 'e6eb1eb3-1f11-43d9-96f0-7105033b2aec', 'exp': 1745791412.449993, 'iat': 1745787782}
-2025-04-28 00:03:15,441 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:03:32.449993
-2025-04-28 00:03:15,441 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3617.008264 seconds
-2025-04-28 00:03:15,441 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:03:15,443 - src.user_service.router - WARNING - User not found
-2025-04-28 00:03:47,621 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-28 01:04:17.621738
-2025-04-28 00:03:47,622 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjI5OThjMjBlLTk0ZDEtNGUxNi05YWUwLWNhY2FlZTkxYTM4MSIsImV4cCI6MTc0NTc5MTQ1Ny42MjE3MzgsImlhdCI6MTc0NTc4NzgyN30.llooIPXOSjFQhUfuj2lSIV9NIufggHNARhfmMF_Jfgo
-2025-04-28 00:03:47,622 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjI5OThjMjBlLTk0ZDEtNGUxNi05YWUwLWNhY2FlZTkxYTM4MSIsImV4cCI6MTc0NTc5MTQ1Ny42MjE3MzgsImlhdCI6MTc0NTc4NzgyN30.llooIPXOSjFQhUfuj2lSIV9NIufggHNARhfmMF_Jfgo
-2025-04-28 00:03:47,622 - src.user_service.router - INFO - True
-2025-04-28 00:03:47,622 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': 'f36199f5-090d-40b3-aa04-fe68281cfbca'}
-2025-04-28 00:03:47,622 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': 'f36199f5-090d-40b3-aa04-fe68281cfbca'}
-2025-04-28 00:03:47,622 - src.user_service.auth_functions - INFO - Refresh token created for user: john.doe@example.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImYzNjE5OWY1LTA5MGQtNDBiMy1hYTA0LWZlNjgyODFjZmJjYSIsImV4cCI6MTc0ODM3OTgyNy42MjI3Mzl9.o7jb9YOwjiFqwZrDDdcsc_hZQEc-QT9axUpGxGCbvS0
-2025-04-28 00:03:47,622 - src.user_service.crud - INFO - Storing session with expires_at: 2025-05-28 00:03:47.622739
-2025-04-28 00:03:47,622 - src.user_service.crud - WARNING - {'session_id': '0ff65254-1486-4de7-b7b2-e1ce55d8fade', 'user_id': '2', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjI5OThjMjBlLTk0ZDEtNGUxNi05YWUwLWNhY2FlZTkxYTM4MSIsImV4cCI6MTc0NTc5MTQ1Ny42MjE3MzgsImlhdCI6MTc0NTc4NzgyN30.llooIPXOSjFQhUfuj2lSIV9NIufggHNARhfmMF_Jfgo', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-28T00:03:47.622739', 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImYzNjE5OWY1LTA5MGQtNDBiMy1hYTA0LWZlNjgyODFjZmJjYSIsImV4cCI6MTc0ODM3OTgyNy42MjI3Mzl9.o7jb9YOwjiFqwZrDDdcsc_hZQEc-QT9axUpGxGCbvS0', 'expires_at': '2025-05-28T00:03:47.622739'}
-2025-04-28 00:03:47,624 - src.user_service.router - INFO - User logged in (rem mode): john.doe@example.com
-2025-04-28 00:03:54,378 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:03:59,954 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:03:59,954 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:03:59,956 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:03:59,956 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:03:59,957 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:04:17.621738
-2025-04-28 00:03:59,957 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3617.664132 seconds
-2025-04-28 00:03:59,957 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:03:59,958 - src.user_service.router - WARNING - User not found
-2025-04-28 00:04:54,377 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:05:54,379 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:06:53,162 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:06:53,162 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:06:53,165 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:06:53,165 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:06:53,165 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:04:17.621738
-2025-04-28 00:06:53,166 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3444.455953 seconds
-2025-04-28 00:06:53,166 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:06:53,167 - src.user_service.router - WARNING - User not found
-2025-04-28 00:06:54,379 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:06:55,404 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:06:55,404 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:06:55,407 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:06:55,408 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:06:55,408 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:04:17.621738
-2025-04-28 00:06:55,408 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3442.213129 seconds
-2025-04-28 00:06:55,408 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:06:55,409 - src.user_service.router - WARNING - User not found
-2025-04-28 00:06:56,272 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:06:56,272 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:06:56,275 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:06:56,275 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:06:56,276 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:04:17.621738
-2025-04-28 00:06:56,276 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3441.345582 seconds
-2025-04-28 00:06:56,276 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:06:56,276 - src.user_service.router - WARNING - User not found
-2025-04-28 00:07:54,379 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:08:51,769 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 21:08:51.769341
-Server timestamp: 1745788131
+2025-04-29 01:20:59,522 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:20:59.522777
+Server timestamp: 1745878859
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 00:08:51,775 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 00:08:51,780 - src.user_service.as_tasks - INFO - Celery worker PID: 288744
-2025-04-28 00:08:51,780 - src.user_service.as_tasks - INFO - Celery beat PID: 295064
-2025-04-28 00:08:53,527 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:08:56,260 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:08:56,261 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:08:56,301 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:08:56,301 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:08:56,302 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:04:17.621738
-2025-04-28 00:08:56,302 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3321.319451 seconds
-2025-04-28 00:08:56,302 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:08:56,303 - src.user_service.router - WARNING - User not found
-2025-04-28 00:09:20,140 - src.user_service.as_tasks - INFO - Shutting down Celery worker and beat...
-2025-04-28 00:09:20,149 - src.user_service.as_tasks - INFO - Celery worker terminated successfully
-2025-04-28 00:09:20,157 - src.user_service.as_tasks - INFO - Celery beat terminated successfully
-2025-04-28 00:09:20,157 - src.user_service.as_tasks - INFO - Shutdown complete
-2025-04-28 00:09:20,157 - main - WARNING - Shutdown event triggered
-2025-04-28 00:09:21,774 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 21:09:21.774474
-Server timestamp: 1745788161
+2025-04-29 01:21:09,325 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-30 07:21:39.325572
+2025-04-29 01:21:09,327 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImQ2YWI4YmQ4LTE4NzMtNGM4OS05OTdlLWQ0NTgyNDRlNWMyNiIsImV4cCI6MTc0NTk4Njg5OS4zMjU1NzIsImlhdCI6MTc0NTg3ODg2OX0.sd6QLw0sdnIVJH2oOtFaYETYUkE_nKiX1tk1DznqCTo
+2025-04-29 01:21:09,327 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImQ2YWI4YmQ4LTE4NzMtNGM4OS05OTdlLWQ0NTgyNDRlNWMyNiIsImV4cCI6MTc0NTk4Njg5OS4zMjU1NzIsImlhdCI6MTc0NTg3ODg2OX0.sd6QLw0sdnIVJH2oOtFaYETYUkE_nKiX1tk1DznqCTo
+2025-04-29 01:21:09,327 - src.user_service.router - INFO - False
+2025-04-29 01:21:09,331 - src.user_service.external_functions - ERROR - 422 Client Error: Unprocessable Entity for url: http://127.0.0.1:8001/session
+2025-04-29 01:21:09,331 - src.user_service.router - INFO - User logged in: john.doe@example.com
+2025-04-29 01:22:51,159 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:22:51.159062
+Server timestamp: 1745878971
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 00:09:21,780 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 00:09:21,785 - src.user_service.as_tasks - INFO - Celery worker PID: 295732
-2025-04-28 00:09:21,785 - src.user_service.as_tasks - INFO - Celery beat PID: 274368
-2025-04-28 00:09:23,995 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:09:23,995 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:09:24,028 - src.user_service.router - INFO - <src.user_service.models.User object at 0x0000020CD4865950>, john.doe@example.com
-2025-04-28 00:09:24,033 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:09:24,033 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:09:24,034 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:04:17.621738
-2025-04-28 00:09:24,034 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3293.587516 seconds
-2025-04-28 00:09:24,034 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:09:24,035 - src.user_service.router - WARNING - User not found
-2025-04-28 00:09:52,492 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:10:52,449 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:10:54,575 - src.user_service.as_tasks - INFO - Shutting down Celery worker and beat...
-2025-04-28 00:10:56,086 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 21:10:56.086553
-Server timestamp: 1745788256
+2025-04-29 01:22:55,053 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-30 07:23:25.053910
+2025-04-29 01:22:55,053 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjlhY2EyOGMyLWY0OTctNDVhYy04NWIxLWIwYTM4MGM1ODY2NCIsImV4cCI6MTc0NTk4NzAwNS4wNTM5MSwiaWF0IjoxNzQ1ODc4OTc1fQ.JZMJ6eevBqSaYBPNL6LR4spwUGebcxF9b-L1sGS6pmQ
+2025-04-29 01:22:55,053 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjlhY2EyOGMyLWY0OTctNDVhYy04NWIxLWIwYTM4MGM1ODY2NCIsImV4cCI6MTc0NTk4NzAwNS4wNTM5MSwiaWF0IjoxNzQ1ODc4OTc1fQ.JZMJ6eevBqSaYBPNL6LR4spwUGebcxF9b-L1sGS6pmQ
+2025-04-29 01:22:55,053 - src.user_service.router - INFO - False
+2025-04-29 01:22:55,056 - src.user_service.external_functions - ERROR - 422 Client Error: Unprocessable Entity for url: http://127.0.0.1:8001/session
+2025-04-29 01:22:55,057 - src.user_service.router - INFO - User logged in: john.doe@example.com
+2025-04-29 01:23:16,572 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:23:16.572903
+Server timestamp: 1745878996
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 00:10:56,092 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 00:10:56,097 - src.user_service.as_tasks - INFO - Celery worker PID: 295816
-2025-04-28 00:10:56,097 - src.user_service.as_tasks - INFO - Celery beat PID: 295124
-2025-04-28 00:10:57,893 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:11:00,103 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:11:00,103 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:11:00,243 - src.user_service.router - INFO - {'id': 2, 'email': 'john.doe@example.com', 'username': 'john_doe', 'first_name': 'Johnaoe', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-04-26T23:42:36.349252+03:00', 'updated_at': '2025-04-27T22:49:52.103706+03:00'}, john.doe@example.com
-2025-04-28 00:11:00,247 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:11:00,247 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:11:00,248 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:04:17.621738
-2025-04-28 00:11:00,248 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3197.373068 seconds
-2025-04-28 00:11:00,248 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:11:00,249 - src.user_service.router - WARNING - User not found
-2025-04-28 00:11:56,796 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:12:56,797 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:13:56,798 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:14:33,537 - src.user_service.as_tasks - INFO - Shutting down Celery worker and beat...
-2025-04-28 00:14:33,546 - src.user_service.as_tasks - INFO - Celery worker terminated successfully
-2025-04-28 00:14:35,064 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 21:14:35.064824
-Server timestamp: 1745788475
+2025-04-29 01:23:22,298 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:23:22.298894
+Server timestamp: 1745879002
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 00:14:35,070 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 00:14:35,075 - src.user_service.as_tasks - INFO - Celery worker PID: 297508
-2025-04-28 00:14:35,075 - src.user_service.as_tasks - INFO - Celery beat PID: 297684
-2025-04-28 00:14:36,941 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:14:37,386 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:14:37,386 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:14:37,422 - src.user_service.router - INFO - {'id': 2, 'email': 'john.doe@example.com', 'username': 'john_doe', 'first_name': 'Johnaoe', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-04-26T23:42:36.349252+03:00', 'updated_at': '2025-04-27T22:49:52.103706+03:00'}, john.doe@example.com
-2025-04-28 00:14:37,428 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:14:37,428 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:14:37,429 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:04:17.621738
-2025-04-28 00:14:37,429 - src.user_service.auth_functions - INFO - check: time left until token expiration: 2980.192539 seconds
-2025-04-28 00:14:37,429 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:14:37,430 - src.user_service.router - WARNING - User not found
-2025-04-28 00:15:35,869 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:16:13,226 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 21:16:13.226266
-Server timestamp: 1745788573
+2025-04-29 01:23:28,586 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-30 07:23:58.586849
+2025-04-29 01:23:28,588 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjlmZTgwMzEzLWJmYzctNDViZi1hMjJhLWEyMDM4NTFlMjBjYiIsImV4cCI6MTc0NTk4NzAzOC41ODY4NDksImlhdCI6MTc0NTg3OTAwOH0.5LsRaDJx7zhv-lV0eF832KBjDmLMqLvABz8VyB8pUWw
+2025-04-29 01:23:28,588 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjlmZTgwMzEzLWJmYzctNDViZi1hMjJhLWEyMDM4NTFlMjBjYiIsImV4cCI6MTc0NTk4NzAzOC41ODY4NDksImlhdCI6MTc0NTg3OTAwOH0.5LsRaDJx7zhv-lV0eF832KBjDmLMqLvABz8VyB8pUWw
+2025-04-29 01:23:28,588 - src.user_service.router - INFO - False
+2025-04-29 01:23:28,591 - src.user_service.external_functions - ERROR - 422 Client Error: Unprocessable Entity for url: http://127.0.0.1:8001/session
+2025-04-29 01:23:28,592 - src.user_service.router - INFO - User logged in: john.doe@example.com
+2025-04-29 01:25:51,081 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:25:51.081472
+Server timestamp: 1745879151
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 00:16:13,231 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 00:16:13,236 - src.user_service.as_tasks - INFO - Celery worker PID: 282740
-2025-04-28 00:16:13,236 - src.user_service.as_tasks - INFO - Celery beat PID: 298932
-2025-04-28 00:16:15,029 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:16:15,774 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:16:15,774 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:16:15,809 - src.user_service.router - INFO - {'id': 2, 'email': 'john.doe@example.com', 'username': 'john_doe', 'first_name': 'Johnaoe', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-04-26T23:42:36.349252+03:00', 'updated_at': '2025-04-27T22:49:52.103706+03:00'}, john.doe@example.com
-2025-04-28 00:16:15,814 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:16:15,815 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '2998c20e-94d1-4e16-9ae0-cacaee91a381', 'exp': 1745791457.621738, 'iat': 1745787827}
-2025-04-28 00:16:15,815 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:04:17.621738
-2025-04-28 00:16:15,815 - src.user_service.auth_functions - INFO - check: time left until token expiration: 2881.806083 seconds
-2025-04-28 00:16:15,815 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:16:15,817 - src.user_service.router - WARNING - User not found 101
-2025-04-28 00:17:13,951 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:18:13,951 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:19:13,951 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:20:13,953 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:21:04,553 - src.user_service.router - WARNING - Session not found
-2025-04-28 00:21:13,951 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:21:34,196 - src.user_service.router - INFO - User john_doe registered
-2025-04-28 00:22:13,951 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:22:24,447 - src.user_service.as_tasks - INFO - Shutting down Celery worker and beat...
-2025-04-28 00:22:24,457 - src.user_service.as_tasks - INFO - Celery worker terminated successfully
-2025-04-28 00:22:24,466 - src.user_service.as_tasks - INFO - Celery beat terminated successfully
-2025-04-28 00:22:24,466 - src.user_service.as_tasks - INFO - Shutdown complete
-2025-04-28 00:22:24,466 - main - WARNING - Shutdown event triggered
-2025-04-28 00:22:25,931 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 21:22:25.931862
-Server timestamp: 1745788945
+2025-04-29 01:25:51,240 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:25:51.240377
+Server timestamp: 1745879151
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 00:22:25,937 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 00:22:25,942 - src.user_service.as_tasks - INFO - Celery worker PID: 300572
-2025-04-28 00:22:25,942 - src.user_service.as_tasks - INFO - Celery beat PID: 298160
-2025-04-28 00:22:27,783 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:22:27,964 - src.user_service.router - WARNING - User with email john.doe@example.com already exists
-2025-04-28 00:22:40,193 - src.user_service.router - INFO - User john_doe registered
-2025-04-28 00:22:50,395 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-28 01:23:20.395331
-2025-04-28 00:22:50,398 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjQ2NGI5MzFhLWUyNzAtNGY4OC1hODQwLTZkYmM5MDlkZTEwZiIsImV4cCI6MTc0NTc5MjYwMC4zOTUzMzEsImlhdCI6MTc0NTc4ODk3MH0.ffaaytuoz34udEqIEOT86ttOV8qMiBFZZfYReJRkNxY
-2025-04-28 00:22:50,398 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjQ2NGI5MzFhLWUyNzAtNGY4OC1hODQwLTZkYmM5MDlkZTEwZiIsImV4cCI6MTc0NTc5MjYwMC4zOTUzMzEsImlhdCI6MTc0NTc4ODk3MH0.ffaaytuoz34udEqIEOT86ttOV8qMiBFZZfYReJRkNxY
-2025-04-28 00:22:50,398 - src.user_service.router - INFO - True
-2025-04-28 00:22:50,398 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8f8f429b-72a3-4ffd-89f8-c58f5e1d38d2'}
-2025-04-28 00:22:50,398 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8f8f429b-72a3-4ffd-89f8-c58f5e1d38d2'}
-2025-04-28 00:22:50,398 - src.user_service.auth_functions - INFO - Refresh token created for user: john.doe@example.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhmOGY0MjliLTcyYTMtNGZmZC04OWY4LWM1OGY1ZTFkMzhkMiIsImV4cCI6MTc0ODM4MDk3MC4zOTgzMzJ9.kWsR0nrW1VxTFeTgQkY6HQbroaRluOzihzZ6KaAYzo0
-2025-04-28 00:22:50,398 - src.user_service.crud - INFO - Storing session with expires_at: 2025-05-28 00:22:50.398332
-2025-04-28 00:22:50,398 - src.user_service.crud - WARNING - {'session_id': 'c55a4bfd-2be2-46c0-b137-8ff8b5780b70', 'user_id': '4', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjQ2NGI5MzFhLWUyNzAtNGY4OC1hODQwLTZkYmM5MDlkZTEwZiIsImV4cCI6MTc0NTc5MjYwMC4zOTUzMzEsImlhdCI6MTc0NTc4ODk3MH0.ffaaytuoz34udEqIEOT86ttOV8qMiBFZZfYReJRkNxY', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-28T00:22:50.398332', 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhmOGY0MjliLTcyYTMtNGZmZC04OWY4LWM1OGY1ZTFkMzhkMiIsImV4cCI6MTc0ODM4MDk3MC4zOTgzMzJ9.kWsR0nrW1VxTFeTgQkY6HQbroaRluOzihzZ6KaAYzo0', 'expires_at': '2025-05-28T00:22:50.398332'}
-2025-04-28 00:22:50,404 - src.user_service.router - INFO - User logged in (rem mode): john.doe@example.com
-2025-04-28 00:23:01,834 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '464b931a-e270-4f88-a840-6dbc909de10f', 'exp': 1745792600.395331, 'iat': 1745788970}
-2025-04-28 00:23:01,834 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '464b931a-e270-4f88-a840-6dbc909de10f', 'exp': 1745792600.395331, 'iat': 1745788970}
-2025-04-28 00:23:01,835 - src.user_service.router - INFO - {'id': 4, 'email': 'john.doe@example.com', 'username': 'john_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-04-28T00:22:40.005337+03:00', 'updated_at': '2025-04-28T00:22:40.005337+03:00'}, john.doe@example.com
-2025-04-28 00:23:01,837 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:23:01,837 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '464b931a-e270-4f88-a840-6dbc909de10f', 'exp': 1745792600.395331, 'iat': 1745788970}
-2025-04-28 00:23:01,838 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:23:20.395331
-2025-04-28 00:23:01,838 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3618.556681 seconds
-2025-04-28 00:23:01,838 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:23:01,839 - src.user_service.router - WARNING - User not found 101
-2025-04-28 00:23:26,689 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:24:26,689 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:25:06,495 - src.user_service.auth_functions - WARNING - JWTError: Invalid crypto padding
-2025-04-28 00:25:06,495 - src.user_service.router - INFO - Token decoded successfully None
-2025-04-28 00:25:06,495 - src.user_service.router - WARNING - Invalid token
-2025-04-28 00:25:26,690 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:25:38,958 - src.user_service.auth_functions - WARNING - JWTError: Invalid crypto padding
-2025-04-28 00:25:38,958 - src.user_service.router - INFO - Token decoded successfully None
-2025-04-28 00:25:38,958 - src.user_service.router - WARNING - Invalid token
-2025-04-28 00:26:03,691 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '464b931a-e270-4f88-a840-6dbc909de10f', 'exp': 1745792600.395331, 'iat': 1745788970}
-2025-04-28 00:26:03,691 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '464b931a-e270-4f88-a840-6dbc909de10f', 'exp': 1745792600.395331, 'iat': 1745788970}
-2025-04-28 00:26:03,692 - src.user_service.router - INFO - {'id': 4, 'email': 'john.doe@example.com', 'username': 'john_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-04-28T00:22:40.005337+03:00', 'updated_at': '2025-04-28T00:22:40.005337+03:00'}, john.doe@example.com
-2025-04-28 00:26:03,695 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:26:03,695 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '464b931a-e270-4f88-a840-6dbc909de10f', 'exp': 1745792600.395331, 'iat': 1745788970}
-2025-04-28 00:26:03,696 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:23:20.395331
-2025-04-28 00:26:03,696 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3436.699153 seconds
-2025-04-28 00:26:03,696 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:26:03,696 - src.user_service.router - WARNING - User not found 101
-2025-04-28 00:26:26,689 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:27:26,690 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:28:26,691 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:29:26,691 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:30:16,953 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 21:30:16.953303
-Server timestamp: 1745789416
+2025-04-29 01:25:56,468 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:25:56.468140
+Server timestamp: 1745879156
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 00:30:16,959 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 00:30:16,964 - src.user_service.as_tasks - INFO - Celery worker PID: 304412
-2025-04-28 00:30:16,964 - src.user_service.as_tasks - INFO - Celery beat PID: 304612
-2025-04-28 00:30:19,340 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '464b931a-e270-4f88-a840-6dbc909de10f', 'exp': 1745792600.395331, 'iat': 1745788970}
-2025-04-28 00:30:19,340 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '464b931a-e270-4f88-a840-6dbc909de10f', 'exp': 1745792600.395331, 'iat': 1745788970}
-2025-04-28 00:30:19,374 - src.user_service.router - INFO - {'id': 4, 'email': 'john.doe@example.com', 'username': 'john_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-04-28T00:22:40.005337+03:00', 'updated_at': '2025-04-28T00:22:40.005337+03:00'}, john.doe@example.com
-2025-04-28 00:30:19,379 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 00:30:19,380 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '464b931a-e270-4f88-a840-6dbc909de10f', 'exp': 1745792600.395331, 'iat': 1745788970}
-2025-04-28 00:30:19,381 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-28 01:23:20.395331
-2025-04-28 00:30:19,381 - src.user_service.auth_functions - INFO - check: time left until token expiration: 3181.013495 seconds
-2025-04-28 00:30:19,381 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 00:30:26,736 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:31:26,692 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:32:26,694 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:33:26,693 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:34:26,695 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:35:26,694 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:36:26,696 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:37:26,696 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:38:26,695 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:39:26,696 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:40:26,695 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:41:26,695 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:42:26,697 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:43:26,696 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:44:26,698 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:45:26,698 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:46:26,697 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:47:26,700 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:48:26,702 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:49:26,700 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:50:26,702 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:51:26,700 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:52:26,703 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:53:26,703 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:54:26,703 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:55:26,703 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:56:26,704 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:57:26,704 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:58:26,706 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 00:59:26,706 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:00:26,707 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:01:26,707 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:02:26,709 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:03:26,708 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:04:26,711 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:05:26,710 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:06:26,751 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:07:26,710 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:08:26,711 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:09:26,711 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:10:26,712 - src.user_service.as_tasks - INFO - Inactive sessions cleaned up
-2025-04-28 01:10:59,803 - src.user_service.as_tasks - INFO - Shutting down Celery worker and beat...
-2025-04-28 01:10:59,814 - src.user_service.as_tasks - INFO - Celery worker terminated successfully
-2025-04-28 01:10:59,823 - src.user_service.as_tasks - INFO - Celery beat terminated successfully
-2025-04-28 01:10:59,823 - src.user_service.as_tasks - INFO - Shutdown complete
-2025-04-28 01:10:59,823 - main - WARNING - Shutdown event triggered
-2025-04-28 02:44:59,506 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:44:59.506995
-Server timestamp: 1745797499
+2025-04-29 01:25:59,469 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:25:59.469203
+Server timestamp: 1745879159
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 02:49:26,225 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:49:26.225196
-Server timestamp: 1745797766
+2025-04-29 01:26:02,753 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-30 07:26:32.753018
+2025-04-29 01:26:02,755 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjU2NzQyYjE0LTIzNDYtNDdhMS04Mjk2LTA3MTQ2ZTQzODVhOSIsImV4cCI6MTc0NTk4NzE5Mi43NTMwMTgsImlhdCI6MTc0NTg3OTE2Mn0.nMPs_tRds8wr2DVtMtjOvg0Y3GQSfOgXvZI9FGyqW14
+2025-04-29 01:26:02,755 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjU2NzQyYjE0LTIzNDYtNDdhMS04Mjk2LTA3MTQ2ZTQzODVhOSIsImV4cCI6MTc0NTk4NzE5Mi43NTMwMTgsImlhdCI6MTc0NTg3OTE2Mn0.nMPs_tRds8wr2DVtMtjOvg0Y3GQSfOgXvZI9FGyqW14
+2025-04-29 01:26:02,755 - src.user_service.router - INFO - False
+2025-04-29 01:26:02,755 - src.user_service.external_functions - WARNING - user_id=4 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjU2NzQyYjE0LTIzNDYtNDdhMS04Mjk2LTA3MTQ2ZTQzODVhOSIsImV4cCI6MTc0NTk4NzE5Mi43NTMwMTgsImlhdCI6MTc0NTg3OTE2Mn0.nMPs_tRds8wr2DVtMtjOvg0Y3GQSfOgXvZI9FGyqW14' refresh_token=None device='unknown' ip_address='unknown'
+2025-04-29 01:26:02,760 - src.user_service.external_functions - ERROR - 422 Client Error: Unprocessable Entity for url: http://127.0.0.1:8001/session
+2025-04-29 01:26:02,760 - src.user_service.router - INFO - User logged in: john.doe@example.com
+2025-04-29 01:30:17,932 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:30:17.932326
+Server timestamp: 1745879417
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 02:49:26,229 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 02:49:26,235 - src.user_service.as_tasks - INFO - Celery worker PID: 354212
-2025-04-28 02:49:26,235 - src.user_service.as_tasks - INFO - Celery beat PID: 353752
-2025-04-28 02:49:34,388 - src.user_service.router - WARNING - User with email john.doe@example.com already exists
-2025-04-28 02:49:38,156 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-28 02:50:08.156333
-2025-04-28 02:49:38,167 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImQ4ZjgzNjMwLTY3YzktNGU3ZS1hZmNiLTQwNjY4ZjhmOGVkMiIsImV4cCI6MTc0NTc5NzgwOC4xNTYzMzMsImlhdCI6MTc0NTc5Nzc3OH0.Y-y8nYc8LZWo2Wkj22RUXke5qaoeh9jdPupgT4ncHNY
-2025-04-28 02:49:38,167 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImQ4ZjgzNjMwLTY3YzktNGU3ZS1hZmNiLTQwNjY4ZjhmOGVkMiIsImV4cCI6MTc0NTc5NzgwOC4xNTYzMzMsImlhdCI6MTc0NTc5Nzc3OH0.Y-y8nYc8LZWo2Wkj22RUXke5qaoeh9jdPupgT4ncHNY
-2025-04-28 02:49:38,167 - src.user_service.router - INFO - True
-2025-04-28 02:49:38,167 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1bace23b-10ba-4f71-8791-df8ebc0a3d9a'}
-2025-04-28 02:49:38,167 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1bace23b-10ba-4f71-8791-df8ebc0a3d9a'}
-2025-04-28 02:49:38,167 - src.user_service.auth_functions - INFO - Refresh token created for user: john.doe@example.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjFiYWNlMjNiLTEwYmEtNGY3MS04NzkxLWRmOGViYzBhM2Q5YSIsImV4cCI6MTc0ODM4OTc3OC4xNjczMzR9.DBfo6PHoNhcYBfzrXtSn_LZYVkFDpNmyPEkPyKLI-B0
-2025-04-28 02:49:38,167 - src.user_service.crud - INFO - Storing session with expires_at: 2025-05-28 02:49:38.167334
-2025-04-28 02:49:38,167 - src.user_service.crud - WARNING - {'session_id': '9ed9c565-9a67-472b-8ad1-02a972f1e303', 'user_id': '4', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImQ4ZjgzNjMwLTY3YzktNGU3ZS1hZmNiLTQwNjY4ZjhmOGVkMiIsImV4cCI6MTc0NTc5NzgwOC4xNTYzMzMsImlhdCI6MTc0NTc5Nzc3OH0.Y-y8nYc8LZWo2Wkj22RUXke5qaoeh9jdPupgT4ncHNY', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-28T02:49:38.167334', 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjFiYWNlMjNiLTEwYmEtNGY3MS04NzkxLWRmOGViYzBhM2Q5YSIsImV4cCI6MTc0ODM4OTc3OC4xNjczMzR9.DBfo6PHoNhcYBfzrXtSn_LZYVkFDpNmyPEkPyKLI-B0', 'expires_at': '2025-05-28T02:49:38.167334'}
-2025-04-28 02:49:38,175 - src.user_service.router - INFO - User logged in (rem mode): john.doe@example.com
-2025-04-28 02:50:06,456 - src.user_service.as_tasks - INFO - Shutting down Celery worker and beat...
-2025-04-28 02:50:06,456 - src.user_service.as_tasks - INFO - Celery worker terminated successfully
-2025-04-28 02:50:06,457 - src.user_service.as_tasks - INFO - Celery beat terminated successfully
-2025-04-28 02:50:06,457 - src.user_service.as_tasks - INFO - Shutdown complete
-2025-04-28 02:50:06,457 - src.main - WARNING - Shutdown event triggered
-2025-04-28 02:52:29,270 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:52:29.270427
-Server timestamp: 1745797949
+2025-04-29 01:30:19,529 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:30:19.529536
+Server timestamp: 1745879419
 System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
 Environment timezone: Not set
 
-2025-04-28 02:52:29,274 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 02:52:29,279 - src.user_service.as_tasks - INFO - Celery worker PID: 352432
-2025-04-28 02:52:29,279 - src.user_service.as_tasks - INFO - Celery beat PID: 342176
-2025-04-28 02:52:42,076 - src.user_service.auth_functions - WARNING - JWTError: Signature has expired.
-2025-04-28 02:52:42,076 - src.user_service.router - INFO - Token decoded successfully None
-2025-04-28 02:52:42,076 - src.user_service.router - WARNING - Invalid token
-2025-04-28 02:53:04,202 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:53:04.202861
-Server timestamp: 1745797984
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 02:53:04,207 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 02:53:04,212 - src.user_service.as_tasks - INFO - Celery worker PID: 356888
-2025-04-28 02:53:04,212 - src.user_service.as_tasks - INFO - Celery beat PID: 356876
-2025-04-28 02:53:14,996 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-29 08:53:44.996453
-2025-04-28 02:53:14,998 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjFjNjVjODQ4LTQ4NGEtNGQxYS1iMWQ3LWExMmI3NTE4ZmZjNyIsImV4cCI6MTc0NTkwNjAyNC45OTY0NTMsImlhdCI6MTc0NTc5Nzk5NH0.rCnQEwQdu3UIqJHxGwYW8USEE3wlXwYBgznXTTW4WcM
-2025-04-28 02:53:14,998 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjFjNjVjODQ4LTQ4NGEtNGQxYS1iMWQ3LWExMmI3NTE4ZmZjNyIsImV4cCI6MTc0NTkwNjAyNC45OTY0NTMsImlhdCI6MTc0NTc5Nzk5NH0.rCnQEwQdu3UIqJHxGwYW8USEE3wlXwYBgznXTTW4WcM
-2025-04-28 02:53:14,999 - src.user_service.router - INFO - True
-2025-04-28 02:53:14,999 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '80d14cf7-e891-476b-b821-24a6c7e66f76'}
-2025-04-28 02:53:14,999 - src.user_service.auth_functions - INFO - {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '80d14cf7-e891-476b-b821-24a6c7e66f76'}
-2025-04-28 02:53:14,999 - src.user_service.auth_functions - INFO - Refresh token created for user: john.doe@example.com eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjgwZDE0Y2Y3LWU4OTEtNDc2Yi1iODIxLTI0YTZjN2U2NmY3NiIsImV4cCI6MTc0ODM4OTk5NC45OTkwODd9.gAcAwa3R6ORzUZh4fTXYEfJM1EUWN1vQbyjJ7iVvtks
-2025-04-28 02:53:14,999 - src.user_service.crud - INFO - Storing session with expires_at: 2025-05-28 02:53:14.999087
-2025-04-28 02:53:14,999 - src.user_service.crud - WARNING - {'session_id': '51d879a8-2a30-4bef-a037-7704a807747a', 'user_id': '4', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjFjNjVjODQ4LTQ4NGEtNGQxYS1iMWQ3LWExMmI3NTE4ZmZjNyIsImV4cCI6MTc0NTkwNjAyNC45OTY0NTMsImlhdCI6MTc0NTc5Nzk5NH0.rCnQEwQdu3UIqJHxGwYW8USEE3wlXwYBgznXTTW4WcM', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-28T02:53:14.999087', 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjgwZDE0Y2Y3LWU4OTEtNDc2Yi1iODIxLTI0YTZjN2U2NmY3NiIsImV4cCI6MTc0ODM4OTk5NC45OTkwODd9.gAcAwa3R6ORzUZh4fTXYEfJM1EUWN1vQbyjJ7iVvtks', 'expires_at': '2025-05-28T02:53:14.999087'}
-2025-04-28 02:53:15,004 - src.user_service.router - INFO - User logged in (rem mode): john.doe@example.com
-2025-04-28 02:53:25,023 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 02:53:25,023 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 02:53:25,027 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 02:53:25,027 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 02:53:25,029 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-29 08:53:44.996453
-2025-04-28 02:53:25,029 - src.user_service.auth_functions - INFO - check: time left until token expiration: 108019.967419 seconds
-2025-04-28 02:53:25,029 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 02:57:12,648 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 02:57:12,648 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 02:57:12,651 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 02:57:12,651 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 02:57:12,653 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-29 08:53:44.996453
-2025-04-28 02:57:12,653 - src.user_service.auth_functions - INFO - check: time left until token expiration: 107792.343301 seconds
-2025-04-28 02:57:12,653 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 02:57:48,531 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:57:48.531395
-Server timestamp: 1745798268
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 02:58:03,647 - src.user_service.as_tasks - INFO - Shutting down Celery worker and beat...
-2025-04-28 02:58:03,647 - src.user_service.as_tasks - INFO - Celery worker terminated successfully
-2025-04-28 02:58:03,647 - src.user_service.as_tasks - INFO - Celery beat terminated successfully
-2025-04-28 02:58:03,647 - src.user_service.as_tasks - INFO - Shutdown complete
-2025-04-28 02:58:03,647 - src.main - WARNING - Shutdown event triggered
-2025-04-28 02:58:04,295 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:58:04.295117
-Server timestamp: 1745798284
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 02:58:04,313 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 02:58:04,318 - src.user_service.as_tasks - INFO - Celery worker PID: 341240
-2025-04-28 02:58:04,318 - src.user_service.as_tasks - INFO - Celery beat PID: 360060
-2025-04-28 02:58:14,362 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:58:14.362963
-Server timestamp: 1745798294
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 02:58:14,675 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 02:58:14,675 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 02:58:14,712 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 02:58:14,713 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 02:58:14,714 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-29 08:53:44.996453
-2025-04-28 02:58:14,714 - src.user_service.auth_functions - INFO - check: time left until token expiration: 107730.281812 seconds
-2025-04-28 02:58:14,714 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 02:58:14,783 - src.user_service.as_tasks - INFO - Shutting down Celery worker and beat...
-2025-04-28 02:58:14,783 - src.user_service.as_tasks - INFO - Celery worker terminated successfully
-2025-04-28 02:58:14,783 - src.user_service.as_tasks - INFO - Celery beat terminated successfully
-2025-04-28 02:58:14,783 - src.user_service.as_tasks - INFO - Shutdown complete
-2025-04-28 02:58:14,783 - src.main - WARNING - Shutdown event triggered
-2025-04-28 02:58:15,463 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:58:15.463518
-Server timestamp: 1745798295
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 02:58:52,707 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:58:52.707065
-Server timestamp: 1745798332
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 02:58:53,225 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:58:53.225690
-Server timestamp: 1745798333
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 02:59:13,857 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:59:13.857836
-Server timestamp: 1745798353
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 02:59:14,471 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-27 23:59:14.471520
-Server timestamp: 1745798354
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:00:10,402 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:00:10.402426
-Server timestamp: 1745798410
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:00:52,553 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:00:52.553453
-Server timestamp: 1745798452
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:00:53,390 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:00:53.390822
-Server timestamp: 1745798453
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:01:40,930 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:01:40.930599
-Server timestamp: 1745798500
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:01:41,134 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:01:41.134658
-Server timestamp: 1745798501
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:02:05,196 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:02:05.196037
-Server timestamp: 1745798525
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:04:05,550 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:04:05.550453
-Server timestamp: 1745798645
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:04:49,686 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:04:49.686842
-Server timestamp: 1745798689
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:04:49,702 - src.user_service.as_tasks - INFO - Starting Celery worker and beat in the background...
-2025-04-28 03:04:49,707 - src.user_service.as_tasks - INFO - Celery worker PID: 363100
-2025-04-28 03:04:49,707 - src.user_service.as_tasks - INFO - Celery beat PID: 357444
-2025-04-28 03:04:53,685 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:04:53.685485
-Server timestamp: 1745798693
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:04:53,951 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 03:04:53,952 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 03:04:53,990 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 03:04:53,990 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 03:04:53,991 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-29 08:53:44.996453
-2025-04-28 03:04:53,991 - src.user_service.auth_functions - INFO - check: time left until token expiration: 107331.004811 seconds
-2025-04-28 03:04:53,991 - src.user_service.auth_functions - INFO - Token is valid
-2025-04-28 03:05:22,495 - src.user_service.router - INFO - 
-Server start time (UTC): 2025-04-28 00:05:22.495032
-Server timestamp: 1745798722
-System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
-Environment timezone: Not set
-
-2025-04-28 03:05:22,737 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 03:05:22,737 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 03:05:22,741 - src.user_service.router - INFO - Deleted inactive sessions: []
-2025-04-28 03:05:22,742 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '1c65c848-484a-4d1a-b1d7-a12b7518ffc7', 'exp': 1745906024.996453, 'iat': 1745797994}
-2025-04-28 03:05:22,744 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-29 08:53:44.996453
-2025-04-28 03:05:22,744 - src.user_service.auth_functions - INFO - check: time left until token expiration: 107302.252063 seconds
-2025-04-28 03:05:22,744 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-29 01:30:21,957 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-30 07:30:51.957772
+2025-04-29 01:30:21,960 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhlY2VlYjU5LTI1YTItNDUwNC04YmU0LTZiOTMyYTIxNTdlYyIsImV4cCI6MTc0NTk4NzQ1MS45NTc3NzIsImlhdCI6MTc0NTg3OTQyMX0.v_F6nD30BhFEUr4ZeKFQMcKiypIJ1rwL8RBznOifrn0
+2025-04-29 01:30:21,960 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhlY2VlYjU5LTI1YTItNDUwNC04YmU0LTZiOTMyYTIxNTdlYyIsImV4cCI6MTc0NTk4NzQ1MS45NTc3NzIsImlhdCI6MTc0NTg3OTQyMX0.v_F6nD30BhFEUr4ZeKFQMcKiypIJ1rwL8RBznOifrn0
+2025-04-29 01:30:21,960 - src.user_service.router - INFO - False
+2025-04-29 01:30:21,960 - src.user_service.external_functions - WARNING - user_id=4 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhlY2VlYjU5LTI1YTItNDUwNC04YmU0LTZiOTMyYTIxNTdlYyIsImV4cCI6MTc0NTk4NzQ1MS45NTc3NzIsImlhdCI6MTc0NTg3OTQyMX0.v_F6nD30BhFEUr4ZeKFQMcKiypIJ1rwL8RBznOifrn0' refresh_token=None device='unknown' ip_address='unknown'
+2025-04-29 01:30:21,966 - src.session_service.router - WARNING - user_id=4 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhlY2VlYjU5LTI1YTItNDUwNC04YmU0LTZiOTMyYTIxNTdlYyIsImV4cCI6MTc0NTk4NzQ1MS45NTc3NzIsImlhdCI6MTc0NTg3OTQyMX0.v_F6nD30BhFEUr4ZeKFQMcKiypIJ1rwL8RBznOifrn0' refresh_token=None device='unknown' ip_address='unknown'
+2025-04-29 01:30:21,966 - src.session_service.crud - INFO - Storing session with expires_at: 2025-04-30 07:30:51.966773
+2025-04-29 01:30:21,966 - src.session_service.crud - WARNING - {'session_id': '99c2d9a9-cd1c-4be8-bd8a-d11868732644', 'user_id': '4', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhlY2VlYjU5LTI1YTItNDUwNC04YmU0LTZiOTMyYTIxNTdlYyIsImV4cCI6MTc0NTk4NzQ1MS45NTc3NzIsImlhdCI6MTc0NTg3OTQyMX0.v_F6nD30BhFEUr4ZeKFQMcKiypIJ1rwL8RBznOifrn0', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-29T01:30:21.966773', 'expires_at': '2025-04-30T07:30:51.966773'}
+2025-04-29 01:30:21,974 - src.user_service.router - INFO - User logged in: john.doe@example.com

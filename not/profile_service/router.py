@@ -1,22 +1,20 @@
 import os
 import time
 from datetime import datetime
-from typing import Any, Dict
 
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 
-from src.shared.schemas import SessionSchema
-from src.user_service import logger_setup, crud, auth_functions
-from src.user_service.auth_functions import validate_password, get_session_by_token, decode_token, \
+from src.profile_service import auth_functions, crud
+from src.shared import logger_setup
+from src.user_service import validate_password, get_session_by_token, decode_token, \
     verify_and_refresh_access_token, get_password_hash
-from src.user_service.crud import delete_inactive_sessions
-from src.user_service.database import SessionLocal
-from src.user_service.external_functions import create_session
-from src.user_service.redis_base import redis_client
-from src.user_service.schemas import UserCreate, AuthForm, TokenModelResponse, UserResponse, SessionDTO, UserUpdate
+from src.user_service import delete_inactive_sessions
+from src.user_service import SessionLocal
+from src.profile_service.redis_base import redis_client
+from src.profile_service.schemas import UserCreate, AuthForm, TokenModelResponse, UserResponse, SessionDTO, UserUpdate
 
 user_router = APIRouter()
 logger = logger_setup.setup_logger(__name__)
@@ -35,9 +33,7 @@ def get_db():
     finally:
         db.close()
 
-
 bearer = HTTPBearer()
-
 
 @user_router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -58,7 +54,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     # Create new user
     result = crud.create_user(db=db, user=user)
     logger.info(f"User {user.username} registered")
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=result)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=result.to_dict())
 
 
 @user_router.post("/auth/login", response_model=TokenModelResponse, status_code=status.HTTP_200_OK)
@@ -75,57 +71,19 @@ def login_user(auth_form: AuthForm, db: Session = Depends(get_db)):
     # Create refresh token if remember_me is set
     if auth_form.remember_me:
         refresh_token = auth_functions.create_new_token(user.email, is_refresh=True)
-        session_data = create_session(
-            SessionSchema(user_id=user.id, access_token=access_token, refresh_token=refresh_token,
-                          device=auth_form.device, ip_address=auth_form.ip_address))
+        session_data = crud.create_and_store_session(user.id, access_token, refresh_token,
+                                                     device=auth_form.device, ip_address=auth_form.ip_address)
         logger.info(f"User logged in (rem mode): {user.email}")
         # TODO: Оставить в ответе только access_token и token_type, остальное удалить ибо не нужно клиенту
         return JSONResponse(status_code=status.HTTP_200_OK,
-                            content={"access_token": access_token, "token_type": "bearer",
-                                     "refresh_token": refresh_token,
-                                     "session_id": session_data["session_id"]})
+                             content={"access_token": access_token, "token_type": "bearer", "refresh_token": refresh_token,
+                                      "session_id": session_data["session_id"]})
     else:
-        session_data = create_session(
-            SessionSchema(
-                user_id=user.id,
-                access_token=access_token,
-                device=auth_form.device,
-                ip_address=auth_form.ip_address))
+        session_data = crud.create_and_store_session(user.id, access_token)
         logger.info(f"User logged in: {user.email}")
         return JSONResponse(status_code=status.HTTP_200_OK,
-                            content={"access_token": access_token, "token_type": "bearer",
-                                     "session_id": session_data["session_id"]})
-
-
-@user_router.get("/user/{username}", response_model=UserResponse, status_code=status.HTTP_200_OK)
-def get_user(username: str, credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
-    """
-    Get user by username
-    :param username: Username
-    :param credentials: Headers with token
-    :param db: Database session
-    :return: User data
-    """
-    verify_result = check_auth(credentials, db)
-    if verify_result.status_code == status.HTTP_200_OK:
-        user = crud.get_user_by_username(db, username=username)
-        if not user:
-            logger.warning("User not found")
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        logger.info(f"User {user.username} found")
-        return UserResponse(**user.to_dict())
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-
-
-@user_router.get("/user")
-def get_users(db: Session = Depends(get_db)):
-    """
-    Get all users
-    :param db:
-    :return:
-    """
-    return crud.get_users(db=db)
-
+                             content={"access_token": access_token, "token_type": "bearer",
+                                      "session_id": session_data["session_id"]})
 
 @user_router.post("/auth/logout", status_code=status.HTTP_200_OK)
 def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
@@ -144,8 +102,7 @@ def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer), db:
     logger.warning(f"No session found for token during logout")
     raise HTTPException(status_code=400, detail="Unable to logout. Session not found.")
 
-
-@user_router.get("/auth/check_auth", response_model=TokenModelResponse)
+@user_router.get("/auth/me/check_auth", response_model=TokenModelResponse)
 def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
     """
     Check if user is authenticated
@@ -161,66 +118,22 @@ def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: 
     if not payload or not payload["sub"]:
         logger.warning("Invalid token")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"message": "Invalid token",
-                                                                           "token": None})
+                                                                            "token": None})
 
     # Get token user
     user = crud.get_user_by_email(db, email=payload["sub"])
+    logger.info(f"{user.to_dict()}, {payload['sub']}")
     if not user:
-        logger.warning("User not found")
+        logger.warning("User not found 214")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"message": "User is not found",
-                                                                           "token": None})
+                                                                            "token": None})
 
     # Delete inactive sessions
     deleted_sessions: list[str] = delete_inactive_sessions(user.id)
     logger.info("Deleted inactive sessions: %s", deleted_sessions)
 
     # Check token validity and refresh if needed
-    return JSONResponse(status_code=status.HTTP_200_OK,
-                        content={"access_token": verify_and_refresh_access_token(token)})
-
-
-@user_router.get("/auth/sessions", response_model=list[SessionDTO], status_code=status.HTTP_200_OK)
-def get_sessions(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
-    """
-    Get all sessions for user
-    :param credentials: Headers with token
-    :param db: Database session
-    :return: List of sessions
-    """
-    verify_result = check_auth(credentials, db)
-    if verify_result.status_code == status.HTTP_200_OK:
-        token = decode_token(credentials.credentials)
-        user = crud.get_user_by_email(db, email=token["sub"])
-        if not user:
-            logger.warning("User not found")
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        sessions = crud.get_sessions(user.id)
-        logger.info(f"Sessions for user {user.username}: {sessions}")
-        session_dtos = [SessionDTO(**session) for session in sessions]
-        return session_dtos
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-
-
-@user_router.delete("/auth/sessions/{session_id}")
-def delete_session(session_id: str, credentials: HTTPAuthorizationCredentials = Depends(bearer),
-                   db: Session = Depends(get_db)):
-    """
-    Delete session by ID
-    :param session_id: Session ID
-    :param credentials: Headers with token
-    :param db: Database session
-    :return: None
-    """
-    verify_result = check_auth(credentials, db)
-    if verify_result.status_code == status.HTTP_200_OK:
-        session = crud.delete_session_by_id(session_id)
-        if not session:
-            logger.warning("Session not found")
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-        logger.info(f"Session {session_id} was deleted")
-        return JSONResponse(status_code=status.HTTP_200_OK, content="Session deleted")
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"access_token": verify_and_refresh_access_token(token)})
 
 @user_router.delete("/auth/me/account", status_code=status.HTTP_200_OK)
 def delete_me(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
@@ -241,10 +154,8 @@ def delete_me(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: S
         return JSONResponse(status_code=status.HTTP_200_OK, content="User deleted")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
-
 @user_router.patch("/auth/me/password", status_code=status.HTTP_200_OK)
-def update_password(password: str, credentials: HTTPAuthorizationCredentials = Depends(bearer),
-                    db: Session = Depends(get_db)):
+def update_password(password:str, credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
     """
     Update user password
     :param password: New password
@@ -263,16 +174,14 @@ def update_password(password: str, credentials: HTTPAuthorizationCredentials = D
         if not validate_password(password):
             logger.warning("Password does not meet complexity requirements")
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password error")
-        user_update = UserUpdate(**user, password=get_password_hash(password))
+        user_update = UserUpdate(**user,password=get_password_hash(password))
         crud.update_user(db, user.username, user_update)
         logger.info(f"User {user.username} updated password")
         return JSONResponse(status_code=status.HTTP_200_OK, content="Password updated")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
-
 @user_router.patch("/auth/me/account", response_model=UserResponse, status_code=status.HTTP_200_OK)
-def update_my_account(user: UserUpdate, credentials: HTTPAuthorizationCredentials = Depends(bearer),
-                      db: Session = Depends(get_db)):
+def update_my_account(user: UserUpdate, credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
     """
     Update user by username
     :param db: database session
@@ -290,3 +199,66 @@ def update_my_account(user: UserUpdate, credentials: HTTPAuthorizationCredential
         logger.info(f"User {user.username} updated")
         return UserResponse(**db_user.to_dict())
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
+@user_router.get("/auth/me/sessions", response_model=list[SessionDTO], status_code=status.HTTP_200_OK)
+def get_sessions(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
+    """
+    Get all sessions for user
+    :param credentials: Headers with token
+    :param db: Database session
+    :return: List of sessions
+    """
+    verify_result = check_auth(credentials, db)
+    if verify_result.status_code == status.HTTP_200_OK:
+        token = decode_token(credentials.credentials)
+        user = crud.get_user_by_email(db, email=token["sub"])
+        if not user:
+            logger.warning("User not found 240")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        sessions = crud.get_sessions(user.id)
+        logger.info(f"Sessions for user {user.username}: {sessions}")
+        session_dtos = [SessionDTO(**session) for session in sessions]
+        return session_dtos
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Invalid token")
+
+@user_router.delete("/auth/me/sessions/{session_id}")
+def delete_session(session_id: str, credentials: HTTPAuthorizationCredentials = Depends(bearer),
+                   db: Session = Depends(get_db)):
+    """
+    Delete session by ID
+    :param session_id: Session ID
+    :param credentials: Headers with token
+    :param db: Database session
+    :return: None
+    """
+    verify_result = check_auth(credentials, db)
+    if verify_result.status_code == status.HTTP_200_OK:
+        session = crud.delete_session_by_id(session_id)
+        if not session:
+            logger.warning("Session not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+        logger.info(f"Session {session_id} was deleted")
+        return JSONResponse(status_code=status.HTTP_200_OK, content="Session deleted")
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Invalid token")
+
+
+@user_router.get("auth/me/account", response_model=UserResponse, status_code=status.HTTP_200_OK)
+def get_user(username: str , credentials:HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
+    """
+    Get user by username
+    :param username: Username
+    :param credentials: Headers with token
+    :param db: Database session
+    :return: User data
+    """
+    verify_result = check_auth(credentials, db)
+    if verify_result.status_code == status.HTTP_200_OK:
+        user = crud.get_user_by_username(db, username=username)
+        if not user:
+            logger.warning("User not found 101")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        logger.info(f"User {user.username} found")
+        return UserResponse(**user.to_dict())
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
+

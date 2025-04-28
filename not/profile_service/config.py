@@ -1,16 +1,14 @@
 import os
 
 from dotenv import load_dotenv
-from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 load_dotenv(verbose=True)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file="src/user_service/.env")
+    model_config = SettingsConfigDict(env_file="../user_service/.env")
     postgres_user: str = ""
     postgres_password: str = ""
     postgres_db: str = ""
@@ -31,9 +29,5 @@ class Settings(BaseSettings):
     session_cleanup_minutes: int = 0
     session_cleanup_hours: int = 0
     session_cleanup_days: int = 0
-    session_service_url: str = Field("http://127.0.0.1:8000")
-
-
 settings = Settings()
 print(settings.refresh_token_expire_days)
-print(settings.postgres_db)

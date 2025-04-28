@@ -5,10 +5,10 @@ postgresql://postgres:18092003@localhost:5432/to-do-base
  
  -------------- celery@DESKTOP-DEP5S0F v5.5.2 (immunity)
 --- ***** ----- 
--- ******* ---- Windows-10-10.0.19045-SP0 2025-04-28 23:54:59
+-- ******* ---- Windows-10-10.0.19045-SP0 2025-04-29 01:20:32
 - *** --- * --- 
 - ** ---------- [config]
-- ** ---------- .> app:         user_service_tasks:0x156ea5c78d0
+- ** ---------- .> app:         user_service_tasks:0x1d30d632610
 - ** ---------- .> transport:   redis://:**@localhost:6379/0
 - ** ---------- .> results:     disabled://
 - *** --- * --- .> concurrency: 32 (solo)

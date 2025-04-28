@@ -1,0 +1,12 @@
+[2025-04-29 01:20:32,081: INFO/MainProcess] Connected to redis://:**@localhost:6379/0
+[2025-04-29 01:20:32,083: INFO/MainProcess] mingle: searching for neighbors
+[2025-04-29 01:20:33,104: INFO/MainProcess] mingle: all alone
+[2025-04-29 01:20:33,121: INFO/MainProcess] celery@DESKTOP-DEP5S0F ready.
+[2025-04-29 01:20:33,122: INFO/MainProcess] Task src.session_service.as_tasks.cleanup_inactive_sessions[fc0c7b66-ebf9-4ed5-9576-9d434a57f66c] received
+[2025-04-29 01:20:33,158: INFO/MainProcess] [{'first_name': 'John', 'id': 4, 'last_name': 'Doe', 'is_active': True, 'updated_at': '2025-04-28T00:22:40.005337+03:00', 'email': 'john.doe@example.com', 'username': 'john_doe', 'hashed_password': '$2b$12$ni/lsPbDaR4cG500SneuWuPlA04txEf..j046K9QrWDzymD3r1V9e', 'is_superuser': False, 'created_at': '2025-04-28T00:22:40.005337+03:00'}]
+[2025-04-29 01:20:33,165: INFO/MainProcess] Inactive sessions cleaned up
+[2025-04-29 01:20:33,166: INFO/MainProcess] Task src.session_service.as_tasks.cleanup_inactive_sessions[fc0c7b66-ebf9-4ed5-9576-9d434a57f66c] succeeded in 0.04699999999957072s: None
+[2025-04-29 01:20:33,167: INFO/MainProcess] Task src.session_service.as_tasks.cleanup_inactive_sessions[d5bf6d65-d6bf-4f42-8095-efce8c883933] received
+[2025-04-29 01:20:33,170: INFO/MainProcess] [{'first_name': 'John', 'id': 4, 'last_name': 'Doe', 'is_active': True, 'updated_at': '2025-04-28T00:22:40.005337+03:00', 'email': 'john.doe@example.com', 'username': 'john_doe', 'hashed_password': '$2b$12$ni/lsPbDaR4cG500SneuWuPlA04txEf..j046K9QrWDzymD3r1V9e', 'is_superuser': False, 'created_at': '2025-04-28T00:22:40.005337+03:00'}]
+[2025-04-29 01:20:33,175: INFO/MainProcess] Inactive sessions cleaned up
+[2025-04-29 01:20:33,175: INFO/MainProcess] Task src.session_service.as_tasks.cleanup_inactive_sessions[d5bf6d65-d6bf-4f42-8095-efce8c883933] succeeded in 0.0s: None

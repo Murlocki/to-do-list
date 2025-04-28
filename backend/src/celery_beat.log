@@ -1,0 +1,14 @@
+30
+postgresql://postgres:18092003@localhost:5432/to-do-base
+30
+postgresql://postgres:18092003@localhost:5432/to-do-base
+celery beat v5.5.2 (immunity) is starting.
+__    -    ... __   -        _
+LocalTime -> 2025-04-28 03:34:48
+Configuration ->
+    . broker -> redis://:**@localhost:6379/0
+    . loader -> celery.loaders.app.AppLoader
+    . scheduler -> celery.beat.PersistentScheduler
+    . db -> celerybeat-schedule
+    . logfile -> [stderr]@%INFO
+    . maxinterval -> 5.00 minutes (300s)
