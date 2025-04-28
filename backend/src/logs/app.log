@@ -98,3 +98,68 @@ Environment timezone: Not set
 2025-04-29 01:30:21,966 - src.session_service.crud - INFO - Storing session with expires_at: 2025-04-30 07:30:51.966773
 2025-04-29 01:30:21,966 - src.session_service.crud - WARNING - {'session_id': '99c2d9a9-cd1c-4be8-bd8a-d11868732644', 'user_id': '4', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjhlY2VlYjU5LTI1YTItNDUwNC04YmU0LTZiOTMyYTIxNTdlYyIsImV4cCI6MTc0NTk4NzQ1MS45NTc3NzIsImlhdCI6MTc0NTg3OTQyMX0.v_F6nD30BhFEUr4ZeKFQMcKiypIJ1rwL8RBznOifrn0', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-29T01:30:21.966773', 'expires_at': '2025-04-30T07:30:51.966773'}
 2025-04-29 01:30:21,974 - src.user_service.router - INFO - User logged in: john.doe@example.com
+2025-04-29 01:35:19,644 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-28 22:35:19.644870
+Server timestamp: 1745879719
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-29 02:02:40,945 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 23:02:40.945857
+Server timestamp: 1745881360
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-29 02:02:41,141 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-28 23:02:41.141922
+Server timestamp: 1745881361
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-29 02:02:47,236 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-28 23:02:47.236396
+Server timestamp: 1745881367
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-29 02:02:49,357 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 23:02:49.357408
+Server timestamp: 1745881369
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-29 02:03:09,541 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8eceeb59-25a2-4504-8be4-6b932a2157ec', 'exp': 1745987451.957772, 'iat': 1745879421}
+2025-04-29 02:03:09,541 - src.user_service.router - INFO - Token decoded successfully {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8eceeb59-25a2-4504-8be4-6b932a2157ec', 'exp': 1745987451.957772, 'iat': 1745879421}
+2025-04-29 02:03:09,575 - src.user_service.auth_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '8eceeb59-25a2-4504-8be4-6b932a2157ec', 'exp': 1745987451.957772, 'iat': 1745879421}
+2025-04-29 02:03:09,580 - src.user_service.auth_functions - INFO - Token expires at: 2025-04-30 07:30:51.957772
+2025-04-29 02:03:09,580 - src.user_service.auth_functions - INFO - check: time left until token expiration: 106062.377489 seconds
+2025-04-29 02:03:09,580 - src.user_service.auth_functions - INFO - Token is valid
+2025-04-29 02:05:10,354 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 23:05:10.353952
+Server timestamp: 1745881510
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-29 02:06:00,253 - src.session_service.router - INFO - Session 62d8c37b-54d5-42bb-a358-cf398e6c8368 was deleted
+2025-04-29 02:10:53,991 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-04-28 23:10:53.991023
+Server timestamp: 1745881853
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-29 02:11:12,531 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-04-28 23:11:12.531383
+Server timestamp: 1745881872
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-04-29 02:11:23,980 - src.user_service.auth_functions - INFO - Access token created for user: john.doe@example.com with expiration: 2025-04-30 08:11:53.980075
+2025-04-29 02:11:23,982 - src.user_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjM1OGQzZDI1LTJlNGQtNGZmYy04MjU1LTYzYjQyNTM1OWYwMyIsImV4cCI6MTc0NTk4OTkxMy45ODAwNzUsImlhdCI6MTc0NTg4MTg4M30.mSfXlQvZLmpfKCCET_OAH0PQycZQ1VjulBbAYpMZLEk
+2025-04-29 02:11:23,982 - src.user_service.router - INFO - User john_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjM1OGQzZDI1LTJlNGQtNGZmYy04MjU1LTYzYjQyNTM1OWYwMyIsImV4cCI6MTc0NTk4OTkxMy45ODAwNzUsImlhdCI6MTc0NTg4MTg4M30.mSfXlQvZLmpfKCCET_OAH0PQycZQ1VjulBbAYpMZLEk
+2025-04-29 02:11:23,982 - src.user_service.router - INFO - False
+2025-04-29 02:11:23,982 - src.user_service.external_functions - WARNING - user_id=4 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjM1OGQzZDI1LTJlNGQtNGZmYy04MjU1LTYzYjQyNTM1OWYwMyIsImV4cCI6MTc0NTk4OTkxMy45ODAwNzUsImlhdCI6MTc0NTg4MTg4M30.mSfXlQvZLmpfKCCET_OAH0PQycZQ1VjulBbAYpMZLEk' refresh_token=None device='unknown' ip_address='unknown'
+2025-04-29 02:11:23,988 - src.session_service.router - WARNING - user_id=4 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjM1OGQzZDI1LTJlNGQtNGZmYy04MjU1LTYzYjQyNTM1OWYwMyIsImV4cCI6MTc0NTk4OTkxMy45ODAwNzUsImlhdCI6MTc0NTg4MTg4M30.mSfXlQvZLmpfKCCET_OAH0PQycZQ1VjulBbAYpMZLEk' refresh_token=None device='unknown' ip_address='unknown'
+2025-04-29 02:11:23,988 - src.session_service.crud - INFO - Storing session with expires_at: 2025-04-30 08:11:53.988073
+2025-04-29 02:11:23,988 - src.session_service.crud - WARNING - {'session_id': '5abd1a55-ac43-4153-90b6-6b28d7a43f9e', 'user_id': '4', 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjM1OGQzZDI1LTJlNGQtNGZmYy04MjU1LTYzYjQyNTM1OWYwMyIsImV4cCI6MTc0NTk4OTkxMy45ODAwNzUsImlhdCI6MTc0NTg4MTg4M30.mSfXlQvZLmpfKCCET_OAH0PQycZQ1VjulBbAYpMZLEk', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-04-29T02:11:23.988073', 'expires_at': '2025-04-30T08:11:53.988073'}
+2025-04-29 02:11:23,996 - src.user_service.router - INFO - User logged in: john.doe@example.com
+2025-04-29 02:11:46,283 - src.session_service.external_functions - INFO - Token decoded successfully: {'iss': 'auth-service', 'sub': 'john.doe@example.com', 'jti': '358d3d25-2e4d-4ffc-8255-63b425359f03', 'exp': 1745989913.980075, 'iat': 1745881883}

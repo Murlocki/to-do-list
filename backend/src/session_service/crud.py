@@ -4,24 +4,12 @@ import uuid
 
 from src.session_service.config import settings
 from src.session_service.redis_base import redis_client
-from src.shared.external_fetcher import proxy_request
 from src.shared.logger_setup import setup_logger
 
 logger = setup_logger(__name__)
 
 
-async def check_auth(access_token: str):
-    """
-    Check auth
-    :param access_token:
-    :return: json - token old or new
-    """
-    headers = {
-        "content-type": "application/json",
-    }
-    result = await proxy_request(f"{settings.auth_service_url}/auth/check_auth", "GET", headers=headers)
-    logger.info(f"Token from auth_service: {result}")
-    return result
+
 
 def create_and_store_session(user_id: int, access_token: str, refresh_token: str = None, device: str = "unknown",
                              ip_address: str = "unknown"):

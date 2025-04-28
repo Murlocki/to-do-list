@@ -15,36 +15,6 @@ logger = logger_setup.setup_logger(__name__)
 
 
 # CRUD сессией
-def create_and_store_session(user_id: int, access_token: str, refresh_token: str = None, device: str = "unknown",
-                             ip_address: str = "unknown"):
-    session_id = str(uuid.uuid4())
-    created_at = datetime.now()
-
-
-    session_data = {
-        "session_id": session_id,
-        "user_id": str(user_id),
-        "access_token": access_token,
-        "device": device,
-        "ip_address": ip_address,
-        "created_at": created_at.isoformat(),
-    }
-    if refresh_token:
-        expires_at = created_at + timedelta(days=settings.refresh_token_expire_days)
-        session_data["refresh_token"] = refresh_token
-    else:
-        expires_at = created_at + timedelta(seconds=settings.access_token_expire_seconds,
-                                            minutes=settings.access_token_expire_minutes,
-                                            hours=settings.access_token_expire_hours)
-    session_data["expires_at"] = expires_at.isoformat()
-    logger.info(f"Storing session with expires_at: {expires_at}")
-
-    logger.warning(session_data)
-    redis_client.hset(f"session:{session_id}", mapping=session_data)
-    redis_client.expire(f"session:{session_id}", int((expires_at - created_at).total_seconds()))
-    redis_client.sadd(f"user:{user_id}:sessions", session_id)
-    return {k: v for k, v in session_data.items() if k not in ["refresh_token", "access_token"]}
-
 
 def get_sessions(user_id: int):
     """

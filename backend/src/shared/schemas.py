@@ -32,3 +32,9 @@ class SessionDTO(BaseModel):
         json_encoders = {
             datetime: lambda v: v.isoformat(),  # Преобразование datetime в ISO строку
         }
+
+class TokenModelResponse(BaseModel):
+    access_token: str
+    refresh_token: Optional[str] = None
+    token_type: str = "bearer"
+    session_id: Optional[str] = None

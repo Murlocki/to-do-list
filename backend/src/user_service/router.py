@@ -16,8 +16,8 @@ from src.user_service.crud import delete_inactive_sessions
 from src.user_service.database import SessionLocal
 from src.user_service.external_functions import create_session
 from src.user_service.redis_base import redis_client
-from src.user_service.schemas import UserCreate, AuthForm, TokenModelResponse, UserResponse, SessionDTO, UserUpdate
-
+from src.user_service.schemas import UserCreate, AuthForm, UserResponse, SessionDTO, UserUpdate
+from src.shared.schemas import TokenModelResponse
 user_router = APIRouter()
 logger = logger_setup.setup_logger(__name__)
 logger.info(f"""
@@ -39,6 +39,7 @@ def get_db():
 bearer = HTTPBearer()
 
 
+# TODO: Вынести в отдельный сервис по стуки к пользователям
 @user_router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
     if not validate_password(user.password):
@@ -59,6 +60,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     result = crud.create_user(db=db, user=user)
     logger.info(f"User {user.username} registered")
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=result)
+
 
 
 @user_router.post("/auth/login", response_model=TokenModelResponse, status_code=status.HTTP_200_OK)
@@ -163,16 +165,13 @@ def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"message": "Invalid token",
                                                                            "token": None})
 
+    # TODO: ВЫНЕСТИ ПО СТУК ПО EMAIL В СЕРВИС ПОЛЬЗОВАТЕЛЕЙ
     # Get token user
     user = crud.get_user_by_email(db, email=payload["sub"])
     if not user:
         logger.warning("User not found")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"message": "User is not found",
                                                                            "token": None})
-
-    # Delete inactive sessions
-    deleted_sessions: list[str] = delete_inactive_sessions(user.id)
-    logger.info("Deleted inactive sessions: %s", deleted_sessions)
 
     # Check token validity and refresh if needed
     return JSONResponse(status_code=status.HTTP_200_OK,

@@ -8,7 +8,8 @@ from starlette.responses import JSONResponse
 
 
 from src.session_service import crud
-from src.session_service.crud import create_and_store_session, check_auth
+from src.session_service.crud import create_and_store_session
+from src.session_service.external_functions import check_auth_from_external_service, decode_token
 from src.shared import logger_setup
 from src.shared.schemas import SessionDTO
 from src.shared.schemas import SessionSchema
@@ -35,14 +36,15 @@ def get_sessions(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
     :param db: Database session
     :return: List of sessions
     """
-    verify_result = check_auth(credentials)
-    if verify_result.status_code == status.HTTP_200_OK:
+    verify_result = check_auth_from_external_service(credentials.credentials)
+    if verify_result:
         token = decode_token(credentials.credentials)
-        user = crud.get_user_by_email(db, email=token["sub"])
+        # TODO: ПЕРЕНЕСТИ ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ В ВНЕШНЮЮ СИСТЕМУ
+        user = crud.get_user_by_email(email=token["sub"])
         if not user:
             logger.warning("User not found 240")
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        sessions = crud.get_sessions(user.id)
+        sessions = crud.get_sessions(4)
         logger.info(f"Sessions for user {user.username}: {sessions}")
         session_dtos = [SessionDTO(**session) for session in sessions]
         return session_dtos
@@ -50,16 +52,15 @@ def get_sessions(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
 
 
 @session_router.delete("/session/{session_id}")
-def delete_session(session_id: str, credentials: HTTPAuthorizationCredentials = Depends(bearer),
-                   ):
+def delete_session(session_id: str, credentials: HTTPAuthorizationCredentials = Depends(bearer)):
     """
     Delete session by ID
     :param session_id: Session ID
     :param credentials: Headers with token
     :return: None
     """
-    verify_result = check_auth(credentials.credentials)
-    if verify_result.status_code == status.HTTP_200_OK:
+    verify_result = check_auth_from_external_service(credentials.credentials)
+    if verify_result:
         session = crud.delete_session_by_id(session_id)
         if not session:
             logger.warning("Session not found")
@@ -67,7 +68,6 @@ def delete_session(session_id: str, credentials: HTTPAuthorizationCredentials = 
         logger.info(f"Session {session_id} was deleted")
         return JSONResponse(status_code=status.HTTP_200_OK, content="Session deleted")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-
 
 @session_router.post("/session", response_model=SessionDTO, status_code=status.HTTP_201_CREATED)
 def create_session(session_create_data:SessionSchema):

@@ -32,11 +32,6 @@ class AuthForm(BaseModel):
     device: Optional[str] = "unknown"
     ip_address: Optional[str] = "unknown"
     remember_me: Optional[bool] = Field(False)
-class TokenModelResponse(BaseModel):
-    access_token: str
-    refresh_token: Optional[str] = None
-    token_type: str = "bearer"
-    session_id: Optional[str] = None
 class TokenDTO(BaseModel):
     access_token: str
 
