@@ -1,6 +1,5 @@
 import asyncio
 import subprocess
-import time
 import os
 import signal
 from contextlib import contextmanager
@@ -12,7 +11,6 @@ from fastapi import FastAPI
 from src.user_service import crud
 from src.user_service.config import settings
 from src.user_service.crud import delete_inactive_sessions
-from src.user_service.database import SessionLocal
 from src.user_service.logger_setup import setup_logger
 
 celery_app = Celery(
@@ -30,21 +28,12 @@ celery_app.conf.update(
 
 logger = setup_logger(__name__)
 
-@contextmanager
-def get_celery_db():
-    """Отдельный менеджер контекста для Celery задач"""
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 @celery_app.task
 def cleanup_inactive_sessions():
     """Фоновая задача очистки сессий"""
     try:
-        with get_celery_db() as db:
-            users = crud.get_users(db)
+            # Todo: Получить всех пользователей из базы данных
+            users = asyncio.run(crud.get_all_users())
             for user in users:
                 delete_inactive_sessions(user.id)
             logger.info("Inactive sessions cleaned up")
@@ -54,7 +43,7 @@ def cleanup_inactive_sessions():
 
 celery_app.conf.beat_schedule = {
     'cleanup_sessions_hourly': {
-        'task': 'src.user_service.as_tasks.cleanup_inactive_sessions',
+        'task': 'src.session_service.as_tasks.cleanup_inactive_sessions',
         'schedule': timedelta(seconds = settings.session_cleanup_seconds,
                               minutes=settings.session_cleanup_minutes,
                              hours=settings.session_cleanup_hours,
@@ -74,7 +63,7 @@ def run_worker():
     # Запуск worker в фоновом режиме
     worker_process = subprocess.Popen(
         [
-            'celery', '-A', 'src.user_service.as_tasks',
+            'celery', '-A', 'src.session_service.as_tasks',
             'worker', '--pool=solo', '--loglevel=INFO'
         ],
         stdout=open('celery_worker.log', 'w'),
@@ -95,7 +84,7 @@ def run_beat():
     # Запуск beat в фоновом режиме
     beat_process = subprocess.Popen(
         [
-            'celery', '-A', 'src.user_service.as_tasks',
+            'celery', '-A', 'src.session_service.as_tasks',
             'beat', '--loglevel=INFO'
         ],
         stdout=open('celery_beat.log', 'w'),

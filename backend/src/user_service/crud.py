@@ -47,6 +47,11 @@ def create_and_store_session(user_id: int, access_token: str, refresh_token: str
 
 
 def get_sessions(user_id: int):
+    """
+    Get all sessions for a user
+    :param user_id:
+    :return: list of user sessions
+    """
     sessions = []
     for key in redis_client.scan_iter(f"session:*"):
         session_data = redis_client.hgetall(key)
@@ -88,6 +93,7 @@ def delete_session_by_id(session_id: str):
     session_data = redis_client.hgetall(f"session:{session_id}")
     if session_data:
         redis_client.delete(f"session:{session_id}")
+        redis_client.srem(f"user:{session_data['user_id']}:sessions", session_id)
         # Проверяем наличие всех необходимых полей
         required_fields = ["session_id", "user_id", "access_token", "device", "ip_address", "created_at", "expires_at"]
         if all(field in session_data for field in required_fields):
@@ -97,8 +103,8 @@ def delete_session_by_id(session_id: str):
     return None
 
 
-# CRUD операции с пользователями
 
+# CRUD операции с пользователями
 def create_user(db: Session, user: UserCreate):
     user_password_hash = get_password_hash(user.password)
     db_user = User(

@@ -7,6 +7,7 @@ from src.user_service.config import settings
 
 
 # Создаем движок для подключения к базе данных PostgreSQL
+print(settings.postgres_db)
 engine = create_engine(settings.postgres_db, echo=True)
 
 # Создаем фабрику сессий для работы с базой данных

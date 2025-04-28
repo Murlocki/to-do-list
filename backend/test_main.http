@@ -5,8 +5,9 @@ Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/hello/User
-Accept: application/json
+GET http://127.0.0.1:8000/user/check_auth
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6IjQ2NGI5MzFhLWUyNzAtNGY4OC1hODQwLTZkYmM5MDlkZTEwZiIsImV4cCI6MTc0NTc5MjYwMC4zOTUzMzEsImlhdCI6MTc0NTc4ODk3MH0.ffaaytuoz34udEqIEOT86ttOV8qMiBFZZfYReJRkNxY
 
 ###
 POST http://127.0.0.1:8000/register
