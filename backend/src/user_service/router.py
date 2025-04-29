@@ -177,8 +177,13 @@ def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: 
                                                                            "token": None})
 
     # Check token validity and refresh if needed
+    token = verify_and_refresh_access_token(token)
+    if not token:
+        logger.warning("Invalid token")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"message": "Invalid token",
+                                                                             "token": None})
     return JSONResponse(status_code=status.HTTP_200_OK,
-                        content={"access_token": verify_and_refresh_access_token(token)})
+                        content={"token": token})
 
 
 

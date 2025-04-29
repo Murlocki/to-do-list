@@ -140,7 +140,8 @@ def verify_and_refresh_access_token(token: str) -> str | None:
                 # Create new access token without refsrh token and update session
                 logger.info("Creating new access token")
                 new_access_token = create_new_token(payload['sub'])
-                update_session_token(session["session_id"],
+                if new_access_token:
+                    update_session_token(session["session_id"],
                                      AccessTokenUpdate(old_access_token=token, new_access_token=new_access_token))
                 return new_access_token
         logger.info("Token is valid")
@@ -174,8 +175,9 @@ def refresh_access_token(refresh_token: str):
         if not session:
             logger.warning(f"No session found for refresh token")
             return None
-        new_access_token = create_new_token(email, is_refresh=True)
-        update_session_token(session["session_id"], AccessTokenUpdate(old_access_token=session["access_token"],
+        new_access_token = create_new_token(email)
+        if new_access_token:
+            update_session_token(session["session_id"], AccessTokenUpdate(old_access_token=session["access_token"],
                                                                       new_access_token=new_access_token))
         return new_access_token
     except JWTError as e:

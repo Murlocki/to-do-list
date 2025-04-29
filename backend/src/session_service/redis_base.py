@@ -1,9 +1,10 @@
+import redis.asyncio as aioredis
 import redis
-from .config import settings
+from src.session_service.config import settings
 
 
 def get_redis_client():
-    return redis.StrictRedis(
+    return aioredis.Redis(
         host=settings.redis_host,
         port=settings.redis_port,
         password=settings.redis_password,

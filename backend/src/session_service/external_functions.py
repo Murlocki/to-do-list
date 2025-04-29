@@ -1,15 +1,16 @@
+import httpx
 import requests
 from jose import jwt, JWTError
-from requests import Response
+from fastapi.responses import JSONResponse
 
 from src.session_service.config import settings
-from src.session_service.endpoints import GET_USERS
+from src.session_service.endpoints import GET_USERS, CHECk_AUTH
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import TokenModelResponse
 
 logger = setup_logger(__name__)
 
-def get_users_from_external_service()->Response:
+async def get_users_from_external_service() -> JSONResponse:
     """
     Get all users from external service
     :return: list of users
@@ -17,16 +18,21 @@ def get_users_from_external_service()->Response:
     try:
         headers = {
             "content-type": "application/json",
-            # если нужен токен, добавь сюда Authorization
         }
 
-        response = requests.get(GET_USERS, headers=headers)
-        response.raise_for_status()
-        return response
-    except requests.RequestException as e:
-        logger.error(e)
+        async with httpx.AsyncClient() as client:
+            response = await client.get(GET_USERS, headers=headers)
+            response.raise_for_status()  # Проверяем статусный код на ошибки
+            return JSONResponse(content=response.json())  # Вернем Response аналогичный requests
+    except httpx.RequestError as e:
+        logger.error(f"An error occurred while requesting {e.request.url!r}.")
+    except httpx.HTTPStatusError as e:
+        logger.error(f"Error response {e.response.status_code} while requesting {e.request.url!r}.")
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
 
-def check_auth_from_external_service(access_token: str)->TokenModelResponse:
+
+async def check_auth_from_external_service(access_token: str) -> TokenModelResponse:
     """
     Check auth
     :param access_token:
@@ -37,11 +43,17 @@ def check_auth_from_external_service(access_token: str)->TokenModelResponse:
             "content-type": "application/json",
             "authorization": f"Bearer {access_token}"
         }
-        response = requests.get(GET_USERS, headers=headers)
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as e:
-        logger.error(e)
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(CHECk_AUTH, headers=headers)
+            response.raise_for_status()  # Проверяем статусный код на ошибки
+            return response.json()  # Делаем это асинхронно
+    except httpx.RequestError as e:
+        logger.error(f"An error occurred while requesting {e.request.url!r}.")
+    except httpx.HTTPStatusError as e:
+        logger.error(f"Error response {e.response.status_code} while requesting {e.request.url!r}.")
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
 
 def decode_token(token: str, is_refresh: bool = False) -> dict[str, any] | None:
     """

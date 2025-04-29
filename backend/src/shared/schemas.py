@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Any
 from pydantic import BaseModel,Field
 
 
@@ -42,3 +42,7 @@ class TokenModelResponse(BaseModel):
 class AccessTokenUpdate(BaseModel):
     old_access_token: str
     new_access_token: str
+
+class AuthResponse(BaseModel):
+    token: str
+    data: Any = None
