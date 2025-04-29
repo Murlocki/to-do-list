@@ -1,76 +1,16 @@
 # Crud юзеров
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from sqlalchemy.orm import Session
 
 from src.user_service import logger_setup
 from src.user_service.auth_functions import get_password_hash, verify_password
-from src.user_service.config import settings
 from src.user_service.models import User
 from src.user_service.redis_base import redis_client
 from src.user_service.schemas import UserCreate, UserUpdate
 
 logger = logger_setup.setup_logger(__name__)
-
-
-# CRUD сессией
-
-def get_sessions(user_id: int):
-    """
-    Get all sessions for a user
-    :param user_id:
-    :return: list of user sessions
-    """
-    sessions = []
-    for key in redis_client.scan_iter(f"session:*"):
-        session_data = redis_client.hgetall(key)
-        if session_data.get("user_id") == str(user_id):
-            # Проверяем наличие всех необходимых полей
-            required_fields = ["session_id", "user_id", "access_token", "device", "ip_address", "created_at",
-                               "expires_at"]
-            if all(field in session_data for field in required_fields):
-                session_data["created_at"] = datetime.fromisoformat(session_data["created_at"])
-                session_data["expires_at"] = datetime.fromisoformat(session_data["expires_at"])
-                sessions.append(session_data)
-    return sessions
-
-def delete_inactive_sessions(user_id: int)->list[str]:
-    """
-    Delete inactive sessions
-    :param user_id: User ID
-    :return: list[str]: list of deleted sessions
-    """
-    result = []
-    session_ids = redis_client.smembers(f"user:{user_id}:sessions")
-    for session_id in session_ids:
-        session_data = redis_client.hgetall(f"session:{session_id}")
-        if not session_data:
-            redis_client.srem(f"user:{user_id}:sessions", session_id)
-            result.append(session_id)
-    return result
-
-def revoke_session(access_token: str):
-    session = redis_client.hgetall(f"session:{access_token}")
-    if session:
-        refresh_token = session.get("refresh_token")
-        redis_client.delete(f"session:{access_token}")
-        if refresh_token:
-            redis_client.delete(f"refresh:{refresh_token}")
-
-
-def delete_session_by_id(session_id: str):
-    session_data = redis_client.hgetall(f"session:{session_id}")
-    if session_data:
-        redis_client.delete(f"session:{session_id}")
-        redis_client.srem(f"user:{session_data['user_id']}:sessions", session_id)
-        # Проверяем наличие всех необходимых полей
-        required_fields = ["session_id", "user_id", "access_token", "device", "ip_address", "created_at", "expires_at"]
-        if all(field in session_data for field in required_fields):
-            session_data["created_at"] = datetime.fromisoformat(session_data["created_at"])
-            session_data["expires_at"] = datetime.fromisoformat(session_data["expires_at"])
-            return session_data
-    return None
 
 
 

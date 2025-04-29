@@ -38,3 +38,7 @@ class TokenModelResponse(BaseModel):
     refresh_token: Optional[str] = None
     token_type: str = "bearer"
     session_id: Optional[str] = None
+
+class AccessTokenUpdate(BaseModel):
+    old_access_token: str
+    new_access_token: str

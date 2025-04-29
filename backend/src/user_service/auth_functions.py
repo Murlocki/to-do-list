@@ -1,13 +1,14 @@
 import re
-from copy import copy, deepcopy
+from copy import deepcopy
 from datetime import timedelta, datetime
-from typing import Awaitable
 
 from passlib.context import CryptContext
 from jose import jwt, JWTError
+
+from src.shared.schemas import SessionDTO, AccessTokenUpdate
 from src.user_service.config import settings
+from src.user_service.external_functions import get_session_by_token, update_session_token
 from src.user_service.logger_setup import setup_logger
-from src.user_service.redis_base import redis_client
 import uuid
 
 logger = setup_logger(__name__)
@@ -75,13 +76,13 @@ def decode_token(token: str, is_refresh: bool = False) -> dict[str, any] | None:
     """
     try:
         payload = jwt.decode(token, settings.jwt_secret_refresh if is_refresh else settings.jwt_secret,
-                             algorithms=settings.jwt_algorithm)
+                             algorithms=settings.jwt_algorithm, options={"verify_exp": False})
         logger.info(f"Token decoded successfully: {payload}")
         return payload
     except JWTError as e:
         logger.warning(f"JWTError: {e}")
         return None
-
+print(decode_token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImNjNjMyNjhiLTNlZjYtNGFmNy05MjFhLTY0NmViMWZiNjFmYyIsImV4cCI6MTc0NTg4ODQwNy45NjE4MzUsImlhdCI6MTc0NTg4ODM3N30.x_wqCDdofhN48IaX30gpKwgjyLkriHBcL8uuvbCiZZQ"))
 
 def is_about_to_expire(exp_time: datetime, threshold: int = 300) -> bool:
     """
@@ -95,38 +96,7 @@ def is_about_to_expire(exp_time: datetime, threshold: int = 300) -> bool:
     return time_left < threshold
 
 
-def get_session_by_token(token: str, token_type: str = "access_token") -> dict | None:
-    """
-    Get session by token
-    :param token: session token
-    :param token_type: access_token or refresh_token
-    :return: dict|None
-    """
-    # TODO: "Рассмотреть возможность искать сначала по юзеру его сессии и затем по токену нужную выбирать
-    #        Возможно это будет хуже,так как могут быть неактивные пользователи без сесссий"
-
-    for key in redis_client.scan_iter("session:*"):
-        session_data = redis_client.hgetall(key)
-        if session_data.get(token_type) == token:
-            return session_data
-    return None
-
-
-def update_session_access_token(old_token: str, new_token: str, session_obj: dict = None):
-    """
-    Update session access token
-    :param old_token: Old access token
-    :param new_token: New access token
-    :param session_obj: Session object
-    :return: None
-    """
-    session = session_obj if session_obj else get_session_by_token(old_token)
-    if session:
-        redis_client.hset(f"session:{session['session_id']}", "access_token", new_token)
-
-
-
-def verify_and_refresh_access_token(token: str)->str | None:
+def verify_and_refresh_access_token(token: str) -> str | None:
     """
     Verify and refresh access token
     :param token: Access token
@@ -141,7 +111,7 @@ def verify_and_refresh_access_token(token: str)->str | None:
             return None
 
         # Check if we have session for token
-        session: dict | None = get_session_by_token(token)
+        session: SessionDTO = get_session_by_token(token)
         if not session:
             logger.warning(f"No session found for token")
             return None
@@ -154,14 +124,15 @@ def verify_and_refresh_access_token(token: str)->str | None:
         if about_to_expire or exp_time <= datetime.now():
             logger.warning("Token is about to expire" if about_to_expire else f"Token expired at: {exp_time}")
             # Check if we have refresh token
-            if "refresh_token" in session:
+            if session["refresh_token"]:
                 # Update session with new access token
                 logger.info("Refreshing token using refresh token")
                 new_token: str = refresh_access_token(session["refresh_token"])
                 # Check if we have new token and update session
                 if new_token:
                     logger.info("Token refreshed successfully")
-                    update_session_access_token(token, new_token, session)
+                    update_session_token(session["session_id"],
+                                         AccessTokenUpdate(old_access_token=token, new_access_token=new_token))
                     return new_token
                 else:
                     logger.warning("Failed to refresh token")
@@ -169,7 +140,8 @@ def verify_and_refresh_access_token(token: str)->str | None:
                 # Create new access token without refsrh token and update session
                 logger.info("Creating new access token")
                 new_access_token = create_new_token(payload['sub'])
-                update_session_access_token(token, new_access_token, session)
+                update_session_token(session["session_id"],
+                                     AccessTokenUpdate(old_access_token=token, new_access_token=new_access_token))
                 return new_access_token
         logger.info("Token is valid")
         return token
@@ -203,12 +175,12 @@ def refresh_access_token(refresh_token: str):
             logger.warning(f"No session found for refresh token")
             return None
         new_access_token = create_new_token(email, is_refresh=True)
-        update_session_access_token(session.get("access_token"), new_access_token)
+        update_session_token(session["session_id"], AccessTokenUpdate(old_access_token=session["access_token"],
+                                                                      new_access_token=new_access_token))
         return new_access_token
     except JWTError as e:
         logger.warning(f"refresh_access_token - JWT Error: {e}")
         return None
-
 
 
 def validate_password(password: str) -> bool:

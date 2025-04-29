@@ -10,11 +10,10 @@ from starlette.responses import JSONResponse
 
 from src.shared.schemas import SessionSchema
 from src.user_service import logger_setup, crud, auth_functions
-from src.user_service.auth_functions import validate_password, get_session_by_token, decode_token, \
+from src.user_service.auth_functions import validate_password, decode_token, \
     verify_and_refresh_access_token, get_password_hash
-from src.user_service.crud import delete_inactive_sessions
 from src.user_service.database import SessionLocal
-from src.user_service.external_functions import create_session
+from src.user_service.external_functions import create_session, get_session_by_token
 from src.user_service.redis_base import redis_client
 from src.user_service.schemas import UserCreate, AuthForm, UserResponse, SessionDTO, UserUpdate
 from src.shared.schemas import TokenModelResponse
@@ -130,14 +129,18 @@ def get_users(db: Session = Depends(get_db)):
 
 
 @user_router.post("/auth/logout", status_code=status.HTTP_200_OK)
-def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
-    token = credentials.credentials
+def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
+    token = verify_and_refresh_access_token(credentials.credentials)
+    if not token:
+        logger.warning("Invalid token")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    logger.info(f"Valid Token: {token}")
     session = get_session_by_token(token, token_type="access_token")
     if not session:
         logger.warning("Session not found")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
 
-    session_id = session.get("session_id")
+    session_id = session["session_id"]
     if session["session_id"]:
         redis_client.delete(f"session:{session_id}")
         redis_client.srem(f"user:{session['user_id']}:sessions", session_id)
@@ -178,47 +181,9 @@ def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: 
                         content={"access_token": verify_and_refresh_access_token(token)})
 
 
-@user_router.get("/auth/sessions", response_model=list[SessionDTO], status_code=status.HTTP_200_OK)
-def get_sessions(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
-    """
-    Get all sessions for user
-    :param credentials: Headers with token
-    :param db: Database session
-    :return: List of sessions
-    """
-    verify_result = check_auth(credentials, db)
-    if verify_result.status_code == status.HTTP_200_OK:
-        token = decode_token(credentials.credentials)
-        user = crud.get_user_by_email(db, email=token["sub"])
-        if not user:
-            logger.warning("User not found")
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        sessions = crud.get_sessions(user.id)
-        logger.info(f"Sessions for user {user.username}: {sessions}")
-        session_dtos = [SessionDTO(**session) for session in sessions]
-        return session_dtos
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
 
-@user_router.delete("/auth/sessions/{session_id}")
-def delete_session(session_id: str, credentials: HTTPAuthorizationCredentials = Depends(bearer),
-                   db: Session = Depends(get_db)):
-    """
-    Delete session by ID
-    :param session_id: Session ID
-    :param credentials: Headers with token
-    :param db: Database session
-    :return: None
-    """
-    verify_result = check_auth(credentials, db)
-    if verify_result.status_code == status.HTTP_200_OK:
-        session = crud.delete_session_by_id(session_id)
-        if not session:
-            logger.warning("Session not found")
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-        logger.info(f"Session {session_id} was deleted")
-        return JSONResponse(status_code=status.HTTP_200_OK, content="Session deleted")
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
 
 
 @user_router.delete("/auth/me/account", status_code=status.HTTP_200_OK)

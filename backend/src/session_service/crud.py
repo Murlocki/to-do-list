@@ -5,6 +5,7 @@ import uuid
 from src.session_service.config import settings
 from src.session_service.redis_base import redis_client
 from src.shared.logger_setup import setup_logger
+from src.shared.schemas import SessionDTO
 
 logger = setup_logger(__name__)
 
@@ -99,7 +100,7 @@ def delete_session_by_id(session_id: str):
             return session_data
     return None
 
-def get_session_by_token(token: str, token_type: str = "access_token") -> dict | None:
+def get_session_by_token(token: str, token_type: str = "access_token") -> SessionDTO | None:
     """
     Get session by token
     :param token: session token
@@ -127,3 +128,5 @@ def update_session_access_token(old_token: str, new_token: str, session_obj: dic
     session = session_obj if session_obj else get_session_by_token(old_token)
     if session:
         redis_client.hset(f"session:{session['session_id']}", "access_token", new_token)
+        return get_session_by_token(new_token)
+    return None
