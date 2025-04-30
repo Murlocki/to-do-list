@@ -1,6 +1,8 @@
+import asyncio
+
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, func
 
-from src.auth_service.database import Base, engine
+from src.user_service.database import Base, engine
 
 
 class User(Base):
@@ -29,6 +31,18 @@ class User(Base):
             "updated_at": self.updated_at.isoformat(),
         }
 
-if __name__=="__main__":
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(bind=engine)
+async def drop_all_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+
+async def create_all_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+async def main():
+    await drop_all_tables()
+    await create_all_tables()
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(main())

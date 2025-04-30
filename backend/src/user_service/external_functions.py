@@ -1,31 +1,29 @@
 import httpx
-
-
-from fastapi.responses import JSONResponse
+from jose import jwt, JWTError
 from src.shared.logger_setup import setup_logger
-from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse
-from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION
-from src.shared.schemas import SessionDTO
+from src.shared.schemas import TokenModelResponse
+from src.user_service.config import settings
+from src.user_service.endpoints import CHECK_AUTH
 
 logger = setup_logger(__name__)
 
-async def create_session(session_data: SessionSchema) -> SessionDTO | None:
+async def check_auth_from_external_service(access_token: str) -> TokenModelResponse | None:
     """
-    Create a session by forwarding data to external service.
+    Check auth
+    :param access_token:
+    :return: json - token old or new
     """
     try:
         headers = {
-            "content-type": "application/json"
+            "content-type": "application/json",
+            "authorization": f"Bearer {access_token}"
         }
+
         async with httpx.AsyncClient() as client:
-            response = await client.post(
-                CREATE_SESSION,
-                headers=headers,
-                content=session_data.model_dump_json()
-            )
-            response.raise_for_status()
+            response = await client.get(CHECK_AUTH, headers=headers)
+            response.raise_for_status()  # Проверяем статусный код на ошибки
             json_data = response.json()
-            return SessionDTO(**json_data)
+            return json_data
     except httpx.RequestError as e:
         logger.error(f"An error occurred while requesting {e.request.url!r}.")
     except httpx.HTTPStatusError as e:
@@ -33,78 +31,18 @@ async def create_session(session_data: SessionSchema) -> SessionDTO | None:
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
     return None
-
-
-
-async def get_session_by_token(token: str, token_type: str = "access_token") -> SessionDTO | None:
+def decode_token(token: str, is_refresh: bool = False) -> dict[str, any] | None:
     """
-    Получить сессию по токену из внешнего сервиса.
+    Decode token
+    :param token: Token for decode
+    :param is_refresh: True if it is refresh token
+    :return: dict[str, any] | None: Decoded token payload or None if error
     """
     try:
-        headers = {
-            "content-type": "application/json",
-        }
-        async with httpx.AsyncClient() as client:
-            response = await client.get(
-                f"{GET_SESSION_BY_TOKEN}?token={token}&token_type={token_type}",
-                headers=headers
-            )
-            response.raise_for_status()
-            data = response.json()
-            return SessionDTO(**data)
-    except httpx.RequestError as e:
-        logger.error(f"Request error while getting session: {e}")
-    except httpx.HTTPStatusError as e:
-        logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-
-    return None
-
-
-async def update_session_token(session_id: str, access_token_update_data: AccessTokenUpdate) -> SessionDTO | None:
-    try:
-        headers = {
-            "content-type": "application/json",
-        }
-        async with httpx.AsyncClient() as client:
-            response = await client.patch(
-                f"{UPDATE_SESSION_TOKEN}/{session_id}/update_token",
-                headers=headers,
-                content=access_token_update_data.model_dump_json()
-            )
-            response.raise_for_status()
-            data = response.json()
-            logger.info(f"Updated session token: {data}")
-            return data
-    except httpx.RequestError as e:
-        logger.error(f"Request error: {e}")
-    except httpx.HTTPStatusError as e:
-        logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-
-    return None
-
-async def delete_session_by_id(session_id: str, access_token:str) -> AuthResponse | None:
-    try:
-        headers = {
-            "content-type": "application/json",
-            "authorization": f"bearer {access_token}"
-        }
-        async with httpx.AsyncClient() as client:
-            response = await client.delete(
-                f"{DELETE_SESSION}/{session_id}",
-                headers=headers
-            )
-            response.raise_for_status()
-            response_json = response.json()
-            return response_json
-    except httpx.RequestError as e:
-        logger.error(f"Request error: {e}")
-    except httpx.HTTPStatusError as e:
-        logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-
-    return None
+        payload = jwt.decode(token, settings.jwt_secret_refresh if is_refresh else settings.jwt_secret,
+                             algorithms=settings.jwt_algorithm, options={"verify_exp": False})
+        logger.info(f"Token decoded successfully: {payload}")
+        return payload
+    except JWTError as e:
+        logger.warning(f"JWTError: {e}")
+        return None

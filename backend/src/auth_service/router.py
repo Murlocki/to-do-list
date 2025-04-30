@@ -11,7 +11,6 @@ from src.auth_service import crud, auth_functions
 from src.shared import logger_setup
 from src.auth_service.auth_functions import decode_token, \
     verify_and_refresh_access_token
-from src.auth_service.database import SessionLocal
 from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id, create_user, \
     authenticate_user, find_user_by_email
 from src.auth_service.schemas import UserCreate, AuthForm, UserUpdate
@@ -91,7 +90,7 @@ async def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer
     :return: AuthResponse
     """
     # Check if token is valid
-    token_verified = await check_auth(credentials, next(get_db()))
+    token_verified = await check_auth(credentials)
     logger.info(token_verified)
     if not token_verified or not token_verified["token"]:
         logger.warning("Invalid token")

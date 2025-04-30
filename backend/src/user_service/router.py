@@ -13,7 +13,7 @@ from src.user_service import crud, auth_functions
 from src.user_service.auth_functions import validate_password, get_password_hash, verify_password
 from src.user_service.crud import authenticate_user
 from src.user_service.database import SessionLocal
-from src.user_service.external_functions import create_session, get_session_by_token, delete_session_by_id
+from src.user_service.external_functions import check_auth_from_external_service, decode_token
 from src.user_service.schemas import UserCreate, AuthForm, UserResponse, UserUpdate
 from src.shared.schemas import TokenModelResponse
 
@@ -26,6 +26,16 @@ System timezone: {time.tzname}
 Environment timezone: {os.environ.get('TZ', 'Not set')}
 """)
 
+bearer = HTTPBearer()
+
+
+async def get_valid_token(credentials: HTTPAuthorizationCredentials = Depends(bearer)) -> str:
+    verify_result = await check_auth_from_external_service(credentials.credentials)
+    logger.info(f"Verify result {verify_result}")
+    if not verify_result or not verify_result["token"]:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    return verify_result["token"]
+
 
 async def get_db():
     async with SessionLocal() as db:
@@ -34,11 +44,12 @@ async def get_db():
         finally:
             await db.close()
 
+
 bearer = HTTPBearer()
 
 
 @user_router.post("/user/crud")
-async def create_user(user_in: UserCreate, db: AsyncSession = Depends(get_db))->UserDTO:
+async def create_user(user_in: UserCreate, db: AsyncSession = Depends(get_db)) -> UserDTO:
     """
     Create a new user
     :param user_in: User data
@@ -59,12 +70,13 @@ async def create_user(user_in: UserCreate, db: AsyncSession = Depends(get_db))->
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password error")
     user = await crud.create_user(db, user_in)
     if not user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="User creation failed")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User creation failed")
     logger.info(f"Created new user using {user}")
     return user
 
+
 @user_router.post("/user/authenticate", response_model=UserDTO, status_code=status.HTTP_200_OK)
-async def auth_user(user_auth_data:UserAuthDTO,db: AsyncSession = Depends(get_db)):
+async def auth_user(user_auth_data: UserAuthDTO, db: AsyncSession = Depends(get_db)):
     user = await authenticate_user(db, user_auth_data.identifier, user_auth_data.password)
     if not user:
         logger.info("User authentication failed")
@@ -72,8 +84,9 @@ async def auth_user(user_auth_data:UserAuthDTO,db: AsyncSession = Depends(get_db
     logger.info(f"Authenticated user using {user}")
     return user
 
+
 @user_router.get("/user/crud/search", status_code=status.HTTP_200_OK, response_model=UserDTO)
-async def search_user(email:str, db: AsyncSession = Depends(get_db)):
+async def search_user(email: str, db: AsyncSession = Depends(get_db)):
     logger.info(f"Searching user using {email}")
     user = await crud.get_user_by_email(db, email)
     if not user:
@@ -82,35 +95,26 @@ async def search_user(email:str, db: AsyncSession = Depends(get_db)):
     logger.info(f"User with email {email} found")
     return user
 
-@user_router.get("/user/{username}", response_model=UserResponse, status_code=status.HTTP_200_OK)
-async def get_user(username: str, credentials: HTTPAuthorizationCredentials = Depends(bearer),
-                   db: Session = Depends(get_db)):
+
+@user_router.get("/user/me", response_model=UserResponse, status_code=status.HTTP_200_OK)
+async def get_profile(token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
     """
-    Get user by username
-    :param username: Username
-    :param credentials: Headers with token
+    Get user by token (basically gey my profile)
+    :param token: User access token
     :param db: Database session
     :return: User data
     """
-    verify_result = await check_auth(credentials, db)
-    if verify_result:
-        user = crud.get_user_by_username(db, username=username)
-        if not user:
-            logger.warning("User not found")
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        logger.info(f"User {user.username} found")
-        return UserResponse(**user.to_dict())
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    payload = decode_token(token)
+    if not payload or not payload["sub"]:
+        logger.info(f"Invalid token")
+        raise HTTPException(status_code=401, detail="Invalid token")
 
-
-@user_router.get("/user")
-async def get_users(db: AsyncSession = Depends(get_db)):
-    """
-    Get all users
-    :param db:
-    :return:
-    """
-    return await crud.get_users(db=db)
+    user = await crud.get_user_by_email(db, email=payload["sub"])
+    if not user:
+        logger.warning("User not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    logger.info(f"User {user.username} found")
+    return UserResponse(**user.to_dict())
 
 
 @user_router.delete("/auth/me/account", status_code=status.HTTP_200_OK)

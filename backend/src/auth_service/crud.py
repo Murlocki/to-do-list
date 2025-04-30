@@ -5,7 +5,6 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from src.shared import logger_setup
-from src.auth_service.models import User
 from src.auth_service.schemas import UserCreate, UserUpdate
 
 logger = logger_setup.setup_logger(__name__)
@@ -33,20 +32,6 @@ def delete_user(db: Session, user_name: str):
     return db_user
 
 
-def get_user_by_email(db: Session, email: str):
-    return db.query(User).filter(User.email == email).first()
-
-
-def get_user_by_username(db: Session, username: str):
-    return db.query(User).filter(User.username == username).first()
-
 def get_users(db: Session):
     return db.query(User).all()
 
-def authenticate_user(db: Session, identifier: str, password: str):
-    user = get_user_by_email(db, identifier) or get_user_by_username(db, identifier)
-    if not user:
-        return False
-    if not verify_password(password, user.hashed_password):
-        return False
-    return user
