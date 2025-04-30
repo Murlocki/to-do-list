@@ -1,10 +1,13 @@
 import httpx
 from src.shared.logger_setup import setup_logger
-from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse
-from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION
+from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse, UserDTO
+from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION, \
+    CREATE_USER
 from src.shared.schemas import SessionDTO
+from src.user_service.schemas import UserCreate
 
 logger = setup_logger(__name__)
+
 
 async def create_session(session_data: SessionSchema) -> SessionDTO | None:
     """
@@ -31,7 +34,6 @@ async def create_session(session_data: SessionSchema) -> SessionDTO | None:
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
     return None
-
 
 
 async def get_session_by_token(token: str, token_type: str = "access_token") -> SessionDTO | None:
@@ -84,7 +86,8 @@ async def update_session_token(session_id: str, access_token_update_data: Access
 
     return None
 
-async def delete_session_by_id(session_id: str, access_token:str) -> AuthResponse | None:
+
+async def delete_session_by_id(session_id: str, access_token: str) -> AuthResponse | None:
     try:
         headers = {
             "content-type": "application/json",
@@ -105,4 +108,27 @@ async def delete_session_by_id(session_id: str, access_token:str) -> AuthRespons
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
 
+    return None
+
+
+async def create_user(user: UserCreate) -> UserDTO | None:
+    headers = {
+        "content-type": "application/json",
+    }
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{CREATE_USER}",
+                headers=headers,
+                content=user.model_dump_json()
+            )
+            response.raise_for_status()  # выбросит исключение, если ошибка
+            logger.info(f"Created new user: {user}")
+            return response.json()
+    except httpx.HTTPStatusError as e:
+        if e.response.status_code == 409:
+            raise e
+        logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
+    except httpx.RequestError as e:
+        logger.error(f"Request error: {e}")
     return None

@@ -1,21 +1,18 @@
 # Crud юзеров
-import uuid
-from datetime import datetime
-
-from sqlalchemy.orm import Session
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.shared import logger_setup
-from src.auth_service.auth_functions import get_password_hash, verify_password
-from src.auth_service.models import User
-from src.auth_service.redis_base import redis_client
-from src.auth_service.schemas import UserCreate, UserUpdate
+from src.user_service.auth_functions import get_password_hash, verify_password
+from src.user_service.models import User
+from src.user_service.schemas import UserCreate, UserUpdate
 
 logger = logger_setup.setup_logger(__name__)
 
 
 
 # CRUD операции с пользователями
-def create_user(db: Session, user: UserCreate):
+async def create_user(db: AsyncSession, user: UserCreate):
     user_password_hash = get_password_hash(user.password)
     db_user = User(
         username=user.username,
@@ -25,13 +22,13 @@ def create_user(db: Session, user: UserCreate):
         last_name=user.last_name,
         is_active=False,
     )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+    async with db.begin():
+        db.add(db_user)
+    await db.refresh(db_user)
     return db_user
 
 
-def update_user(db: Session, user_name: str, user: UserUpdate):
+def update_user(db: AsyncSession, user_name: str, user: UserUpdate):
     db_user = db.query(User).filter(User.username == user_name).first()
     if db_user:
         update_data = user.model_dump(exclude_unset=True)
@@ -44,7 +41,7 @@ def update_user(db: Session, user_name: str, user: UserUpdate):
     return db_user
 
 
-def delete_user(db: Session, user_name: str):
+def delete_user(db: AsyncSession, user_name: str):
     db_user = db.query(User).filter(User.username == user_name).first()
     if db_user:
         db.delete(db_user)
@@ -52,17 +49,23 @@ def delete_user(db: Session, user_name: str):
     return db_user
 
 
-def get_user_by_email(db: Session, email: str):
-    return db.query(User).filter(User.email == email).first()
+async def get_user_by_email(db: AsyncSession, email: str):
+    async with db.begin():
+        db_user = await db.execute(select(User).filter(User.email == email))
+        return db_user.scalar()
 
 
-def get_user_by_username(db: Session, username: str):
-    return db.query(User).filter(User.username == username).first()
+async def get_user_by_username(db: AsyncSession, username: str):
+    async with db.begin():
+        db_user = await db.execute(select(User).filter(User.username == username))
+        return db_user.scalar()
 
-def get_users(db: Session):
-    return db.query(User).all()
+async def get_users(db: AsyncSession):
+    async with db as session:
+        result =  await session.execute(select(User))
+        return result.scalars().all()
 
-def authenticate_user(db: Session, identifier: str, password: str):
+def authenticate_user(db: AsyncSession, identifier: str, password: str):
     user = get_user_by_email(db, identifier) or get_user_by_username(db, identifier)
     if not user:
         return False

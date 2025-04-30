@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from src.shared.logger_setup import setup_logger
-from src.auth_service.router import user_router
+from src.user_service.router import user_router
 
 logger = setup_logger(__name__)
 

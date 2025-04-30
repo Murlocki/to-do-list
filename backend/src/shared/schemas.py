@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Optional, Any
-from pydantic import BaseModel,Field
-
+from pydantic import BaseModel, Field, EmailStr
 
 
 class AuthForm(BaseModel):
@@ -46,3 +45,12 @@ class AccessTokenUpdate(BaseModel):
 class AuthResponse(BaseModel):
     token: str
     data: Any = None
+
+class UserDTO(BaseModel):
+    id: int
+    username: str
+    first_name: str
+    last_name: str
+    email: EmailStr
+    is_active: bool = Field(False)
+    is_superuser: bool = Field(False)

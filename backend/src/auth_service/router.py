@@ -2,6 +2,7 @@ import os
 import time
 from datetime import datetime
 
+import httpx
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
@@ -12,8 +13,9 @@ from src.shared import logger_setup
 from src.auth_service.auth_functions import validate_password, decode_token, \
     verify_and_refresh_access_token, get_password_hash
 from src.auth_service.database import SessionLocal
-from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id
-from src.auth_service.schemas import UserCreate, AuthForm, UserResponse, UserUpdate
+from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id, create_user
+from src.auth_service.schemas import UserCreate, AuthForm, UserUpdate
+from src.shared.schemas import UserDTO
 from src.shared.schemas import TokenModelResponse
 
 auth_router = APIRouter()
@@ -38,27 +40,29 @@ bearer = HTTPBearer()
 
 
 # TODO: Вынести в отдельный сервис по стуки к пользователям
-@auth_router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@auth_router.post("/auth/register", response_model=UserDTO, status_code=status.HTTP_201_CREATED)
 async def register_user(user: UserCreate, db: Session = Depends(get_db)):
     if not validate_password(user.password):
         logger.warning("Password does not meet complexity requirements")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password error")
-
-    # Check if user with the same email or username already exists
-    db_user = crud.get_user_by_email(db, email=user.email)
-    if db_user:
-        logger.warning(f"User with email {user.email} already exists")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
-    db_user = crud.get_user_by_username(db, username=user.username)
-    if db_user:
-        logger.warning(f"User with username {user.username} already exists")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already registered")
-
     # Create new user
-    result = crud.create_user(db=db, user=user)
-    logger.info(f"User {user.username} registered")
-    return result
+    try:
+        result = await create_user(user=user)
+        if not result:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User is not registered")
+        logger.info(f"User {user.username} registered")
+        return result
+    except httpx.HTTPStatusError as e:
+        if e.response.status_code == 409:
+            logger.warning(f"User {user.username} already exists")
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=e.response.json().get("detail", "User already exists"))
 
+    except httpx.RequestError as e:
+        logger.error(f"Request error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="User service is unreachable"
+        )
 
 @auth_router.post("/auth/login", response_model=TokenModelResponse, status_code=status.HTTP_200_OK)
 async def login_user(auth_form: AuthForm, db: Session = Depends(get_db)):

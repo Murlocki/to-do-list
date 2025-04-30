@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     session_cleanup_hours: int = 0
     session_cleanup_days: int = 0
     session_service_url: str = Field("http://127.0.0.1:8000")
+    user_service_url: str = Field("http://127.0.0.1:8002")
 
 
 settings = Settings()

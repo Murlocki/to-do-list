@@ -9,7 +9,7 @@ from src.user_service.config import settings  # адаптируй путь по
 engine = create_async_engine(settings.postgres_db, echo=True)
 
 # Фабрика асинхронных сессий
-AsyncSessionLocal = async_sessionmaker(
+SessionLocal = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
     expire_on_commit=False,
