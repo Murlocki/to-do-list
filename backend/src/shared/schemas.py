@@ -22,7 +22,7 @@ class SessionDTO(BaseModel):
     session_id: str
     user_id: int
     access_token: str
-    refresh_token: str = Field(None)
+    refresh_token: str | None = None
     device: str = Field("unknown")
     ip_address: str = Field("unknown")
     created_at: datetime = Field(datetime.now())

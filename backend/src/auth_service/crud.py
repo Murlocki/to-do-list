@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 from src.shared import logger_setup
 from src.auth_service.auth_functions import get_password_hash, verify_password
 from src.auth_service.models import User
-from src.auth_service.redis_base import redis_client
 from src.auth_service.schemas import UserCreate, UserUpdate
 
 logger = logger_setup.setup_logger(__name__)
@@ -23,7 +22,7 @@ def create_user(db: Session, user: UserCreate):
         hashed_password=user_password_hash,
         first_name=user.first_name,
         last_name=user.last_name,
-        is_active=False,
+        is_active=True,
     )
     db.add(db_user)
     db.commit()
