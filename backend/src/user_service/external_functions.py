@@ -2,7 +2,7 @@ import httpx
 from jose import jwt, JWTError
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import TokenModelResponse
-from src.user_service.config import settings
+from src.shared.config import settings
 from src.user_service.endpoints import CHECK_AUTH
 
 logger = setup_logger(__name__)

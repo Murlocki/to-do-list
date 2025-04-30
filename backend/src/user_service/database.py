@@ -1,9 +1,9 @@
 import asyncio
 
-from sqlalchemy import Text, text
+from sqlalchemy import  text
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlalchemy.orm import sessionmaker, declarative_base
-from src.user_service.config import settings  # адаптируй путь под свой проект
+from sqlalchemy.orm import declarative_base
+from src.shared.config import settings
 
 # Создаем движок
 engine = create_async_engine(settings.postgres_db, echo=True)

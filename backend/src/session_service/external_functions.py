@@ -1,8 +1,7 @@
 import httpx
 from jose import jwt, JWTError
-from fastapi.responses import JSONResponse
 
-from src.session_service.config import settings
+from src.shared.config import settings
 from src.session_service.endpoints import GET_USERS, CHECK_AUTH, FIND_USER_BY_EMAIL
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import TokenModelResponse, UserDTO

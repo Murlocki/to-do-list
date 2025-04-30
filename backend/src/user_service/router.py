@@ -14,6 +14,7 @@ from src.user_service.auth_functions import validate_password, get_password_hash
 from src.user_service.crud import authenticate_user
 from src.user_service.database import SessionLocal
 from src.user_service.external_functions import check_auth_from_external_service, decode_token
+from src.user_service.models import User
 from src.user_service.schemas import UserCreate, AuthForm, UserResponse, UserUpdate
 from src.shared.schemas import TokenModelResponse
 
@@ -117,24 +118,21 @@ async def get_profile(token: str = Depends(get_valid_token), db: AsyncSession = 
     return UserResponse(**user.to_dict())
 
 
-@user_router.delete("/auth/me/account", status_code=status.HTTP_200_OK)
-def delete_me(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
+@user_router.delete("/user/me", status_code=status.HTTP_200_OK)
+async def delete_me(token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
     """
     Delete of my self
-    :param credentials: Headers with token
+    :param token: User access token
     :param db: Database session
     :return: None
     """
-    verify_result = check_auth(credentials, db)
-    if verify_result.status_code == status.HTTP_200_OK:
-        token = decode_token(credentials.credentials)
-        user = crud.get_user_by_email(db, email=token["sub"])
-        if not user:
-            logger.warning("User not found 141")
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        logger.info(f"User {user.username} deleted")
-        return JSONResponse(status_code=status.HTTP_200_OK, content="User deleted")
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    decoded_token = decode_token(token)
+    user: User = await crud.get_user_by_email(db, email=decoded_token["sub"])
+    if not user:
+        logger.warning("User not found 141")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    logger.info(f"User {user.username} deleted")
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message":"User deleted"})
 
 
 @user_router.patch("/auth/me/password", status_code=status.HTTP_200_OK)

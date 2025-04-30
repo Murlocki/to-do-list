@@ -1,3 +1,0 @@
-[2025-04-28 03:34:48,938: INFO/MainProcess] beat: Starting...
-[2025-04-28 03:34:48,958: INFO/MainProcess] Scheduler: Sending due task cleanup_sessions_hourly (src.session_service.as_tasks.cleanup_inactive_sessions)
-[2025-04-28 03:35:48,952: INFO/MainProcess] Scheduler: Sending due task cleanup_sessions_hourly (src.session_service.as_tasks.cleanup_inactive_sessions)

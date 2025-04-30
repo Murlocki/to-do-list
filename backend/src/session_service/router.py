@@ -5,7 +5,6 @@ from datetime import datetime
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-import src.auth_service.crud
 from src.session_service import crud
 from src.session_service.crud import create_and_store_session, delete_inactive_sessions, update_session_access_token
 from src.session_service.external_functions import check_auth_from_external_service, decode_token, find_user_by_email
@@ -17,7 +16,7 @@ from src.shared.schemas import SessionSchema
 session_router = APIRouter()
 logger = logger_setup.setup_logger(__name__)
 logger.info(f"""
-Server start time (UTC): {datetime.utcnow()}
+Server start time (UTC): {datetime.now()}
 Server timestamp: {int(time.time())}
 System timezone: {time.tzname}
 Environment timezone: {os.environ.get('TZ', 'Not set')}

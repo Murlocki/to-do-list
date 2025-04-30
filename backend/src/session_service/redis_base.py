@@ -1,6 +1,6 @@
 import redis.asyncio as aioredis
 import redis
-from src.session_service.config import settings
+from src.shared.config import settings
 
 
 def get_redis_client():

@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 import uuid
 
-from src.session_service.config import settings
+from src.shared.config import settings
 from src.session_service.redis_base import redis_client
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import SessionDTO

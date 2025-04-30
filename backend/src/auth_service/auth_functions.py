@@ -2,7 +2,7 @@ from copy import deepcopy
 from datetime import timedelta, datetime
 from jose import jwt, JWTError
 from src.shared.schemas import SessionDTO, AccessTokenUpdate
-from src.auth_service.config import settings
+from src.shared.config import settings
 from src.auth_service.external_functions import get_session_by_token, update_session_token
 from src.shared.logger_setup import setup_logger
 import uuid

@@ -6,7 +6,7 @@ from datetime import timedelta
 from celery import Celery
 from fastapi import FastAPI
 
-from src.session_service.config import settings
+from src.shared.config import settings
 from src.session_service.crud import delete_inactive_sessions
 from src.session_service.external_functions import get_users_from_external_service
 from src.shared.logger_setup import setup_logger

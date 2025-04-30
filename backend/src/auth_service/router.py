@@ -5,9 +5,8 @@ from datetime import datetime
 import httpx
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from sqlalchemy.orm import Session
 from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO, UserAuthDTO
-from src.auth_service import crud, auth_functions
+from src.auth_service import auth_functions
 from src.shared import logger_setup
 from src.auth_service.auth_functions import decode_token, \
     verify_and_refresh_access_token
