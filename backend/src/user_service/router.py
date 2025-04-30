@@ -7,12 +7,12 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
 from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO
-from src.user_service import logger_setup, crud, auth_functions
-from src.user_service.auth_functions import validate_password, decode_token, \
+from src.auth_service import logger_setup, crud, auth_functions
+from src.auth_service.auth_functions import validate_password, decode_token, \
     verify_and_refresh_access_token, get_password_hash
-from src.user_service.database import SessionLocal
-from src.user_service.external_functions import create_session, get_session_by_token, delete_session_by_id
-from src.user_service.schemas import UserCreate, AuthForm, UserResponse, UserUpdate
+from src.auth_service.database import SessionLocal
+from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id
+from src.auth_service.schemas import UserCreate, AuthForm, UserResponse, UserUpdate
 from src.shared.schemas import TokenModelResponse
 
 user_router = APIRouter()
@@ -177,8 +177,8 @@ async def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer)
     # Check token validity and refresh if needed
     token = await verify_and_refresh_access_token(token)
     if not token:
-        logger.warning("Invalid token")
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"message": "Invalid token",
+        logger.warning("Invalid new token")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"message": "Invalid new token",
                                                                               "token": None})
     return {"token": token}
 

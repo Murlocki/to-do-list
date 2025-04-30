@@ -2,7 +2,7 @@ import logging
 import sys
 import os
 from logging.handlers import TimedRotatingFileHandler
-from src.user_service.config import settings
+from src.auth_service.config import settings
 
 
 def setup_logger(name:str, console: bool = False)->logging.Logger:

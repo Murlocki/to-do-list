@@ -4,7 +4,7 @@ import httpx
 from fastapi.responses import JSONResponse
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse
-from src.user_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION
+from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION
 from src.shared.schemas import SessionDTO
 
 logger = setup_logger(__name__)

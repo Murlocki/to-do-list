@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, func
 
-from src.user_service.database import Base, engine
+from src.auth_service.database import Base, engine
 
 
 class User(Base):

@@ -103,9 +103,6 @@ async def get_session_by_token(token: str, token_type: str = "access_token") -> 
     :param token_type: access_token or refresh_token
     :return: dict|None
     """
-    # TODO: "Рассмотреть возможность искать сначала по юзеру его сессии и затем по токену нужную выбирать
-    #        Возможно это будет хуже,так как могут быть неактивные пользователи без сесссий"
-
     async for key in redis_client.scan_iter("session:*"):
         session_data = await redis_client.hgetall(key)
         if session_data.get(token_type) == token:

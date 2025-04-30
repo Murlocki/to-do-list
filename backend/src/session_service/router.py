@@ -5,14 +5,14 @@ from datetime import datetime
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-import src.user_service.crud
+import src.auth_service.crud
 from src.session_service import crud
 from src.session_service.crud import create_and_store_session, delete_inactive_sessions, update_session_access_token
 from src.session_service.external_functions import check_auth_from_external_service, decode_token
 from src.shared import logger_setup
 from src.shared.schemas import SessionDTO, AccessTokenUpdate, AuthResponse
 from src.shared.schemas import SessionSchema
-from src.user_service.router import get_db
+from src.auth_service.router import get_db
 
 session_router = APIRouter()
 logger = logger_setup.setup_logger(__name__)
@@ -44,7 +44,7 @@ async def get_sessions(token: str = Depends(get_valid_token)):
     """
     decoded_token = decode_token(token)
     # TODO: ПЕРЕНЕСТИ ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ В ВНЕШНЮЮ СИСТЕМУ
-    user = src.user_service.crud.get_user_by_email(email=decoded_token["sub"], db=next(get_db()))
+    user = src.auth_service.crud.get_user_by_email(email=decoded_token["sub"], db=next(get_db()))
     if not user:
         logger.warning("User not found 240")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,

@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file="src/user_service/.env")
+    model_config = SettingsConfigDict(env_file="src/auth_service/.env")
     postgres_user: str = ""
     postgres_password: str = ""
     postgres_db: str = ""

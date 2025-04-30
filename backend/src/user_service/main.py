@@ -3,8 +3,8 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from src.user_service.logger_setup import setup_logger
-from src.user_service.router import user_router
+from src.auth_service.logger_setup import setup_logger
+from src.auth_service.router import user_router
 
 logger = setup_logger(__name__)
 
