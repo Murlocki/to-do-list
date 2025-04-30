@@ -34,7 +34,7 @@ class SessionDTO(BaseModel):
         }
 
 class TokenModelResponse(BaseModel):
-    access_token: str
+    token: str
     refresh_token: Optional[str] = None
     token_type: str = "bearer"
     session_id: Optional[str] = None

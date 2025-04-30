@@ -4,7 +4,6 @@ from datetime import datetime
 
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from starlette.responses import JSONResponse
 
 import src.user_service.crud
 from src.session_service import crud
@@ -48,7 +47,9 @@ async def get_sessions(token: str = Depends(get_valid_token)):
     user = src.user_service.crud.get_user_by_email(email=decoded_token["sub"], db=next(get_db()))
     if not user:
         logger.warning("User not found 240")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=AuthResponse(data={"message":"User not found"},
+                                                token=token))
     await delete_inactive_sessions(user_id=user.id)
     sessions = await crud.get_sessions(user_id=user.id)
     logger.info(f"Sessions for user {user.username}: {sessions}")
@@ -67,7 +68,10 @@ async def delete_session(session_id: str, token=Depends(get_valid_token)):
     session = await crud.delete_session_by_id(session_id)
     if not session:
         logger.warning("Session not found")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=AuthResponse(data=
+                                                {"message": "Session not found"},
+                                                token=token))
     logger.info(f"Session {session_id} was deleted")
     return AuthResponse(data=session, token=token)
 

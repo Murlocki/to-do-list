@@ -19,7 +19,7 @@ async def create_and_store_session(user_id: int, access_token: str, refresh_toke
 
     session_data = {
         "session_id": session_id,
-        "user_id": str(user_id),
+        "user_id": user_id,
         "access_token": access_token,
         "device": device,
         "ip_address": ip_address,
@@ -124,5 +124,5 @@ async def update_session_access_token(old_token: str, new_token: str, session_ob
     session = session_obj if session_obj else await get_session_by_token(old_token)
     if session:
         await redis_client.hset(f"session:{session['session_id']}", "access_token", new_token)
-        return get_session_by_token(new_token)
+        return await get_session_by_token(new_token)
     return None

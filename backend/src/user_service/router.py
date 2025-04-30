@@ -1,26 +1,24 @@
 import os
 import time
 from datetime import datetime
-from typing import Any, Dict
 
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from starlette.responses import JSONResponse
-
-from src.shared.schemas import SessionSchema
+from fastapi.responses import JSONResponse
+from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO
 from src.user_service import logger_setup, crud, auth_functions
 from src.user_service.auth_functions import validate_password, decode_token, \
     verify_and_refresh_access_token, get_password_hash
 from src.user_service.database import SessionLocal
-from src.user_service.external_functions import create_session, get_session_by_token
-from src.user_service.redis_base import redis_client
-from src.user_service.schemas import UserCreate, AuthForm, UserResponse, SessionDTO, UserUpdate
+from src.user_service.external_functions import create_session, get_session_by_token, delete_session_by_id
+from src.user_service.schemas import UserCreate, AuthForm, UserResponse, UserUpdate
 from src.shared.schemas import TokenModelResponse
+
 user_router = APIRouter()
 logger = logger_setup.setup_logger(__name__)
 logger.info(f"""
-Server start time (UTC): {datetime.utcnow()}
+Server start time (UTC): {datetime.now()}
 Server timestamp: {int(time.time())}
 System timezone: {time.tzname}
 Environment timezone: {os.environ.get('TZ', 'Not set')}
@@ -40,7 +38,7 @@ bearer = HTTPBearer()
 
 # TODO: Вынести в отдельный сервис по стуки к пользователям
 @user_router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-def register_user(user: UserCreate, db: Session = Depends(get_db)):
+async def register_user(user: UserCreate, db: Session = Depends(get_db)):
     if not validate_password(user.password):
         logger.warning("Password does not meet complexity requirements")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password error")
@@ -58,12 +56,11 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     # Create new user
     result = crud.create_user(db=db, user=user)
     logger.info(f"User {user.username} registered")
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=result)
-
+    return result
 
 
 @user_router.post("/auth/login", response_model=TokenModelResponse, status_code=status.HTTP_200_OK)
-def login_user(auth_form: AuthForm, db: Session = Depends(get_db)):
+async def login_user(auth_form: AuthForm, db: Session = Depends(get_db)):
     user = crud.authenticate_user(db=db, identifier=auth_form.identifier, password=auth_form.password)
     if not user:
         logger.warning("Invalid credentials")
@@ -76,30 +73,32 @@ def login_user(auth_form: AuthForm, db: Session = Depends(get_db)):
     # Create refresh token if remember_me is set
     if auth_form.remember_me:
         refresh_token = auth_functions.create_new_token(user.email, is_refresh=True)
-        session_data = create_session(
+        session_data = await create_session(
             SessionSchema(user_id=user.id, access_token=access_token, refresh_token=refresh_token,
                           device=auth_form.device, ip_address=auth_form.ip_address))
+        if not session_data:
+            logger.warning("Session not created")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Session not created")
         logger.info(f"User logged in (rem mode): {user.email}")
         # TODO: Оставить в ответе только access_token и token_type, остальное удалить ибо не нужно клиенту
-        return JSONResponse(status_code=status.HTTP_200_OK,
-                            content={"access_token": access_token, "token_type": "bearer",
-                                     "refresh_token": refresh_token,
-                                     "session_id": session_data["session_id"]})
+        return {"token": access_token}
     else:
-        session_data = create_session(
+        session_data = await create_session(
             SessionSchema(
                 user_id=user.id,
                 access_token=access_token,
                 device=auth_form.device,
                 ip_address=auth_form.ip_address))
+        if not session_data:
+            logger.warning("Session not created")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Session not created")
         logger.info(f"User logged in: {user.email}")
-        return JSONResponse(status_code=status.HTTP_200_OK,
-                            content={"access_token": access_token, "token_type": "bearer",
-                                     "session_id": session_data["session_id"]})
+        return {"token"}
 
 
 @user_router.get("/user/{username}", response_model=UserResponse, status_code=status.HTTP_200_OK)
-def get_user(username: str, credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
+async def get_user(username: str, credentials: HTTPAuthorizationCredentials = Depends(bearer),
+                   db: Session = Depends(get_db)):
     """
     Get user by username
     :param username: Username
@@ -107,8 +106,8 @@ def get_user(username: str, credentials: HTTPAuthorizationCredentials = Depends(
     :param db: Database session
     :return: User data
     """
-    verify_result = check_auth(credentials, db)
-    if verify_result.status_code == status.HTTP_200_OK:
+    verify_result = await check_auth(credentials, db)
+    if verify_result:
         user = crud.get_user_by_username(db, username=username)
         if not user:
             logger.warning("User not found")
@@ -118,40 +117,39 @@ def get_user(username: str, credentials: HTTPAuthorizationCredentials = Depends(
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
 
-@user_router.get("/user")
-def get_users(db: Session = Depends(get_db)):
-    """
-    Get all users
-    :param db:
-    :return:
-    """
-    return crud.get_users(db=db)
-
-
-@user_router.post("/auth/logout", status_code=status.HTTP_200_OK)
-def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
-    token = verify_and_refresh_access_token(credentials.credentials)
-    if not token:
+@user_router.post("/auth/logout", status_code=status.HTTP_200_OK, response_model=AuthResponse)
+async def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
+    # Check if token is valid
+    token_verified = await check_auth(credentials, next(get_db()))
+    logger.info(token_verified)
+    if not token_verified or not token_verified["token"]:
         logger.warning("Invalid token")
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail=AuthResponse(data={"message": "Invalid token"}, token=credentials.credentials))
+    token = token_verified["token"]
+    result = AuthResponse(data={"message": ""}, token=token)
     logger.info(f"Valid Token: {token}")
-    session = get_session_by_token(token, token_type="access_token")
+    # Get session by token
+    session: SessionDTO = await get_session_by_token(token, token_type="access_token")
     if not session:
+        result.data = {"message": "Session not found"}
         logger.warning("Session not found")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
-
-    session_id = session["session_id"]
-    if session["session_id"]:
-        redis_client.delete(f"session:{session_id}")
-        redis_client.srem(f"user:{session['user_id']}:sessions", session_id)
-        logger.info(f"Session {session_id} has been deleted")
-        return JSONResponse(status_code=status.HTTP_200_OK, content="Logout successful")
-    logger.warning(f"No session found for token during logout")
-    raise HTTPException(status_code=400, detail="Unable to logout. Session not found.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
+    logger.info(f"Found session {session}")
+    # Delete session
+    response_json = await delete_session_by_id(session.session_id, token)
+    if not response_json:
+        result.data = {"message": "Session delete error"}
+        logger.warning("Session delete error")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
+    logger.info(f"Session {session.session_id} deleted")
+    result.data = response_json
+    return result
 
 
 @user_router.get("/auth/check_auth", response_model=TokenModelResponse)
-def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
+# TODO: УБРАТЬ БД ОТСЮДА НАХРЕН
+async def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
     """
     Check if user is authenticated
     :param credentials: Carryind token in header
@@ -177,18 +175,22 @@ def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: 
                                                                            "token": None})
 
     # Check token validity and refresh if needed
-    token = verify_and_refresh_access_token(token)
+    token = await verify_and_refresh_access_token(token)
     if not token:
         logger.warning("Invalid token")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"message": "Invalid token",
-                                                                             "token": None})
-    return JSONResponse(status_code=status.HTTP_200_OK,
-                        content={"token": token})
+                                                                              "token": None})
+    return {"token": token}
 
 
-
-
-
+@user_router.get("/user")
+def get_users(db: Session = Depends(get_db)):
+    """
+    Get all users
+    :param db:
+    :return:
+    """
+    return crud.get_users(db=db)
 
 
 @user_router.delete("/auth/me/account", status_code=status.HTTP_200_OK)

@@ -82,7 +82,6 @@ def decode_token(token: str, is_refresh: bool = False) -> dict[str, any] | None:
     except JWTError as e:
         logger.warning(f"JWTError: {e}")
         return None
-print(decode_token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImp0aSI6ImNjNjMyNjhiLTNlZjYtNGFmNy05MjFhLTY0NmViMWZiNjFmYyIsImV4cCI6MTc0NTg4ODQwNy45NjE4MzUsImlhdCI6MTc0NTg4ODM3N30.x_wqCDdofhN48IaX30gpKwgjyLkriHBcL8uuvbCiZZQ"))
 
 def is_about_to_expire(exp_time: datetime, threshold: int = 300) -> bool:
     """
@@ -96,7 +95,7 @@ def is_about_to_expire(exp_time: datetime, threshold: int = 300) -> bool:
     return time_left < threshold
 
 
-def verify_and_refresh_access_token(token: str) -> str | None:
+async def verify_and_refresh_access_token(token: str) -> str | None:
     """
     Verify and refresh access token
     :param token: Access token
@@ -111,7 +110,7 @@ def verify_and_refresh_access_token(token: str) -> str | None:
             return None
 
         # Check if we have session for token
-        session: SessionDTO = get_session_by_token(token)
+        session: SessionDTO = await get_session_by_token(token)
         if not session:
             logger.warning(f"No session found for token")
             return None
@@ -124,25 +123,28 @@ def verify_and_refresh_access_token(token: str) -> str | None:
         if about_to_expire or exp_time <= datetime.now():
             logger.warning("Token is about to expire" if about_to_expire else f"Token expired at: {exp_time}")
             # Check if we have refresh token
-            if session["refresh_token"]:
+            if session.refresh_token:
                 # Update session with new access token
                 logger.info("Refreshing token using refresh token")
-                new_token: str = refresh_access_token(session["refresh_token"])
+                new_token: str = await refresh_access_token(session.refresh_token)
                 # Check if we have new token and update session
-                if new_token:
-                    logger.info("Token refreshed successfully")
-                    update_session_token(session["session_id"],
-                                         AccessTokenUpdate(old_access_token=token, new_access_token=new_token))
-                    return new_token
-                else:
+                if not new_token:
                     logger.warning("Failed to refresh token")
+                    return None
+                logger.info("Token refreshed successfully")
+                return new_token
             else:
                 # Create new access token without refsrh token and update session
                 logger.info("Creating new access token")
                 new_access_token = create_new_token(payload['sub'])
-                if new_access_token:
-                    update_session_token(session["session_id"],
+                if not new_access_token:
+                    logger.warning("Failed to create new access token")
+                    return None
+                session = await update_session_token(session.session_id,
                                      AccessTokenUpdate(old_access_token=token, new_access_token=new_access_token))
+                if not session:
+                    logger.warning("Failed to update session with new token")
+                    return None
                 return new_access_token
         logger.info("Token is valid")
         return token
@@ -151,7 +153,7 @@ def verify_and_refresh_access_token(token: str) -> str | None:
         return None
 
 
-def refresh_access_token(refresh_token: str):
+async def refresh_access_token(refresh_token: str):
     """
     Refresh access token using refresh token
     :param refresh_token: Refresh token
@@ -171,15 +173,22 @@ def refresh_access_token(refresh_token: str):
             return None
 
         # Получаем сессию по refresh token
-        session = get_session_by_token(refresh_token, token_type="refresh_token")
+        session = await get_session_by_token(refresh_token, token_type="refresh_token")
         if not session:
             logger.warning(f"No session found for refresh token")
             return None
         new_access_token = create_new_token(email)
-        if new_access_token:
-            update_session_token(session["session_id"], AccessTokenUpdate(old_access_token=session["access_token"],
+        if not new_access_token:
+            logger.warning("Failed to create new access token")
+            return None
+
+        session = await update_session_token(session.session_id, AccessTokenUpdate(old_access_token=session.access_token,
                                                                       new_access_token=new_access_token))
+        if not session:
+            logger.warning("Failed to update session with new access token")
+            return None
         return new_access_token
+
     except JWTError as e:
         logger.warning(f"refresh_access_token - JWT Error: {e}")
         return None

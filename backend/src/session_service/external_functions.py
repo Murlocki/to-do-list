@@ -1,5 +1,4 @@
 import httpx
-import requests
 from jose import jwt, JWTError
 from fastapi.responses import JSONResponse
 
@@ -10,7 +9,7 @@ from src.shared.schemas import TokenModelResponse
 
 logger = setup_logger(__name__)
 
-async def get_users_from_external_service() -> JSONResponse:
+async def get_users_from_external_service():
     """
     Get all users from external service
     :return: list of users
@@ -22,17 +21,19 @@ async def get_users_from_external_service() -> JSONResponse:
 
         async with httpx.AsyncClient() as client:
             response = await client.get(GET_USERS, headers=headers)
-            response.raise_for_status()  # Проверяем статусный код на ошибки
-            return JSONResponse(content=response.json())  # Вернем Response аналогичный requests
+            response.raise_for_status()
+            json_data = response.json()
+            return json_data
     except httpx.RequestError as e:
         logger.error(f"An error occurred while requesting {e.request.url!r}.")
     except httpx.HTTPStatusError as e:
         logger.error(f"Error response {e.response.status_code} while requesting {e.request.url!r}.")
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
+    return None
 
 
-async def check_auth_from_external_service(access_token: str) -> TokenModelResponse:
+async def check_auth_from_external_service(access_token: str) -> TokenModelResponse | None:
     """
     Check auth
     :param access_token:
@@ -47,13 +48,15 @@ async def check_auth_from_external_service(access_token: str) -> TokenModelRespo
         async with httpx.AsyncClient() as client:
             response = await client.get(CHECk_AUTH, headers=headers)
             response.raise_for_status()  # Проверяем статусный код на ошибки
-            return response.json()  # Делаем это асинхронно
+            json_data = response.json()
+            return json_data
     except httpx.RequestError as e:
         logger.error(f"An error occurred while requesting {e.request.url!r}.")
     except httpx.HTTPStatusError as e:
         logger.error(f"Error response {e.response.status_code} while requesting {e.request.url!r}.")
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
+    return None
 
 def decode_token(token: str, is_refresh: bool = False) -> dict[str, any] | None:
     """

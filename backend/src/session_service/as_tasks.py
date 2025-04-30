@@ -28,17 +28,17 @@ logger = setup_logger(__name__)
 
 
 @celery_app.task
-def cleanup_inactive_sessions():
+async def cleanup_inactive_sessions():
     """Фоновая задача очистки сессий"""
     try:
 
-        response = get_users_from_external_service()
-        if response.status_code == 200:
+        response = await get_users_from_external_service()
+        if response:
             users = response.json()
             logger.info(users)
 
             for user in users:
-                delete_inactive_sessions(user["id"])
+                await delete_inactive_sessions(user["id"])
 
             logger.info("Inactive sessions cleaned up")
         else:
