@@ -1,8 +1,8 @@
 import httpx
 from src.shared.logger_setup import setup_logger
-from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse, UserDTO
+from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse, UserDTO, UserAuthDTO
 from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION, \
-    CREATE_USER
+    CREATE_USER, AUTHENTICATE_USER
 from src.shared.schemas import SessionDTO
 from src.user_service.schemas import UserCreate
 
@@ -76,7 +76,7 @@ async def update_session_token(session_id: str, access_token_update_data: Access
             response.raise_for_status()
             data = response.json()
             logger.info(f"Updated session token: {data}")
-            return data
+            return SessionDTO(**data)
     except httpx.RequestError as e:
         logger.error(f"Request error: {e}")
     except httpx.HTTPStatusError as e:
@@ -100,7 +100,7 @@ async def delete_session_by_id(session_id: str, access_token: str) -> AuthRespon
             )
             response.raise_for_status()
             response_json = response.json()
-            return response_json
+            return AuthResponse(**response_json)
     except httpx.RequestError as e:
         logger.error(f"Request error: {e}")
     except httpx.HTTPStatusError as e:
@@ -124,10 +124,30 @@ async def create_user(user: UserCreate) -> UserDTO | None:
             )
             response.raise_for_status()  # выбросит исключение, если ошибка
             logger.info(f"Created new user: {user}")
-            return response.json()
+            return UserDTO(**response.json())
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 409:
             raise e
+        logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
+    except httpx.RequestError as e:
+        logger.error(f"Request error: {e}")
+    return None
+
+async def authenticate_user(user: UserAuthDTO) -> UserDTO | None:
+    try:
+        headers = {
+            "content-type": "application/json",
+        }
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{AUTHENTICATE_USER}",
+                headers=headers,
+                content=user.model_dump_json()
+            )
+            response.raise_for_status()
+            logger.info(f"Authenticated user: {user}")
+            return UserDTO(**response.json())
+    except httpx.HTTPStatusError as e:
         logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
     except httpx.RequestError as e:
         logger.error(f"Request error: {e}")

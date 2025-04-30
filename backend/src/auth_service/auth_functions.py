@@ -196,18 +196,3 @@ async def refresh_access_token(refresh_token: str):
         return None
 
 
-
-
-def validate_password(password: str) -> bool:
-    return re.search("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*=])[A-Za-z\d!@#$%^&*=]{8,}$", password) is not None
-
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)

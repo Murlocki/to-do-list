@@ -65,10 +65,10 @@ async def get_users(db: AsyncSession):
         result =  await session.execute(select(User))
         return result.scalars().all()
 
-def authenticate_user(db: AsyncSession, identifier: str, password: str):
-    user = get_user_by_email(db, identifier) or get_user_by_username(db, identifier)
+async def authenticate_user(db: AsyncSession, identifier: str, password: str):
+    user = await get_user_by_email(db, identifier) or await get_user_by_username(db, identifier)
     if not user:
-        return False
+        return None
     if not verify_password(password, user.hashed_password):
-        return False
+        return None
     return user

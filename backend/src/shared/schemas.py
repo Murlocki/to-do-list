@@ -34,9 +34,6 @@ class SessionDTO(BaseModel):
 
 class TokenModelResponse(BaseModel):
     token: str
-    refresh_token: Optional[str] = None
-    token_type: str = "bearer"
-    session_id: Optional[str] = None
 
 class AccessTokenUpdate(BaseModel):
     old_access_token: str
@@ -54,3 +51,7 @@ class UserDTO(BaseModel):
     email: EmailStr
     is_active: bool = Field(False)
     is_superuser: bool = Field(False)
+
+class UserAuthDTO(BaseModel):
+    identifier: str
+    password: str

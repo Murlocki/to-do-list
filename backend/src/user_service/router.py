@@ -7,10 +7,11 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
-from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO, UserDTO
+from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO, UserDTO, UserAuthDTO
 from src.shared.logger_setup import setup_logger
 from src.user_service import crud, auth_functions
-from src.user_service.auth_functions import validate_password, get_password_hash
+from src.user_service.auth_functions import validate_password, get_password_hash, verify_password
+from src.user_service.crud import authenticate_user
 from src.user_service.database import SessionLocal
 from src.user_service.external_functions import create_session, get_session_by_token, delete_session_by_id
 from src.user_service.schemas import UserCreate, AuthForm, UserResponse, UserUpdate
@@ -38,8 +39,13 @@ bearer = HTTPBearer()
 
 @user_router.post("/user/crud")
 async def create_user(user_in: UserCreate, db: AsyncSession = Depends(get_db))->UserDTO:
+    """
+    Create a new user
+    :param user_in: User data
+    :param db: session
+    :return: new UserDTO
+    """
     logger.info(f"Creating new user using {user_in}")
-
     db_user = await crud.get_user_by_email(db, user_in.email)
     if db_user:
         logger.error(f"User with email {user_in.email} already exists")
@@ -48,14 +54,23 @@ async def create_user(user_in: UserCreate, db: AsyncSession = Depends(get_db))->
     if db_user:
         logger.error(f"User with username {user_in.username} already exists")
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Username already registered")
-
+    if not validate_password(user_in.password):
+        logger.warning("Password does not meet complexity requirements")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password error")
     user = await crud.create_user(db, user_in)
     if not user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail={"message": "User creation failed"})
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="User creation failed")
     logger.info(f"Created new user using {user}")
     return user
 
-
+@user_router.post("/user/authenticate", response_model=UserDTO, status_code=status.HTTP_200_OK)
+async def auth_user(user_auth_data:UserAuthDTO,db: AsyncSession = Depends(get_db)):
+    user = await authenticate_user(db, user_auth_data.identifier, user_auth_data.password)
+    if not user:
+        logger.info("User authentication failed")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect identifier or password")
+    logger.info(f"Authenticated user using {user}")
+    return user
 
 
 @user_router.get("/user/{username}", response_model=UserResponse, status_code=status.HTTP_200_OK)

@@ -6,14 +6,14 @@ import httpx
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from fastapi.responses import JSONResponse
-from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO
+from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO, UserAuthDTO
 from src.auth_service import crud, auth_functions
 from src.shared import logger_setup
-from src.auth_service.auth_functions import validate_password, decode_token, \
-    verify_and_refresh_access_token, get_password_hash
+from src.auth_service.auth_functions import decode_token, \
+    verify_and_refresh_access_token
 from src.auth_service.database import SessionLocal
-from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id, create_user
+from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id, create_user, \
+    authenticate_user
 from src.auth_service.schemas import UserCreate, AuthForm, UserUpdate
 from src.shared.schemas import UserDTO
 from src.shared.schemas import TokenModelResponse
@@ -38,13 +38,8 @@ def get_db():
 
 bearer = HTTPBearer()
 
-
-# TODO: Вынести в отдельный сервис по стуки к пользователям
 @auth_router.post("/auth/register", response_model=UserDTO, status_code=status.HTTP_201_CREATED)
-async def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    if not validate_password(user.password):
-        logger.warning("Password does not meet complexity requirements")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password error")
+async def register_user(user: UserCreate):
     # Create new user
     try:
         result = await create_user(user=user)
@@ -56,49 +51,36 @@ async def register_user(user: UserCreate, db: Session = Depends(get_db)):
         if e.response.status_code == 409:
             logger.warning(f"User {user.username} already exists")
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=e.response.json().get("detail", "User already exists"))
+        elif e.response.status_code == 400 and "Password" in e.response.json().get("detail", "User creation error"):
+            logger.warning(f"Password error")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password does not meet complexity requirements")
 
-    except httpx.RequestError as e:
-        logger.error(f"Request error: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="User service is unreachable"
-        )
 
 @auth_router.post("/auth/login", response_model=TokenModelResponse, status_code=status.HTTP_200_OK)
-async def login_user(auth_form: AuthForm, db: Session = Depends(get_db)):
-    user = crud.authenticate_user(db=db, identifier=auth_form.identifier, password=auth_form.password)
+async def login_user(auth_form: AuthForm):
+    user: UserDTO = await authenticate_user(UserAuthDTO(identifier=auth_form.identifier, password=auth_form.password))
     if not user:
         logger.warning("Invalid credentials")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+    logger.info(f"User {user} logged in")
 
     # Create access tokens
     access_token = auth_functions.create_new_token(user.email)
     logger.info(f"User {user.username} logged in with access token {access_token}")
-    logger.info(auth_form.remember_me)
     # Create refresh token if remember_me is set
-    if auth_form.remember_me:
-        refresh_token = auth_functions.create_new_token(user.email, is_refresh=True)
-        session_data = await create_session(
-            SessionSchema(user_id=user.id, access_token=access_token, refresh_token=refresh_token,
-                          device=auth_form.device, ip_address=auth_form.ip_address))
-        if not session_data:
-            logger.warning("Session not created")
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Session not created")
-        logger.info(f"User logged in (rem mode): {user.email}")
-        return {"token": access_token}
-    else:
-        session_data = await create_session(
+    refresh_token = auth_functions.create_new_token(user.email, is_refresh=True) if auth_form.remember_me else None
+    session_data = await create_session(
             SessionSchema(
                 user_id=user.id,
                 access_token=access_token,
+                refresh_token=refresh_token,
                 device=auth_form.device,
                 ip_address=auth_form.ip_address))
-        if not session_data:
-            logger.warning("Session not created")
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Session not created")
-        logger.info(f"User logged in: {user.email}")
-        return {"token":access_token}
-
+    if not session_data:
+        logger.warning("Session not created")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Session not created")
+    logger.info(f"User logged in { '(rem mode)' if auth_form.remember_me else ''}: {user.email}")
+    return {"token": access_token}
 
 
 @auth_router.post("/auth/logout", status_code=status.HTTP_200_OK, response_model=AuthResponse)
