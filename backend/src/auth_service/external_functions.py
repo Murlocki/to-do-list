@@ -2,7 +2,7 @@ import httpx
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse, UserDTO, UserAuthDTO
 from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION, \
-    CREATE_USER, AUTHENTICATE_USER
+    CREATE_USER, AUTHENTICATE_USER, FIND_USER_BY_EMAIL
 from src.shared.schemas import SessionDTO
 from src.user_service.schemas import UserCreate
 
@@ -146,6 +146,25 @@ async def authenticate_user(user: UserAuthDTO) -> UserDTO | None:
             )
             response.raise_for_status()
             logger.info(f"Authenticated user: {user}")
+            return UserDTO(**response.json())
+    except httpx.HTTPStatusError as e:
+        logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
+    except httpx.RequestError as e:
+        logger.error(f"Request error: {e}")
+    return None
+
+async def find_user_by_email(email:str) -> UserDTO | None:
+    try:
+        headers = {
+            "content-type": "application/json",
+        }
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{FIND_USER_BY_EMAIL}?email={email}",
+                headers=headers,
+            )
+            response.raise_for_status()
+            logger.info(f"Find user by email: {email}")
             return UserDTO(**response.json())
     except httpx.HTTPStatusError as e:
         logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")

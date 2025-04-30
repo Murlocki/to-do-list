@@ -13,7 +13,7 @@ from src.auth_service.auth_functions import decode_token, \
     verify_and_refresh_access_token
 from src.auth_service.database import SessionLocal
 from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id, create_user, \
-    authenticate_user
+    authenticate_user, find_user_by_email
 from src.auth_service.schemas import UserCreate, AuthForm, UserUpdate
 from src.shared.schemas import UserDTO
 from src.shared.schemas import TokenModelResponse
@@ -119,8 +119,7 @@ async def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer
 
 
 @auth_router.get("/auth/check_auth", response_model=TokenModelResponse)
-# TODO: УБРАТЬ БД ОТСЮДА НАХРЕН
-async def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer), db: Session = Depends(get_db)):
+async def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
     """
     Check if user is authenticated
     :param credentials: Carryind token in header
@@ -137,9 +136,8 @@ async def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"message": "Invalid token",
                                                                            "token": None})
 
-    # TODO: ВЫНЕСТИ ПО СТУК ПО EMAIL В СЕРВИС ПОЛЬЗОВАТЕЛЕЙ
     # Get token user
-    user = crud.get_user_by_email(db, email=payload["sub"])
+    user = await find_user_by_email(email=payload["sub"])
     if not user:
         logger.warning("User not found")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail={"message": "User is not found",

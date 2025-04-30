@@ -72,6 +72,15 @@ async def auth_user(user_auth_data:UserAuthDTO,db: AsyncSession = Depends(get_db
     logger.info(f"Authenticated user using {user}")
     return user
 
+@user_router.get("/user/crud/search", status_code=status.HTTP_200_OK, response_model=UserDTO)
+async def search_user(email:str, db: AsyncSession = Depends(get_db)):
+    logger.info(f"Searching user using {email}")
+    user = await crud.get_user_by_email(db, email)
+    if not user:
+        logger.info(f"User with email {email} not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    logger.info(f"User with email {email} found")
+    return user
 
 @user_router.get("/user/{username}", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def get_user(username: str, credentials: HTTPAuthorizationCredentials = Depends(bearer),
