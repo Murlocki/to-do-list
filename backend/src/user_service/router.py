@@ -15,8 +15,8 @@ from src.user_service.crud import authenticate_user
 from src.user_service.database import SessionLocal
 from src.user_service.external_functions import check_auth_from_external_service, decode_token
 from src.user_service.models import User
-from src.user_service.schemas import UserCreate, AuthForm, UserResponse, UserUpdate
-from src.shared.schemas import TokenModelResponse
+from src.user_service.schemas import UserCreate, UserUpdate, PasswordForm
+from src.shared.schemas import UserDTO
 
 user_router = APIRouter()
 logger = setup_logger(__name__)
@@ -97,7 +97,7 @@ async def search_user(email: str, db: AsyncSession = Depends(get_db)):
     return user
 
 
-@user_router.get("/user/me", response_model=UserResponse, status_code=status.HTTP_200_OK)
+@user_router.get("/user/me", response_model=UserDTO, status_code=status.HTTP_200_OK)
 async def get_profile(token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
     """
     Get user by token (basically gey my profile)
@@ -115,7 +115,7 @@ async def get_profile(token: str = Depends(get_valid_token), db: AsyncSession = 
         logger.warning("User not found")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     logger.info(f"User {user.username} found")
-    return UserResponse(**user.to_dict())
+    return UserDTO(**user.to_dict())
 
 
 @user_router.delete("/user/me", status_code=status.HTTP_200_OK)
@@ -132,38 +132,42 @@ async def delete_me(token: str = Depends(get_valid_token), db: AsyncSession = De
         logger.warning("User not found 141")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     logger.info(f"User {user.username} deleted")
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"message":"User deleted"})
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "User deleted"})
 
 
-@user_router.patch("/auth/me/password", status_code=status.HTTP_200_OK)
-def update_password(password: str, credentials: HTTPAuthorizationCredentials = Depends(bearer),
-                    db: Session = Depends(get_db)):
+@user_router.patch("/user/me/password", status_code=status.HTTP_200_OK, response_model=AuthResponse)
+async def update_password(password_form: PasswordForm, token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
     """
     Update user password
-    :param password: New password
-    :param credentials: Headers with token
+    :param password_form: New password
+    :param token: Access token
     :param db: Database session
     :return: None
     """
-    verify_result = check_auth(credentials, db)
-    if verify_result.status_code == status.HTTP_200_OK:
-        payload = decode_token(credentials.credentials)
-        user = crud.get_user_by_email(db, email=payload["sub"])
-        if not user:
-            logger.warning("User not found 161")
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        # Check if password meets complexity requirements
-        if not validate_password(password):
-            logger.warning("Password does not meet complexity requirements")
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password error")
-        user_update = UserUpdate(**user, password=get_password_hash(password))
-        crud.update_user(db, user.username, user_update)
-        logger.info(f"User {user.username} updated password")
-        return JSONResponse(status_code=status.HTTP_200_OK, content="Password updated")
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    result = AuthResponse(token=token, data={"message": "Password updated"})
+    payload = decode_token(token)
+    logger.info(f"Decode token {payload}")
+    user: User = await crud.get_user_by_email(db, email=payload["sub"])
+    if not user:
+        logger.warning("User not found")
+        result.data["message"] = "User not found"
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result.model_dump_json())
+    logger.info(f"User {user.to_dict()} is found")
+    # Check if password meets complexity requirements
+    if not validate_password(password_form.new_password):
+        logger.warning("Password does not meet complexity requirements")
+        result.data["message"] = "Password error"
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=result.model_dump())
+    logger.info(f"Password validated{password_form.new_password}")
+    # Update user password
+    user_update = UserUpdate(**user.to_dict(), password=get_password_hash(password_form.new_password))
+    logger.info(f"Update user:{user_update}")
+    user_update = await crud.update_user(db, user.username, user_update)
+    logger.info(f"User {user_update.username} updated password {user_update.hashed_password}")
+    return AuthResponse(data=UserDTO(**user_update.to_dict()), token=token)
 
 
-@user_router.patch("/auth/me/account", response_model=UserResponse, status_code=status.HTTP_200_OK)
+@user_router.patch("/auth/me/account", response_model=UserDTO, status_code=status.HTTP_200_OK)
 def update_my_account(user: UserUpdate, credentials: HTTPAuthorizationCredentials = Depends(bearer),
                       db: Session = Depends(get_db)):
     """

@@ -17,20 +17,13 @@ class UserUpdate(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
     is_active: bool = Field(True)
-class UserResponse(BaseModel):
-    id: int
-    username: str
-    first_name: str
-    last_name: str
-    email: EmailStr
-    is_active: bool = Field(True)
-    is_superuser: bool = Field(False)
-
 class AuthForm(BaseModel):
     identifier: str
     password: str
     device: Optional[str] = "unknown"
     ip_address: Optional[str] = "unknown"
     remember_me: Optional[bool] = Field(False)
+class PasswordForm(BaseModel):
+    new_password: str
 
 
