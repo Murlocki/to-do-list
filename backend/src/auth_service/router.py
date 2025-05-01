@@ -157,10 +157,8 @@ async def forgot_password(new_password_form: PasswordForm, credentials: HTTPAuth
     response = await update_user_password(new_password_form, token_verified["token"])
 
     if response.status_code != 200:
-        error_json = response.json()
-        detail = error_json.get("detail")
-        message = detail.get("data", {}).get("message") or str(detail)
-        raise HTTPException(status_code=response.status_code, detail=message)
+        resp_json = response.json()
+        raise HTTPException(status_code=response.status_code, detail=resp_json["detail"])
     response_json = response.json()
     return UserDTO(**response_json["data"])
 

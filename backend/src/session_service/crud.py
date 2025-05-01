@@ -139,3 +139,19 @@ async def update_session_access_token(old_token: str, new_token: str, session_ob
         session = await get_session_by_token(new_token)
         return session
     return None
+
+async def delete_sessions_by_user_id(user_id: int) -> list[SessionDTO]:
+    """
+    Delete sessions by user ID
+    :param user_id: user ID
+    :return: List of deleted sessions
+    """
+    result = []
+    session_ids = await redis_client.smembers(f"user:{user_id}:sessions")
+    for session_id in session_ids:
+        session_data = await redis_client.hgetall(f"session:{session_id}")
+        if session_data:
+            await redis_client.delete(f"user:{user_id}:sessions", session_id)
+            await redis_client.srem(f"user:{user_id}:sessions", session_id)
+            result.append(session_id)
+    return result

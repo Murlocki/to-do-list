@@ -3,16 +3,16 @@ import time
 from datetime import datetime
 
 from fastapi import HTTPException, status, APIRouter, Depends, Request
+from httpx import Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi.responses import JSONResponse
 from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO, UserDTO, UserAuthDTO
 from src.shared.logger_setup import setup_logger
 from src.user_service import crud, auth_functions
 from src.user_service.auth_functions import validate_password, get_password_hash, verify_password
 from src.user_service.crud import authenticate_user
 from src.user_service.database import SessionLocal
-from src.user_service.external_functions import check_auth_from_external_service, decode_token
+from src.user_service.external_functions import check_auth_from_external_service, decode_token, delete_user_sessions
 from src.user_service.models import User
 from src.user_service.schemas import UserCreate, UserUpdate
 from src.shared.schemas import UserDTO, PasswordForm
@@ -138,7 +138,7 @@ async def delete_me(token: str = Depends(get_valid_token), db: AsyncSession = De
         logger.warning("User not found")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     logger.info(f"User {user.username} deleted")
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "User deleted"})
+    return {"message": "User deleted"}
 
 
 @user_router.patch("/user/me/password", status_code=status.HTTP_200_OK, response_model=AuthResponse)
@@ -171,6 +171,13 @@ async def update_password(password_form: PasswordForm, token: str = Depends(get_
     logger.info(f"Update user:{user_update}")
     user_update = await crud.update_user(db, user.username, user_update)
     logger.info(f"User {user_update.username} updated password {user_update.hashed_password}")
+
+    deleted_sessions: Response = await delete_user_sessions(token)
+    if deleted_sessions.status_code!=200:
+        logger.warning("User not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    logger.info(f"User sessions deleted {deleted_sessions.content.decode('utf-8')}")
+
     return AuthResponse(data=UserDTO(**user_update.to_dict()), token=token).model_dump()
 
 
