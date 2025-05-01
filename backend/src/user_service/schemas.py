@@ -11,12 +11,11 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
 class UserUpdate(BaseModel):
-    username: str = Field(None, min_length=3, max_length=50)
+    username: str
     first_name: str
     last_name: str
     email: EmailStr
-    password: str = Field(min_length=8)
-    is_active: bool = Field(True)
+    is_active: bool = Field(False)
 class AuthForm(BaseModel):
     identifier: str
     password: str

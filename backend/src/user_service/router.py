@@ -136,7 +136,8 @@ async def delete_me(token: str = Depends(get_valid_token), db: AsyncSession = De
 
 
 @user_router.patch("/user/me/password", status_code=status.HTTP_200_OK, response_model=AuthResponse)
-async def update_password(password_form: PasswordForm, token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
+async def update_password(password_form: PasswordForm, token: str = Depends(get_valid_token),
+                          db: AsyncSession = Depends(get_db)):
     """
     Update user password
     :param password_form: New password
@@ -167,23 +168,21 @@ async def update_password(password_form: PasswordForm, token: str = Depends(get_
     return AuthResponse(data=UserDTO(**user_update.to_dict()), token=token)
 
 
-@user_router.patch("/auth/me/account", response_model=UserDTO, status_code=status.HTTP_200_OK)
-def update_my_account(user: UserUpdate, credentials: HTTPAuthorizationCredentials = Depends(bearer),
-                      db: Session = Depends(get_db)):
+@user_router.patch("/user/me/account", response_model=AuthResponse, status_code=status.HTTP_200_OK)
+async def update_my_account(user: UserUpdate, token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
     """
     Update user by username
     :param db: database session
-    :param username: Username
     :param user: User data
-    :param credentials: Headers with token
+    :param token: Access token
     :return: Updated user data
     """
-    verify_result = check_auth(credentials, db)
-    if verify_result.status_code == status.HTTP_200_OK:
-        db_user = crud.update_user(db, user_name=user.username, user=user)
-        if not db_user:
-            logger.warning("User not found 122")
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        logger.info(f"User {user.username} updated")
-        return UserResponse(**db_user.to_dict())
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    db_user = await crud.update_user(db, user_name=user.username, user=user)
+    if not db_user:
+        logger.warning("User not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=AuthResponse(token=token,
+                                                data={
+                                                    "message": "User not found"}).model_dump_json())
+    logger.info(f"User {user.username} updated")
+    return AuthResponse(token=token, data=UserDTO(**db_user.to_dict()))

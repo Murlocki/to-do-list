@@ -44,7 +44,6 @@ class AuthResponse(BaseModel):
     data: Any = None
 
 class UserDTO(BaseModel):
-    id: int
     username: str
     first_name: str
     last_name: str
