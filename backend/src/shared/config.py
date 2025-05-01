@@ -33,5 +33,8 @@ class Settings(BaseSettings):
     user_service_url: str = Field("http://127.0.0.1:8002")
     session_service_url: str = Field("http://127.0.0.1:8001")
     auth_service_url: str = Field("http://127.0.0.1:8000")
+    kafka_broker:str = Field("localhost:9093")
+    kafka_email_send_topic_name:str = "email_send"
+    kafka_email_send_topic_partitions:int = 1
 settings = Settings()
 print(settings)

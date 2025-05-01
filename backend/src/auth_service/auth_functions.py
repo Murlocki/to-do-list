@@ -1,6 +1,8 @@
 from copy import deepcopy
 from datetime import timedelta, datetime
 from jose import jwt, JWTError
+
+from src.auth_service.kafka_producers import send_kafka_message
 from src.shared.schemas import SessionDTO, AccessTokenUpdate
 from src.shared.config import settings
 from src.auth_service.external_functions import get_session_by_token, update_session_token
@@ -190,3 +192,12 @@ async def refresh_access_token(refresh_token: str):
         return None
 
 
+async def send_register_email_signal(access_token:str, user_email:str):
+    message = await send_kafka_message({"message_type": "register_email","token": access_token, "email": user_email})
+
+    if not message:
+        logger.warning("Failed to send register email")
+        return None
+
+    logger.info(f"Send register email signal sent for {user_email}")
+    return message

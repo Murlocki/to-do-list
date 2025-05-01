@@ -2,7 +2,7 @@ import httpx
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse, UserDTO, UserAuthDTO
 from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION, \
-    CREATE_USER, AUTHENTICATE_USER, FIND_USER_BY_EMAIL
+    CREATE_USER, AUTHENTICATE_USER, FIND_USER_BY_EMAIL, UPDATE_USER, DELETE_SESSION_BY_TOKEN
 from src.shared.schemas import SessionDTO
 from src.user_service.schemas import UserCreate
 
@@ -107,9 +107,28 @@ async def delete_session_by_id(session_id: str, access_token: str) -> AuthRespon
         logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
-
     return None
-
+async def delete_session_by_token(access_token: str) -> AuthResponse | None:
+    try:
+        headers = {
+            "content-type": "application/json",
+            "authorization": f"bearer {access_token}"
+        }
+        async with httpx.AsyncClient() as client:
+            response = await client.delete(
+                f"{DELETE_SESSION_BY_TOKEN}?token={access_token}",
+                headers=headers
+            )
+            response.raise_for_status()
+            response_json = response.json()
+            return AuthResponse(**response_json)
+    except httpx.RequestError as e:
+        logger.error(f"Request error: {e}")
+    except httpx.HTTPStatusError as e:
+        logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
+    except Exception as e:
+        logger.error(f"Unexpected error: {str(e)}")
+    return None
 
 async def create_user(user: UserCreate) -> UserDTO | None:
     headers = {
@@ -166,6 +185,27 @@ async def find_user_by_email(email:str) -> UserDTO | None:
             response.raise_for_status()
             logger.info(f"Find user by email: {email}")
             return UserDTO(**response.json())
+    except httpx.HTTPStatusError as e:
+        logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
+    except httpx.RequestError as e:
+        logger.error(f"Request error: {e}")
+    return None
+
+async def update_user(user: UserDTO, access_token:str) -> AuthResponse | None:
+    try:
+        headers = {
+            "content-type": "application/json",
+            "authorization": f"bearer {access_token}"
+        }
+        async with httpx.AsyncClient() as client:
+            response = await client.patch(
+                f"{UPDATE_USER}",
+                headers=headers,
+                content=user.model_dump_json()
+            )
+            response.raise_for_status()
+            logger.info(f"Update user {user.username} by token {access_token}")
+            return AuthResponse(**response.json())
     except httpx.HTTPStatusError as e:
         logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
     except httpx.RequestError as e:

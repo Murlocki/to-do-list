@@ -1,5 +1,5 @@
 # Crud юзеров
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.shared import logger_setup
@@ -36,13 +36,14 @@ async def update_user(db: AsyncSession, user_name: str, user: UserUpdate):
             return None
         logger.info(f"Found old user {db_user.to_dict()}")
         update_data = user.model_dump(exclude_unset=True)
+        logger.info(f"Updating user {update_data}")
         if "password" in update_data:
             update_data["hashed_password"] = get_password_hash(update_data.pop("password"))
             logger.info(f"Updated password {update_data['hashed_password']}")
         for key, value in update_data.items():
             setattr(db_user, key, value)
-        await db.refresh(db_user)
-        return db_user
+    await db.refresh(db_user)
+    return db_user
 
 
 def delete_user(db: AsyncSession, user_name: str):

@@ -9,9 +9,9 @@ from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO, UserAuth
 from src.auth_service import auth_functions
 from src.shared import logger_setup
 from src.auth_service.auth_functions import decode_token, \
-    verify_and_refresh_access_token
+    verify_and_refresh_access_token, send_register_email_signal
 from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id, create_user, \
-    authenticate_user, find_user_by_email
+    authenticate_user, find_user_by_email, update_user, delete_session_by_token
 from src.auth_service.schemas import UserCreate, AuthForm, UserUpdate
 from src.shared.schemas import UserDTO
 from src.shared.schemas import TokenModelResponse
@@ -25,15 +25,6 @@ System timezone: {time.tzname}
 Environment timezone: {os.environ.get('TZ', 'Not set')}
 """)
 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
 bearer = HTTPBearer()
 
 @auth_router.post("/auth/register", response_model=UserDTO, status_code=status.HTTP_201_CREATED)
@@ -44,6 +35,18 @@ async def register_user(user: UserCreate):
         if not result:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User is not registered")
         logger.info(f"User {user.username} registered")
+
+        # Create token and session for registration
+        register_token = auth_functions.create_new_token(result.email)
+        session_data = await create_session(
+            SessionSchema(
+                user_id=result.id,
+                access_token=register_token))
+        if not session_data:
+            logger.warning(f"Could not create session for user {user.username}, but he is already registered")
+        message = await send_register_email_signal(register_token, result.email)
+        if not message:
+            logger.warning(f"Could not send email for user {user.username}, but he is registered")
         return result
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 409:
@@ -53,7 +56,29 @@ async def register_user(user: UserCreate):
             logger.warning(f"Password error")
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password does not meet complexity requirements")
 
+@auth_router.post("/auth/activate_account")
+async def activate_account(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
+    token_verified = await check_auth(credentials)
+    if not token_verified or not token_verified["token"]:
+        logger.warning(f"Invalid token for registed user {credentials.username}")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    logger.info(f"Token verified: {token_verified['token']}")
+    payload = decode_token(token_verified["token"])
 
+    user = await find_user_by_email(payload["sub"])
+    if not user:
+        logger.warning(f"Could not find user {payload['sub']}")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    logger.info(f"User {user.username} is found by email {payload['sub']}")
+    user.is_active = True
+    user_activated = await update_user(user, token_verified["token"])
+    if not user_activated:
+        logger.warning(f"Could not activate user {payload['sub']}")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not activated")
+    session = await delete_session_by_token(user_activated.token)
+    if not session:
+        logger.warning(f"Could not delete session for user {payload['sub']}")
+    return user_activated.data
 @auth_router.post("/auth/login", response_model=TokenModelResponse, status_code=status.HTTP_200_OK)
 async def login_user(auth_form: AuthForm):
     user: UserDTO = await authenticate_user(UserAuthDTO(identifier=auth_form.identifier, password=auth_form.password))
