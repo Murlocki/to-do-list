@@ -1,10 +1,13 @@
 import httpx
+from httpx import HTTPStatusError, RequestError, Response
+
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse, UserDTO, UserAuthDTO
 from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION, \
-    CREATE_USER, AUTHENTICATE_USER, FIND_USER_BY_EMAIL, UPDATE_USER, DELETE_SESSION_BY_TOKEN
+    CREATE_USER, AUTHENTICATE_USER, FIND_USER_BY_EMAIL, UPDATE_USER, DELETE_SESSION_BY_TOKEN, UPDATE_USER_PASSWORD
 from src.shared.schemas import SessionDTO
 from src.user_service.schemas import UserCreate
+from src.shared.schemas import PasswordForm
 
 logger = setup_logger(__name__)
 
@@ -211,3 +214,16 @@ async def update_user(user: UserDTO, access_token:str) -> AuthResponse | None:
     except httpx.RequestError as e:
         logger.error(f"Request error: {e}")
     return None
+async def update_user_password(password_form: PasswordForm, access_token:str) -> Response:
+        headers = {
+            "content-type": "application/json",
+            "authorization": f"bearer {access_token}"
+        }
+        async with httpx.AsyncClient() as client:
+            response = await client.patch(
+                f"{UPDATE_USER_PASSWORD}",
+                headers=headers,
+                content=password_form.model_dump_json()
+            )
+            logger.info(f"Get reponse from update user password: {response.json()}")
+            return response

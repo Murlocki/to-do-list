@@ -46,11 +46,14 @@ async def update_user(db: AsyncSession, user_name: str, user: UserUpdate):
     return db_user
 
 
-def delete_user(db: AsyncSession, user_name: str):
-    db_user = db.query(User).filter(User.username == user_name).first()
-    if db_user:
-        db.delete(db_user)
-        db.commit()
+async def delete_user(db: AsyncSession, user: User):
+    async with db.begin():
+        result = await db.execute(select(User).filter(User.username == user.username))
+        db_user = result.scalar_one_or_none()
+        if not db_user:
+            logger.warning(f"User {user.username} not found.")
+            return None
+        await db.delete(db_user)
     return db_user
 
 

@@ -9,3 +9,4 @@ CREATE_USER = f"{settings.user_service_url}/user/crud"
 AUTHENTICATE_USER = (f"{settings.user_service_url}/user/authenticate")
 FIND_USER_BY_EMAIL = f"{settings.user_service_url}/user/crud/search"
 UPDATE_USER = f"{settings.user_service_url}/user/me/account"
+UPDATE_USER_PASSWORD = f"{settings.user_service_url}/user/me/password"

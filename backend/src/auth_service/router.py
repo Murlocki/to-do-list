@@ -1,3 +1,4 @@
+import json
 import os
 import time
 from datetime import datetime
@@ -5,14 +6,15 @@ from datetime import datetime
 import httpx
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO, UserAuthDTO
+from httpx import HTTPStatusError
+
+from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO, UserAuthDTO, PasswordForm
 from src.auth_service import auth_functions
 from src.shared import logger_setup
-from src.auth_service.auth_functions import decode_token, \
-    verify_and_refresh_access_token, send_register_email_signal
+from src.auth_service.auth_functions import decode_token, verify_and_refresh_access_token, send_email_signal
 from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id, create_user, \
-    authenticate_user, find_user_by_email, update_user, delete_session_by_token
-from src.auth_service.schemas import UserCreate, AuthForm, UserUpdate
+    authenticate_user, find_user_by_email, update_user, delete_session_by_token, update_user_password
+from src.auth_service.schemas import UserCreate, AuthForm
 from src.shared.schemas import UserDTO
 from src.shared.schemas import TokenModelResponse
 
@@ -26,6 +28,7 @@ Environment timezone: {os.environ.get('TZ', 'Not set')}
 """)
 
 bearer = HTTPBearer()
+
 
 @auth_router.post("/auth/register", response_model=UserDTO, status_code=status.HTTP_201_CREATED)
 async def register_user(user: UserCreate):
@@ -44,23 +47,26 @@ async def register_user(user: UserCreate):
                 access_token=register_token))
         if not session_data:
             logger.warning(f"Could not create session for user {user.username}, but he is already registered")
-        message = await send_register_email_signal(register_token, result.email)
+        message = await send_email_signal(register_token, result.email)
         if not message:
             logger.warning(f"Could not send email for user {user.username}, but he is registered")
         return result
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 409:
             logger.warning(f"User {user.username} already exists")
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=e.response.json().get("detail", "User already exists"))
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+                                detail=e.response.json().get("detail", "User already exists"))
         elif e.response.status_code == 400 and "Password" in e.response.json().get("detail", "User creation error"):
             logger.warning(f"Password error")
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password does not meet complexity requirements")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="Password does not meet complexity requirements")
+
 
 @auth_router.post("/auth/activate_account")
 async def activate_account(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
     token_verified = await check_auth(credentials)
     if not token_verified or not token_verified["token"]:
-        logger.warning(f"Invalid token for registed user {credentials.username}")
+        logger.warning(f"Invalid token for registed user with credentials {credentials}")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
     logger.info(f"Token verified: {token_verified['token']}")
     payload = decode_token(token_verified["token"])
@@ -79,6 +85,8 @@ async def activate_account(credentials: HTTPAuthorizationCredentials = Depends(b
     if not session:
         logger.warning(f"Could not delete session for user {payload['sub']}")
     return user_activated.data
+
+
 @auth_router.post("/auth/login", response_model=TokenModelResponse, status_code=status.HTTP_200_OK)
 async def login_user(auth_form: AuthForm):
     user: UserDTO = await authenticate_user(UserAuthDTO(identifier=auth_form.identifier, password=auth_form.password))
@@ -93,17 +101,68 @@ async def login_user(auth_form: AuthForm):
     # Create refresh token if remember_me is set
     refresh_token = auth_functions.create_new_token(user.email, is_refresh=True) if auth_form.remember_me else None
     session_data = await create_session(
-            SessionSchema(
-                user_id=user.id,
-                access_token=access_token,
-                refresh_token=refresh_token,
-                device=auth_form.device,
-                ip_address=auth_form.ip_address))
+        SessionSchema(
+            user_id=user.id,
+            access_token=access_token,
+            refresh_token=refresh_token,
+            device=auth_form.device,
+            ip_address=auth_form.ip_address))
     if not session_data:
         logger.warning("Session not created")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Session not created")
-    logger.info(f"User logged in { '(rem mode)' if auth_form.remember_me else ''}: {user.email}")
-    return {"token": access_token}
+    logger.info(f"User logged in {'(rem mode)' if auth_form.remember_me else ''}: {user.email}")
+    return TokenModelResponse(token=access_token).model_dump()
+
+
+@auth_router.get("/auth/get_forgot_password_email/{email}", status_code=status.HTTP_200_OK)
+async def get_forgot_password(email: str):
+    """
+    Create email for password reset link
+    :param email: User's email'
+    :return: Kafka message
+    """
+    user = await find_user_by_email(email)
+    if not user:
+        logger.warning(f"Could not find user {email}")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    logger.info(f"User {user.username} is found by email {email}")
+
+    recovery_token = auth_functions.create_new_token(email)
+    session_data = await create_session(
+        SessionSchema(
+            user_id=user.id,
+            access_token=recovery_token))
+    if not session_data:
+        logger.warning(f"Could not create recovery session for user {user}")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Session not created")
+    logger.info(f"User {user.username} recovery session created")
+
+    message = await send_email_signal(recovery_token, user.email, "recover_password")
+    if not message:
+        logger.warning(f"Could not send recovery message for user {user}")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Message not sent")
+    logger.info(f"User {user.username} recovery message sent")
+    return {"message": message}
+
+from fastapi.responses import JSONResponse
+
+@auth_router.post("/auth/forgot_password", status_code=status.HTTP_200_OK)
+async def forgot_password(new_password_form: PasswordForm, credentials: HTTPAuthorizationCredentials = Depends(bearer)):
+    token_verified = await check_auth(credentials)
+    if not token_verified or not token_verified["token"]:
+        logger.warning(f"Invalid token for forgot password")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
+    logger.info(f"Token verified: {token_verified['token']}")
+    response = await update_user_password(new_password_form, token_verified["token"])
+
+    if response.status_code != 200:
+        error_json = response.json()
+        detail = error_json.get("detail")
+        message = detail.get("data", {}).get("message") or str(detail)
+        raise HTTPException(status_code=response.status_code, detail=message)
+    response_json = response.json()
+    return UserDTO(**response_json["data"])
 
 
 @auth_router.post("/auth/logout", status_code=status.HTTP_200_OK, response_model=AuthResponse)
@@ -174,5 +233,3 @@ async def check_auth(credentials: HTTPAuthorizationCredentials = Depends(bearer)
                                                                               "token": None})
     return {"token": token}
 
-
-# TODO: ДОБАВИТЬ АКТИВАЦИЮ ПО ПИСЬМУ НА EMAIL

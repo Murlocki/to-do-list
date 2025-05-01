@@ -51,7 +51,8 @@ class UserDTO(BaseModel):
     email: EmailStr
     is_active: bool = Field(False)
     is_superuser: bool = Field(False)
-
 class UserAuthDTO(BaseModel):
     identifier: str
     password: str
+class PasswordForm(BaseModel):
+    new_password: str

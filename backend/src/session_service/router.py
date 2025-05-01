@@ -46,7 +46,6 @@ async def get_sessions(token: str = Depends(get_valid_token)):
     """
     decoded_token = decode_token(token)
     logger.info(f"Decoded token: {decoded_token}")
-    # TODO: ПЕРЕНЕСТИ ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ В ВНЕШНЮЮ СИСТЕМУ
     user = await find_user_by_email(email=decoded_token["sub"])
     if not user:
         logger.warning("User not found")

@@ -15,6 +15,7 @@ class UserUpdate(BaseModel):
     first_name: str
     last_name: str
     email: EmailStr
+    password: str | None = Field(None)
     is_active: bool = Field(False)
 class AuthForm(BaseModel):
     identifier: str
@@ -22,7 +23,6 @@ class AuthForm(BaseModel):
     device: Optional[str] = "unknown"
     ip_address: Optional[str] = "unknown"
     remember_me: Optional[bool] = Field(False)
-class PasswordForm(BaseModel):
-    new_password: str
+
 
 

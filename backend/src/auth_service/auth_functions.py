@@ -192,12 +192,12 @@ async def refresh_access_token(refresh_token: str):
         return None
 
 
-async def send_register_email_signal(access_token:str, user_email:str):
-    message = await send_kafka_message({"message_type": "register_email","token": access_token, "email": user_email})
+async def send_email_signal(access_token:str, user_email:str, message_type:str = "register_email"):
+    message = await send_kafka_message({"message_type": message_type,"token": access_token, "email": user_email})
 
     if not message:
-        logger.warning("Failed to send register email")
+        logger.warning(f"Failed to send {message_type} email")
         return None
 
-    logger.info(f"Send register email signal sent for {user_email}")
+    logger.info(f"Send {message_type} email signal sent for {user_email}")
     return message
