@@ -63,22 +63,25 @@ async def delete_user(db: AsyncSession, user: User):
 async def get_user_by_email(db: AsyncSession, email: str):
     async with db.begin():
         db_user = await db.execute(select(User).filter(User.email == email))
-        logger.info(f"Found user {db_user.scalar()}")
-        return db_user.scalar()
+        db_user = db_user.scalar_one_or_none()
+        logger.info(f"Found user {db_user}")
+        return db_user
 
 
 async def get_user_by_username(db: AsyncSession, username: str):
     async with db.begin():
         db_user = await db.execute(select(User).filter(User.username == username))
-        logger.info(f"Found user {db_user.scalar()}")
-        return db_user.scalar()
+        db_user = db_user.scalar_one_or_none()
+        logger.info(f"Found user {db_user}")
+        return db_user
 
 
 async def get_users(db: AsyncSession):
     async with db as session:
         result = await session.execute(select(User))
-        logger.info(f"Found users {result.scalars()}")
-        return result.scalars().all()
+        result = result.scalars().all()
+        logger.info(f"Found users {result}")
+        return result
 
 
 async def authenticate_user(db: AsyncSession, identifier: str, password: str):
