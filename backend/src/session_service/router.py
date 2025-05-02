@@ -6,8 +6,7 @@ from fastapi import HTTPException, status, APIRouter, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from src.session_service import crud
-from src.session_service.crud import create_and_store_session, delete_inactive_sessions, update_session_access_token, \
-    delete_sessions_by_user_id
+from src.session_service.crud import create_and_store_session, delete_inactive_sessions, delete_sessions_by_user_id
 from src.session_service.external_functions import check_auth_from_external_service, find_user_by_email
 from src.shared import logger_setup
 from src.shared.common_functions import decode_token, verify_response

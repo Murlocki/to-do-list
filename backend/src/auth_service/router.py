@@ -2,15 +2,14 @@ import os
 import time
 from datetime import datetime
 
-import httpx
 from fastapi import HTTPException, status, APIRouter, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from sqlalchemy.sql.functions import user
 
 from src.auth_service import auth_functions
 from src.auth_service.auth_functions import verify_and_refresh_access_token, send_email_signal
 from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id, create_user, \
-    authenticate_user, find_user_by_email, update_user, delete_sessions_by_token, update_user_password, get_user_sessions
+    authenticate_user, find_user_by_email, update_user, delete_sessions_by_token, update_user_password, \
+    get_user_sessions
 from src.auth_service.schemas import UserCreate, AuthForm
 from src.shared import logger_setup
 from src.shared.common_functions import decode_token, verify_response

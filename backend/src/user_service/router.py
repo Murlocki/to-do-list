@@ -4,7 +4,6 @@ from datetime import datetime
 
 from fastapi import HTTPException, status, APIRouter, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from httpx import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.shared.common_functions import decode_token, verify_response
@@ -13,9 +12,9 @@ from src.shared.schemas import AuthResponse, UserAuthDTO
 from src.shared.schemas import UserDTO, PasswordForm
 from src.user_service import crud, auth_functions
 from src.user_service.auth_functions import validate_password, get_password_hash
-from src.user_service.database import SessionLocal
+from src.shared.database import SessionLocal
 from src.user_service.external_functions import check_auth_from_external_service, delete_user_sessions
-from src.user_service.models import User
+from src.shared.models import User
 from src.user_service.schemas import UserCreate, UserUpdate
 
 user_router = APIRouter()

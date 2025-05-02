@@ -6,8 +6,7 @@ from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPD
     GET_USER_SESSIONS
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import PasswordForm
-from src.shared.schemas import SessionDTO
-from src.shared.schemas import SessionSchema, AccessTokenUpdate, AuthResponse, UserDTO, UserAuthDTO
+from src.shared.schemas import SessionSchema, AccessTokenUpdate, UserDTO, UserAuthDTO
 from src.user_service.schemas import UserCreate
 
 logger = setup_logger(__name__)

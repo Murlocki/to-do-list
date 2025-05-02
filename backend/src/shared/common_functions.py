@@ -1,7 +1,5 @@
-from fastapi import HTTPException
 from httpx import Response
 from jose import jwt, JWTError
-from starlette.responses import JSONResponse
 
 from src.shared.config import settings
 from src.shared.logger_setup import setup_logger

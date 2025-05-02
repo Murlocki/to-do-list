@@ -1,7 +1,9 @@
 import asyncio
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
 import aiosmtplib
+
 from src.shared.config import settings
 from src.shared.logger_setup import setup_logger
 

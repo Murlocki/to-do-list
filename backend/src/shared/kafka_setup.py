@@ -1,7 +1,9 @@
 
 
 import asyncio
+
 from confluent_kafka.admin import AdminClient, NewTopic
+
 from src.shared.config import settings
 
 
