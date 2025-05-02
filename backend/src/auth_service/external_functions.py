@@ -2,7 +2,8 @@ import httpx
 from httpx import Response
 
 from src.auth_service.endpoints import CREATE_SESSION, GET_SESSION_BY_TOKEN, UPDATE_SESSION_TOKEN, DELETE_SESSION, \
-    CREATE_USER, AUTHENTICATE_USER, FIND_USER_BY_EMAIL, UPDATE_USER, DELETE_SESSION_BY_TOKEN, UPDATE_USER_PASSWORD
+    CREATE_USER, AUTHENTICATE_USER, FIND_USER_BY_EMAIL, UPDATE_USER, DELETE_SESSION_BY_TOKEN, UPDATE_USER_PASSWORD, \
+    GET_USER_SESSIONS
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import PasswordForm
 from src.shared.schemas import SessionDTO
@@ -94,7 +95,7 @@ async def delete_session_by_id(session_id: str, access_token: str, skip_auth: bo
         return response
 
 
-async def delete_session_by_token(access_token: str, skip_auth: bool = False) -> Response:
+async def delete_sessions_by_token(access_token: str, skip_auth: bool = False) -> Response:
     """
     Delete session by token
     :param access_token: token for finding session
@@ -108,10 +109,10 @@ async def delete_session_by_token(access_token: str, skip_auth: bool = False) ->
     }
     async with httpx.AsyncClient() as client:
         response = await client.delete(
-            f"{DELETE_SESSION_BY_TOKEN}?token={access_token}",
+            f"{DELETE_SESSION_BY_TOKEN}",
             headers=headers
         )
-        logger.info(f"Deleted session by token {access_token} with response {response.json()}")
+        logger.info(f"Deleted sessions by token {access_token} with response {response.json()}")
         return response
 
 
@@ -215,4 +216,21 @@ async def update_user_password(password_form: PasswordForm, access_token: str, s
             content=password_form.model_dump_json()
         )
         logger.info(f"Get reponse from update user password: {response.json()}")
+        return response
+
+async def get_user_sessions(user_id:int) -> Response:
+    """
+    Get user sessions
+    :param user_id: User id
+    :return: Response from external service
+    """
+    headers = {
+        "content-type": "application/json"
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            f"{GET_USER_SESSIONS}/{user_id}",
+            headers=headers
+        )
+        logger.info(f"Get reponse from get user sessions: {response.json()}")
         return response

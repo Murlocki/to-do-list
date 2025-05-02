@@ -119,6 +119,17 @@ async def delete_sessions(token=Depends(get_valid_token)):
     result = await delete_sessions_by_user_id(user.id)
     return AuthResponse(data=result, token=token).model_dump()
 
+@session_router.get("/session/crud/user/{user_id}", response_model=list[SessionDTO], status_code=status.HTTP_200_OK)
+async def get_user_sessions(user_id: int):
+    """
+    Get all sessions for user
+    :param user_id: User ID
+    :return: List of sessions
+    """
+    sessions = await crud.get_sessions(user_id=user_id)
+    logger.info(f"Sessions for user {user_id} were found")
+    return [SessionDTO(**session) for session in sessions]
+
 @session_router.patch("/session/crud/{session_id}/update_token", response_model=SessionDTO,
                       status_code=status.HTTP_200_OK)
 async def update_session_token(session_id: str, access_token_update_data: AccessTokenUpdate):

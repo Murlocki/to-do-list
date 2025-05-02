@@ -10,7 +10,7 @@ from sqlalchemy.sql.functions import user
 from src.auth_service import auth_functions
 from src.auth_service.auth_functions import verify_and_refresh_access_token, send_email_signal
 from src.auth_service.external_functions import create_session, get_session_by_token, delete_session_by_id, create_user, \
-    authenticate_user, find_user_by_email, update_user, delete_session_by_token, update_user_password
+    authenticate_user, find_user_by_email, update_user, delete_sessions_by_token, update_user_password, get_user_sessions
 from src.auth_service.schemas import UserCreate, AuthForm
 from src.shared import logger_setup
 from src.shared.common_functions import decode_token, verify_response
@@ -103,7 +103,7 @@ async def activate_account(credentials: HTTPAuthorizationCredentials = Depends(b
 
     # Delete activation session
     user_activated = AuthResponse.model_validate(response.json())
-    response = await delete_session_by_token(user_activated.token, True)
+    response = await delete_sessions_by_token(user_activated.token, True)
     error = verify_response(response,200)
     if error:
         logger.error(error)
@@ -126,6 +126,30 @@ async def login_user(auth_form: AuthForm):
     # Check if user is active
     if not user.is_active:
         logger.error(f"Could not login user {user.username} because it is inactive")
+
+        response = await get_user_sessions(user.id)
+        error = verify_response(response)
+        if error:
+            logger.error(error)
+            raise HTTPException(status_code=error["status_code"], detail=error["detail"])
+        sessions_data = response.json()
+        sessions = [SessionDTO(**session) for session in sessions_data]
+        if not sessions:
+            logger.warning(f"User {user.username} has no sessions")
+            new_register_token = auth_functions.create_new_token(user.email)
+            response = await create_session(
+                SessionSchema(
+                    user_id=user.id,
+                    access_token=new_register_token,
+                    device=auth_form.device,
+                    ip_address=auth_form.ip_address))
+            error = verify_response(response, 201)
+            if error:
+                logger.error(error)
+                raise HTTPException(status_code=error["status_code"], detail=error["detail"])
+            message = await send_email_signal(new_register_token, user.email)
+            if not message:
+                logger.warning(f"Could not send email for user {user.username}, but he is registered")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Activate account")
     logger.info(f"User {user} logged in")
 

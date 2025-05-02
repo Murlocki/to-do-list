@@ -151,7 +151,7 @@ async def delete_sessions_by_user_id(user_id: int) -> list[SessionDTO]:
     for session_id in session_ids:
         session_data = await redis_client.hgetall(f"session:{session_id}")
         if session_data:
-            await redis_client.delete(f"user:{user_id}:sessions", session_id)
+            await redis_client.delete(f"session:{session_id}", session_id)
             await redis_client.srem(f"user:{user_id}:sessions", session_id)
             result.append(session_id)
     return result
