@@ -63,7 +63,7 @@ async def register_user(user_data: UserCreate):
     # Send email activation
     message = await send_email_signal(register_token, result.email)
     if not message:
-        logger.warning(f"Could not send email for user {user.username}, but he is registered")
+        logger.warning(f"Could not send email for user {user_data.username}, but he is registered")
     return result
 
 

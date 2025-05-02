@@ -100,7 +100,7 @@ async def search_user(email: str, db: AsyncSession = Depends(get_db)):
     return user
 
 
-@user_router.get("/user/me", response_model=UserDTO, status_code=status.HTTP_200_OK)
+@user_router.get("/user/me", response_model=AuthResponse, status_code=status.HTTP_200_OK)
 async def get_profile(token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
     """
     Get user by token (basically gey my profile)
@@ -108,17 +108,21 @@ async def get_profile(token: str = Depends(get_valid_token), db: AsyncSession = 
     :param db: Database session
     :return: User data
     """
+    result = AuthResponse(token=token, data={"message": "User not found"})
     payload = decode_token(token)
     if not payload or not payload["sub"]:
         logger.info(f"Invalid token")
-        raise HTTPException(status_code=401, detail="Invalid token")
+        result.data = {"message": "Invalid token"}
+        raise HTTPException(status_code=401, detail=result.model_dump())
 
     user = await crud.get_user_by_email(db, email=payload["sub"])
     if not user:
         logger.warning("User not found")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        result.data = {"message": "User not found"}
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result.model_dump())
     logger.info(f"User {user.username} found")
-    return UserDTO(**user.to_dict())
+    result.data = UserDTO.model_validate(user)
+    return result.model_dump()
 
 
 @user_router.delete("/user/me", status_code=status.HTTP_200_OK)
