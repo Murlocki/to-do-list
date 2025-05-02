@@ -8,7 +8,7 @@ from src.user_service.endpoints import CHECK_AUTH, DELETE_USER_SESSIONS
 logger = setup_logger(__name__)
 
 
-async def check_auth_from_external_service(access_token: str) -> TokenModelResponse | None:
+async def check_auth_from_external_service(access_token: str, skip_auth: bool = False) -> TokenModelResponse | None:
     """
     Check auth
     :param access_token:
@@ -17,7 +17,8 @@ async def check_auth_from_external_service(access_token: str) -> TokenModelRespo
     try:
         headers = {
             "content-type": "application/json",
-            "authorization": f"Bearer {access_token}"
+            "authorization": f"Bearer {access_token}",
+            "X-Skip-Auth": str(skip_auth)
         }
 
         async with httpx.AsyncClient() as client:

@@ -7,7 +7,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from httpx import Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.shared.common_functions import decode_token
+from src.shared.common_functions import decode_token, verify_response
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import AuthResponse, UserAuthDTO
 from src.shared.schemas import UserDTO, PasswordForm
@@ -173,11 +173,12 @@ async def update_password(password_form: PasswordForm, token: str = Depends(get_
     user_update = await crud.update_user(db, user.username, user_update)
     logger.info(f"User {user_update.username} updated password {user_update.hashed_password}")
 
-    deleted_sessions: Response = await delete_user_sessions(token)
-    if deleted_sessions.status_code!=200:
-        logger.warning("User not found")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    logger.info(f"User sessions deleted {deleted_sessions.content.decode('utf-8')}")
+    response = await delete_user_sessions(token)
+    error = verify_response(response)
+    if error:
+        logger.error(f"Error {error}")
+        raise HTTPException(status_code=error["status"], detail=error["detail"])
+    logger.info(f"User sessions deleted {response.json()}")
 
     return AuthResponse(data=UserDTO(**user_update.to_dict()), token=token).model_dump()
 

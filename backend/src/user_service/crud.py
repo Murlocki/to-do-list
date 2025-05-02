@@ -21,9 +21,11 @@ async def create_user(db: AsyncSession, user: UserCreate):
         last_name=user.last_name,
         is_active=False,
     )
+    logger.info(f"User create data {db_user}")
     async with db.begin():
         db.add(db_user)
     await db.refresh(db_user)
+    logger.info(f"User created data {db_user}")
     return db_user
 
 
@@ -32,7 +34,7 @@ async def update_user(db: AsyncSession, user_name: str, user: UserUpdate):
         db_user = await db.execute(select(User).filter(User.username == user_name))
         db_user = db_user.scalar()
         if db_user is None:
-            logger.warning(f"User {user_name} not found.")
+            logger.error(f"User {user_name} not found.")
             return None
         logger.info(f"Found old user {db_user.to_dict()}")
         update_data = user.model_dump(exclude_unset=True)
@@ -53,6 +55,7 @@ async def delete_user(db: AsyncSession, user: User):
         if not db_user:
             logger.warning(f"User {user.username} not found.")
             return None
+        logger.info(f"Deleted user {db_user.to_dict()}")
         await db.delete(db_user)
     return db_user
 
@@ -60,25 +63,31 @@ async def delete_user(db: AsyncSession, user: User):
 async def get_user_by_email(db: AsyncSession, email: str):
     async with db.begin():
         db_user = await db.execute(select(User).filter(User.email == email))
+        logger.info(f"Found user {db_user.scalar()}")
         return db_user.scalar()
 
 
 async def get_user_by_username(db: AsyncSession, username: str):
     async with db.begin():
         db_user = await db.execute(select(User).filter(User.username == username))
+        logger.info(f"Found user {db_user.scalar()}")
         return db_user.scalar()
 
 
 async def get_users(db: AsyncSession):
     async with db as session:
         result = await session.execute(select(User))
+        logger.info(f"Found users {result.scalars()}")
         return result.scalars().all()
 
 
 async def authenticate_user(db: AsyncSession, identifier: str, password: str):
     user = await get_user_by_email(db, identifier) or await get_user_by_username(db, identifier)
     if not user:
+        logger.error(f"User {identifier} not found.")
         return None
     if not verify_password(password, user.hashed_password):
+        logger.error(f"User {identifier} not found.")
         return None
+    logger.info(f"Authenticated user {user.to_dict()}")
     return user
