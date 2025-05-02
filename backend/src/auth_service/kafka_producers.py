@@ -8,16 +8,16 @@ from src.shared.logger_setup import setup_logger
 logger = setup_logger(__name__)
 # Инициализация продюсера
 async def send_kafka_message(message: dict)-> dict|None:
+    producer = AIOKafkaProducer(
+        bootstrap_servers=settings.kafka_broker,
+        value_serializer=lambda m: json.dumps(m).encode("utf-8")
+    )
     try:
-        producer = AIOKafkaProducer(
-            bootstrap_servers=settings.kafka_broker,
-            value_serializer=lambda m: json.dumps(m).encode("utf-8")
-        )
         await producer.start()
         await producer.send_and_wait(settings.kafka_email_send_topic_name, message)
     except Exception as e:
         logger.error(e)
         return None
     finally:
-        if producer is not None: await producer.stop()
+        await producer.stop()
     return message

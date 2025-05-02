@@ -8,6 +8,7 @@ load_dotenv(verbose=True)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=os.path.join(BASE_DIR, "shared/.env"))
     postgres_user: str = ""
@@ -34,8 +35,16 @@ class Settings(BaseSettings):
     user_service_url: str = Field("http://127.0.0.1:8002")
     session_service_url: str = Field("http://127.0.0.1:8001")
     auth_service_url: str = Field("http://127.0.0.1:8000")
-    kafka_broker:str = Field("localhost:9093")
-    kafka_email_send_topic_name:str = "email_send"
-    kafka_email_send_topic_partitions:int = 1
+    kafka_broker: str = Field("localhost:9093")
+    kafka_email_send_topic_name: str = "email_send"
+    kafka_email_send_topic_partitions: int = 1
+    email_host: str = "smtp.gmail.com"
+    email_port: int = 587
+    email_send_retries: int = 3
+    email_send_delay: int = 5
+    email_send_address: str = ""
+    email_send_password: str = ""
+
+
 settings = Settings()
 print(settings)
