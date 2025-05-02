@@ -1,10 +1,12 @@
 import httpx
+from httpx import Response
 
 from src.session_service.endpoints import GET_USERS, CHECK_AUTH, FIND_USER_BY_EMAIL
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import TokenModelResponse, UserDTO
 
 logger = setup_logger(__name__)
+
 
 async def get_users_from_external_service():
     """
@@ -41,7 +43,7 @@ async def check_auth_from_external_service(access_token: str, skip_auth: bool = 
         headers = {
             "content-type": "application/json",
             "authorization": f"Bearer {access_token}",
-            "X-Skip-Auth" : str(skip_auth)
+            "X-Skip-Auth": str(skip_auth)
         }
 
         async with httpx.AsyncClient() as client:
@@ -57,21 +59,20 @@ async def check_auth_from_external_service(access_token: str, skip_auth: bool = 
         logger.error(f"Unexpected error: {str(e)}")
     return None
 
-async def find_user_by_email(email:str) -> UserDTO | None:
-    try:
-        headers = {
-            "content-type": "application/json",
-        }
-        async with httpx.AsyncClient() as client:
-            response = await client.get(
-                f"{FIND_USER_BY_EMAIL}?email={email}",
-                headers=headers,
-            )
-            response.raise_for_status()
-            logger.info(f"Find user by email: {email}")
-            return UserDTO(**response.json())
-    except httpx.HTTPStatusError as e:
-        logger.error(f"HTTP error: {e.response.status_code} - {e.response.text}")
-    except httpx.RequestError as e:
-        logger.error(f"Request error: {e}")
-    return None
+
+async def find_user_by_email(email: str) -> Response:
+    """
+    Find user by email
+    :param email: email to find
+    :return: response from external service
+    """
+    headers = {
+        "content-type": "application/json",
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            f"{FIND_USER_BY_EMAIL}?email={email}",
+            headers=headers,
+        )
+        logger.info(f"Find user by email: {email} with response {response.json()}")
+        return response

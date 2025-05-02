@@ -10,8 +10,8 @@ from src.session_service.crud import create_and_store_session, delete_inactive_s
     delete_sessions_by_user_id
 from src.session_service.external_functions import check_auth_from_external_service, find_user_by_email
 from src.shared import logger_setup
-from src.shared.common_functions import decode_token
-from src.shared.schemas import SessionDTO, AccessTokenUpdate, AuthResponse
+from src.shared.common_functions import decode_token, verify_response
+from src.shared.schemas import SessionDTO, AccessTokenUpdate, AuthResponse, UserDTO
 from src.shared.schemas import SessionSchema
 
 session_router = APIRouter()
@@ -47,25 +47,30 @@ async def get_sessions(token: str = Depends(get_valid_token)):
     """
     decoded_token = decode_token(token)
     logger.info(f"Decoded token: {decoded_token}")
-    user = await find_user_by_email(email=decoded_token["sub"])
-    if not user:
-        logger.warning("User not found")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=AuthResponse(data={"message":"User not found"},
-                                                token=token).model_dump())
+    # Find user by email
+    response = await find_user_by_email(email=decoded_token["sub"])
+    error = verify_response(response)
+    if error:
+        logger.error(f"Error: {error}")
+        raise HTTPException(status_code=error["status"], detail=error["detail"])
+    user = UserDTO(**response.json())
+    logger.info(f"Found user: {user}")
+    # Delete his sessions
     await delete_inactive_sessions(user_id=user.id)
+    # Return only active sessions
     sessions = await crud.get_sessions(user_id=user.id)
     logger.info(f"Sessions for user {user.username}: {sessions}")
     session_dtos = [SessionDTO(**session) for session in sessions]
     return AuthResponse(data=session_dtos, token=token).model_dump()
 
 @session_router.delete("/session/crud/me/search", response_model=AuthResponse, status_code=status.HTTP_200_OK)
-async def delete_session(token=Depends(get_valid_token)):
+async def delete_session(token:str,access_token=Depends(get_valid_token)):
+
     """
     Delete session by ID
+    :param access_token: auth token
     :param token: JWT Token
-    :param session_id: Session ID
-    :return: None
+    :return: AuthResponse
     """
     session = await crud.delete_session_by_access_token(token)
     if not session:
@@ -75,7 +80,7 @@ async def delete_session(token=Depends(get_valid_token)):
                                                 {"message": "Session not found"},
                                                 token=token).model_dump())
     logger.info(f"Session {session.session_id} was deleted")
-    return AuthResponse(data=session, token=token).model_dump()
+    return AuthResponse(data=session, token=access_token).model_dump()
 
 @session_router.delete("/session/crud/me/{session_id}", response_model=AuthResponse, status_code=status.HTTP_200_OK)
 async def delete_session(session_id: str, token=Depends(get_valid_token)):
@@ -104,11 +109,12 @@ async def delete_sessions(token=Depends(get_valid_token)):
     """
     decoded_token = decode_token(token)
     logger.info(f"Decoded token: {decoded_token}")
-    user = await find_user_by_email(email=decoded_token["sub"])
-    if not user:
-        logger.warning("User not found")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=AuthResponse(data={"message":"User not found"},token=token).model_dump())
+    response = await find_user_by_email(email=decoded_token["sub"])
+    error = verify_response(response)
+    if error:
+        logger.error(f"Error: {error}")
+        raise HTTPException(status_code=error["status"], detail=error["detail"])
+    user = UserDTO(**response.json())
     logger.info(f"Sessions deleting for user {user.username}")
     result = await delete_sessions_by_user_id(user.id)
     return AuthResponse(data=result, token=token).model_dump()
