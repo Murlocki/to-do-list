@@ -1,0 +1,339 @@
+2025-05-03 01:39:59,678 - src.user_service.crud - INFO - Found user None
+2025-05-03 01:39:59,680 - src.user_service.crud - INFO - Found user <src.user_service.models.User object at 0x0000027E7BB0B4D0>
+2025-05-03 01:39:59,867 - src.user_service.crud - INFO - Authenticated user {'id': 2, 'email': 'kirillgod6@gmail.com', 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-05-02T21:47:48.880313+00:00', 'updated_at': '2025-05-02T21:57:20.107151+00:00'}
+2025-05-03 01:39:59,867 - src.user_service.router - INFO - Authenticated user using <src.user_service.models.User object at 0x0000027E7BB0B4D0>
+2025-05-03 01:39:59,874 - src.auth_service.external_functions - INFO - Authenticated user response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False}
+2025-05-03 01:39:59,874 - src.shared.common_functions - INFO - Verified response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False} successfully
+2025-05-03 01:39:59,877 - src.auth_service.router - INFO - User john22_doe is found
+2025-05-03 01:39:59,877 - src.auth_service.router - INFO - User id=2 username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' is_active=True is_superuser=False logged in
+2025-05-03 01:39:59,877 - src.auth_service.auth_functions - INFO - Access token created for user: kirillgod6@gmail.com with expiration: 2025-05-03 01:40:09.877503
+2025-05-03 01:39:59,879 - src.auth_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImY0YTQyYTViLWJkYmItNGYxZC1iYzU4LTNlY2RjMDk2MGQ0ZSIsImV4cCI6MTc0NjIyNTYwOS44Nzc1MDMsImlhdCI6MTc0NjIyNTU5OX0.tBL1F5ct6k0FIOBUyffgfDNK8w8DPWzKYg9Lb6Seaj0
+2025-05-03 01:39:59,879 - src.auth_service.router - INFO - User john22_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImY0YTQyYTViLWJkYmItNGYxZC1iYzU4LTNlY2RjMDk2MGQ0ZSIsImV4cCI6MTc0NjIyNTYwOS44Nzc1MDMsImlhdCI6MTc0NjIyNTU5OX0.tBL1F5ct6k0FIOBUyffgfDNK8w8DPWzKYg9Lb6Seaj0
+2025-05-03 01:39:59,879 - src.auth_service.external_functions - INFO - Creating session with data: user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImY0YTQyYTViLWJkYmItNGYxZC1iYzU4LTNlY2RjMDk2MGQ0ZSIsImV4cCI6MTc0NjIyNTYwOS44Nzc1MDMsImlhdCI6MTc0NjIyNTU5OX0.tBL1F5ct6k0FIOBUyffgfDNK8w8DPWzKYg9Lb6Seaj0' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:40:00,097 - src.session_service.router - WARNING - user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImY0YTQyYTViLWJkYmItNGYxZC1iYzU4LTNlY2RjMDk2MGQ0ZSIsImV4cCI6MTc0NjIyNTYwOS44Nzc1MDMsImlhdCI6MTc0NjIyNTU5OX0.tBL1F5ct6k0FIOBUyffgfDNK8w8DPWzKYg9Lb6Seaj0' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:40:00,097 - src.session_service.crud - INFO - Storing session with expires_at: 2025-05-03 01:40:10.097418
+2025-05-03 01:40:00,097 - src.session_service.crud - WARNING - {'session_id': '1be2e65f-d93f-4c35-b17d-c268b1d9846c', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImY0YTQyYTViLWJkYmItNGYxZC1iYzU4LTNlY2RjMDk2MGQ0ZSIsImV4cCI6MTc0NjIyNTYwOS44Nzc1MDMsImlhdCI6MTc0NjIyNTU5OX0.tBL1F5ct6k0FIOBUyffgfDNK8w8DPWzKYg9Lb6Seaj0', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:40:00.097418', 'expires_at': '2025-05-03T01:40:10.097418'}
+2025-05-03 01:40:00,104 - src.auth_service.external_functions - INFO - Created session with response: {'session_id': '1be2e65f-d93f-4c35-b17d-c268b1d9846c', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImY0YTQyYTViLWJkYmItNGYxZC1iYzU4LTNlY2RjMDk2MGQ0ZSIsImV4cCI6MTc0NjIyNTYwOS44Nzc1MDMsImlhdCI6MTc0NjIyNTU5OX0.tBL1F5ct6k0FIOBUyffgfDNK8w8DPWzKYg9Lb6Seaj0', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:40:00.097418', 'expires_at': '2025-05-03T01:40:10.097418'}
+2025-05-03 01:40:00,104 - src.shared.common_functions - INFO - Verified response {'session_id': '1be2e65f-d93f-4c35-b17d-c268b1d9846c', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImY0YTQyYTViLWJkYmItNGYxZC1iYzU4LTNlY2RjMDk2MGQ0ZSIsImV4cCI6MTc0NjIyNTYwOS44Nzc1MDMsImlhdCI6MTc0NjIyNTU5OX0.tBL1F5ct6k0FIOBUyffgfDNK8w8DPWzKYg9Lb6Seaj0', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:40:00.097418', 'expires_at': '2025-05-03T01:40:10.097418'} successfully
+2025-05-03 01:40:00,104 - src.auth_service.router - INFO - User logged in : kirillgod6@gmail.com
+2025-05-03 01:40:01,124 - src.user_service.crud - INFO - Found user None
+2025-05-03 01:40:01,125 - src.user_service.crud - INFO - Found user <src.user_service.models.User object at 0x0000027E7BFB40D0>
+2025-05-03 01:40:01,294 - src.user_service.crud - INFO - Authenticated user {'id': 2, 'email': 'kirillgod6@gmail.com', 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-05-02T21:47:48.880313+00:00', 'updated_at': '2025-05-02T21:57:20.107151+00:00'}
+2025-05-03 01:40:01,295 - src.user_service.router - INFO - Authenticated user using <src.user_service.models.User object at 0x0000027E7BFB40D0>
+2025-05-03 01:40:01,296 - src.auth_service.external_functions - INFO - Authenticated user response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False}
+2025-05-03 01:40:01,296 - src.shared.common_functions - INFO - Verified response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False} successfully
+2025-05-03 01:40:01,296 - src.auth_service.router - INFO - User john22_doe is found
+2025-05-03 01:40:01,296 - src.auth_service.router - INFO - User id=2 username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' is_active=True is_superuser=False logged in
+2025-05-03 01:40:01,296 - src.auth_service.auth_functions - INFO - Access token created for user: kirillgod6@gmail.com with expiration: 2025-05-03 01:40:11.296085
+2025-05-03 01:40:01,297 - src.auth_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjNjMmRjY2FlLWFlZjEtNDhjNC1hN2QwLWU4MWExOGMwZmY3YiIsImV4cCI6MTc0NjIyNTYxMS4yOTYwODUsImlhdCI6MTc0NjIyNTYwMX0.uKiyY4qTtw-mlMD4YE_VnXzUDZaaFgXfowBjjL4yLI4
+2025-05-03 01:40:01,297 - src.auth_service.router - INFO - User john22_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjNjMmRjY2FlLWFlZjEtNDhjNC1hN2QwLWU4MWExOGMwZmY3YiIsImV4cCI6MTc0NjIyNTYxMS4yOTYwODUsImlhdCI6MTc0NjIyNTYwMX0.uKiyY4qTtw-mlMD4YE_VnXzUDZaaFgXfowBjjL4yLI4
+2025-05-03 01:40:01,297 - src.auth_service.external_functions - INFO - Creating session with data: user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjNjMmRjY2FlLWFlZjEtNDhjNC1hN2QwLWU4MWExOGMwZmY3YiIsImV4cCI6MTc0NjIyNTYxMS4yOTYwODUsImlhdCI6MTc0NjIyNTYwMX0.uKiyY4qTtw-mlMD4YE_VnXzUDZaaFgXfowBjjL4yLI4' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:40:01,509 - src.session_service.router - WARNING - user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjNjMmRjY2FlLWFlZjEtNDhjNC1hN2QwLWU4MWExOGMwZmY3YiIsImV4cCI6MTc0NjIyNTYxMS4yOTYwODUsImlhdCI6MTc0NjIyNTYwMX0.uKiyY4qTtw-mlMD4YE_VnXzUDZaaFgXfowBjjL4yLI4' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:40:01,509 - src.session_service.crud - INFO - Storing session with expires_at: 2025-05-03 01:40:11.509225
+2025-05-03 01:40:01,509 - src.session_service.crud - WARNING - {'session_id': '7220ff10-45a7-4de5-9251-6ebdd1d5cd19', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjNjMmRjY2FlLWFlZjEtNDhjNC1hN2QwLWU4MWExOGMwZmY3YiIsImV4cCI6MTc0NjIyNTYxMS4yOTYwODUsImlhdCI6MTc0NjIyNTYwMX0.uKiyY4qTtw-mlMD4YE_VnXzUDZaaFgXfowBjjL4yLI4', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:40:01.509225', 'expires_at': '2025-05-03T01:40:11.509225'}
+2025-05-03 01:40:01,512 - src.auth_service.external_functions - INFO - Created session with response: {'session_id': '7220ff10-45a7-4de5-9251-6ebdd1d5cd19', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjNjMmRjY2FlLWFlZjEtNDhjNC1hN2QwLWU4MWExOGMwZmY3YiIsImV4cCI6MTc0NjIyNTYxMS4yOTYwODUsImlhdCI6MTc0NjIyNTYwMX0.uKiyY4qTtw-mlMD4YE_VnXzUDZaaFgXfowBjjL4yLI4', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:40:01.509225', 'expires_at': '2025-05-03T01:40:11.509225'}
+2025-05-03 01:40:01,513 - src.shared.common_functions - INFO - Verified response {'session_id': '7220ff10-45a7-4de5-9251-6ebdd1d5cd19', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjNjMmRjY2FlLWFlZjEtNDhjNC1hN2QwLWU4MWExOGMwZmY3YiIsImV4cCI6MTc0NjIyNTYxMS4yOTYwODUsImlhdCI6MTc0NjIyNTYwMX0.uKiyY4qTtw-mlMD4YE_VnXzUDZaaFgXfowBjjL4yLI4', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:40:01.509225', 'expires_at': '2025-05-03T01:40:11.509225'} successfully
+2025-05-03 01:40:01,513 - src.auth_service.router - INFO - User logged in : kirillgod6@gmail.com
+2025-05-03 01:40:10,302 - src.session_service.as_tasks - INFO - Received session key session:1be2e65f-d93f-4c35-b17d-c268b1d9846c
+2025-05-03 01:40:10,303 - src.session_service.as_tasks - INFO - Received session data <redis.asyncio.client.Pipeline(<redis.asyncio.connection.ConnectionPool(<redis.asyncio.connection.Connection(host=localhost,port=6379,db=0)>)>)>
+2025-05-03 01:40:10,303 - src.session_service.as_tasks - ERROR - Error processing expiration: Async Redis client does not support class inclusion
+Traceback (most recent call last):
+  File "C:\Users\kirill\Desktop\to-do-list\backend\src\session_service\as_tasks.py", line 37, in listen_expirations
+    if session_data and "user_id" in session_data:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kirill\Desktop\to-do-list\backend\.venv\Lib\site-packages\redis\commands\core.py", line 2548, in __contains__
+    raise TypeError("Async Redis client does not support class inclusion")
+TypeError: Async Redis client does not support class inclusion
+2025-05-03 01:40:11,616 - src.session_service.as_tasks - INFO - Received session key session:7220ff10-45a7-4de5-9251-6ebdd1d5cd19
+2025-05-03 01:40:11,616 - src.session_service.as_tasks - INFO - Received session data <redis.asyncio.client.Pipeline(<redis.asyncio.connection.ConnectionPool(<redis.asyncio.connection.Connection(host=localhost,port=6379,db=0)>)>)>
+2025-05-03 01:40:11,616 - src.session_service.as_tasks - ERROR - Error processing expiration: Async Redis client does not support class inclusion
+Traceback (most recent call last):
+  File "C:\Users\kirill\Desktop\to-do-list\backend\src\session_service\as_tasks.py", line 37, in listen_expirations
+    if session_data and "user_id" in session_data:
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kirill\Desktop\to-do-list\backend\.venv\Lib\site-packages\redis\commands\core.py", line 2548, in __contains__
+    raise TypeError("Async Redis client does not support class inclusion")
+TypeError: Async Redis client does not support class inclusion
+2025-05-03 01:42:56,852 - src.session_service.main - INFO - Stopped session expiration listener
+2025-05-03 01:42:57,521 - src.auth_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:42:57.521252
+Server timestamp: 1746225777
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:42:57,698 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:42:57.698209
+Server timestamp: 1746225777
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:43:00,997 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:43:00.997348
+Server timestamp: 1746225780
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:43:03,362 - src.auth_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:43:03.362071
+Server timestamp: 1746225783
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:43:04,919 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:43:04.919625
+Server timestamp: 1746225784
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:43:04,925 - src.session_service.main - INFO - Started session expiration listener
+2025-05-03 01:43:12,618 - src.user_service.crud - INFO - Found user None
+2025-05-03 01:43:12,620 - src.user_service.crud - INFO - Found user <src.user_service.models.User object at 0x00000200820BB450>
+2025-05-03 01:43:12,805 - src.user_service.crud - INFO - Authenticated user {'id': 2, 'email': 'kirillgod6@gmail.com', 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-05-02T21:47:48.880313+00:00', 'updated_at': '2025-05-02T21:57:20.107151+00:00'}
+2025-05-03 01:43:12,805 - src.user_service.router - INFO - Authenticated user using <src.user_service.models.User object at 0x00000200820BB450>
+2025-05-03 01:43:12,811 - src.auth_service.external_functions - INFO - Authenticated user response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False}
+2025-05-03 01:43:12,811 - src.shared.common_functions - INFO - Verified response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False} successfully
+2025-05-03 01:43:12,814 - src.auth_service.router - INFO - User john22_doe is found
+2025-05-03 01:43:12,814 - src.auth_service.router - INFO - User id=2 username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' is_active=True is_superuser=False logged in
+2025-05-03 01:43:12,814 - src.auth_service.auth_functions - INFO - Access token created for user: kirillgod6@gmail.com with expiration: 2025-05-03 01:43:22.814419
+2025-05-03 01:43:12,817 - src.auth_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjUzNDBiMjNhLWZmMGQtNDE1YS1hODE4LTE4OTg1NjdjODY0NSIsImV4cCI6MTc0NjIyNTgwMi44MTQ0MTksImlhdCI6MTc0NjIyNTc5Mn0.P6rtJGqpHajxI2GSeOjtvwLDRCoyILwKBI8XLZWZKUk
+2025-05-03 01:43:12,817 - src.auth_service.router - INFO - User john22_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjUzNDBiMjNhLWZmMGQtNDE1YS1hODE4LTE4OTg1NjdjODY0NSIsImV4cCI6MTc0NjIyNTgwMi44MTQ0MTksImlhdCI6MTc0NjIyNTc5Mn0.P6rtJGqpHajxI2GSeOjtvwLDRCoyILwKBI8XLZWZKUk
+2025-05-03 01:43:12,817 - src.auth_service.external_functions - INFO - Creating session with data: user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjUzNDBiMjNhLWZmMGQtNDE1YS1hODE4LTE4OTg1NjdjODY0NSIsImV4cCI6MTc0NjIyNTgwMi44MTQ0MTksImlhdCI6MTc0NjIyNTc5Mn0.P6rtJGqpHajxI2GSeOjtvwLDRCoyILwKBI8XLZWZKUk' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:43:13,006 - src.session_service.router - WARNING - user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjUzNDBiMjNhLWZmMGQtNDE1YS1hODE4LTE4OTg1NjdjODY0NSIsImV4cCI6MTc0NjIyNTgwMi44MTQ0MTksImlhdCI6MTc0NjIyNTc5Mn0.P6rtJGqpHajxI2GSeOjtvwLDRCoyILwKBI8XLZWZKUk' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:43:13,006 - src.session_service.crud - INFO - Storing session with expires_at: 2025-05-03 01:43:23.006953
+2025-05-03 01:43:13,006 - src.session_service.crud - WARNING - {'session_id': '5679330c-1907-453a-a68f-5fcc2fe92405', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjUzNDBiMjNhLWZmMGQtNDE1YS1hODE4LTE4OTg1NjdjODY0NSIsImV4cCI6MTc0NjIyNTgwMi44MTQ0MTksImlhdCI6MTc0NjIyNTc5Mn0.P6rtJGqpHajxI2GSeOjtvwLDRCoyILwKBI8XLZWZKUk', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:43:13.006953', 'expires_at': '2025-05-03T01:43:23.006953'}
+2025-05-03 01:43:13,013 - src.auth_service.external_functions - INFO - Created session with response: {'session_id': '5679330c-1907-453a-a68f-5fcc2fe92405', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjUzNDBiMjNhLWZmMGQtNDE1YS1hODE4LTE4OTg1NjdjODY0NSIsImV4cCI6MTc0NjIyNTgwMi44MTQ0MTksImlhdCI6MTc0NjIyNTc5Mn0.P6rtJGqpHajxI2GSeOjtvwLDRCoyILwKBI8XLZWZKUk', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:43:13.006953', 'expires_at': '2025-05-03T01:43:23.006953'}
+2025-05-03 01:43:13,013 - src.shared.common_functions - INFO - Verified response {'session_id': '5679330c-1907-453a-a68f-5fcc2fe92405', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjUzNDBiMjNhLWZmMGQtNDE1YS1hODE4LTE4OTg1NjdjODY0NSIsImV4cCI6MTc0NjIyNTgwMi44MTQ0MTksImlhdCI6MTc0NjIyNTc5Mn0.P6rtJGqpHajxI2GSeOjtvwLDRCoyILwKBI8XLZWZKUk', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:43:13.006953', 'expires_at': '2025-05-03T01:43:23.006953'} successfully
+2025-05-03 01:43:13,013 - src.auth_service.router - INFO - User logged in : kirillgod6@gmail.com
+2025-05-03 01:43:13,804 - src.user_service.crud - INFO - Found user None
+2025-05-03 01:43:13,805 - src.user_service.crud - INFO - Found user <src.user_service.models.User object at 0x0000020082544110>
+2025-05-03 01:43:13,973 - src.user_service.crud - INFO - Authenticated user {'id': 2, 'email': 'kirillgod6@gmail.com', 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-05-02T21:47:48.880313+00:00', 'updated_at': '2025-05-02T21:57:20.107151+00:00'}
+2025-05-03 01:43:13,973 - src.user_service.router - INFO - Authenticated user using <src.user_service.models.User object at 0x0000020082544110>
+2025-05-03 01:43:13,974 - src.auth_service.external_functions - INFO - Authenticated user response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False}
+2025-05-03 01:43:13,975 - src.shared.common_functions - INFO - Verified response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False} successfully
+2025-05-03 01:43:13,975 - src.auth_service.router - INFO - User john22_doe is found
+2025-05-03 01:43:13,975 - src.auth_service.router - INFO - User id=2 username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' is_active=True is_superuser=False logged in
+2025-05-03 01:43:13,975 - src.auth_service.auth_functions - INFO - Access token created for user: kirillgod6@gmail.com with expiration: 2025-05-03 01:43:23.975169
+2025-05-03 01:43:13,975 - src.auth_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjdkNjlhZjEzLWY3NjEtNDU1ZC1hOGJkLWE5YjE2YzdhMWExZCIsImV4cCI6MTc0NjIyNTgwMy45NzUxNjksImlhdCI6MTc0NjIyNTc5M30.nVKQwiW6BWHVpUt1HBUrE0XvuWDLRdED_DOFKwczetQ
+2025-05-03 01:43:13,975 - src.auth_service.router - INFO - User john22_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjdkNjlhZjEzLWY3NjEtNDU1ZC1hOGJkLWE5YjE2YzdhMWExZCIsImV4cCI6MTc0NjIyNTgwMy45NzUxNjksImlhdCI6MTc0NjIyNTc5M30.nVKQwiW6BWHVpUt1HBUrE0XvuWDLRdED_DOFKwczetQ
+2025-05-03 01:43:13,975 - src.auth_service.external_functions - INFO - Creating session with data: user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjdkNjlhZjEzLWY3NjEtNDU1ZC1hOGJkLWE5YjE2YzdhMWExZCIsImV4cCI6MTc0NjIyNTgwMy45NzUxNjksImlhdCI6MTc0NjIyNTc5M30.nVKQwiW6BWHVpUt1HBUrE0XvuWDLRdED_DOFKwczetQ' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:43:14,163 - src.session_service.router - WARNING - user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjdkNjlhZjEzLWY3NjEtNDU1ZC1hOGJkLWE5YjE2YzdhMWExZCIsImV4cCI6MTc0NjIyNTgwMy45NzUxNjksImlhdCI6MTc0NjIyNTc5M30.nVKQwiW6BWHVpUt1HBUrE0XvuWDLRdED_DOFKwczetQ' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:43:14,163 - src.session_service.crud - INFO - Storing session with expires_at: 2025-05-03 01:43:24.163617
+2025-05-03 01:43:14,163 - src.session_service.crud - WARNING - {'session_id': 'df9139a3-c2f0-4283-834a-ebecc5b38b51', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjdkNjlhZjEzLWY3NjEtNDU1ZC1hOGJkLWE5YjE2YzdhMWExZCIsImV4cCI6MTc0NjIyNTgwMy45NzUxNjksImlhdCI6MTc0NjIyNTc5M30.nVKQwiW6BWHVpUt1HBUrE0XvuWDLRdED_DOFKwczetQ', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:43:14.163617', 'expires_at': '2025-05-03T01:43:24.163617'}
+2025-05-03 01:43:14,168 - src.auth_service.external_functions - INFO - Created session with response: {'session_id': 'df9139a3-c2f0-4283-834a-ebecc5b38b51', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjdkNjlhZjEzLWY3NjEtNDU1ZC1hOGJkLWE5YjE2YzdhMWExZCIsImV4cCI6MTc0NjIyNTgwMy45NzUxNjksImlhdCI6MTc0NjIyNTc5M30.nVKQwiW6BWHVpUt1HBUrE0XvuWDLRdED_DOFKwczetQ', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:43:14.163617', 'expires_at': '2025-05-03T01:43:24.163617'}
+2025-05-03 01:43:14,168 - src.shared.common_functions - INFO - Verified response {'session_id': 'df9139a3-c2f0-4283-834a-ebecc5b38b51', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjdkNjlhZjEzLWY3NjEtNDU1ZC1hOGJkLWE5YjE2YzdhMWExZCIsImV4cCI6MTc0NjIyNTgwMy45NzUxNjksImlhdCI6MTc0NjIyNTc5M30.nVKQwiW6BWHVpUt1HBUrE0XvuWDLRdED_DOFKwczetQ', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:43:14.163617', 'expires_at': '2025-05-03T01:43:24.163617'} successfully
+2025-05-03 01:43:14,168 - src.auth_service.router - INFO - User logged in : kirillgod6@gmail.com
+2025-05-03 01:43:23,119 - src.session_service.as_tasks - INFO - Received session key session:5679330c-1907-453a-a68f-5fcc2fe92405
+2025-05-03 01:43:23,121 - src.session_service.as_tasks - INFO - Received session data {}
+2025-05-03 01:43:23,122 - src.session_service.as_tasks - INFO - Cleaned up session: session:5679330c-1907-453a-a68f-5fcc2fe92405 (user: None)
+2025-05-03 01:43:24,230 - src.session_service.as_tasks - INFO - Received session key session:df9139a3-c2f0-4283-834a-ebecc5b38b51
+2025-05-03 01:43:24,231 - src.session_service.as_tasks - INFO - Received session data {}
+2025-05-03 01:43:24,231 - src.session_service.as_tasks - INFO - Cleaned up session: session:df9139a3-c2f0-4283-834a-ebecc5b38b51 (user: None)
+2025-05-03 01:51:40,430 - src.session_service.main - INFO - Stopped session expiration listener
+2025-05-03 01:52:07,837 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:52:07.837291
+Server timestamp: 1746226327
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:52:08,884 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:52:08.884141
+Server timestamp: 1746226328
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:52:08,889 - src.session_service.main - INFO - Started session expiration listener
+2025-05-03 01:52:08,906 - src.session_service.as_tasks - INFO - Subscribed to key expiration events
+2025-05-03 01:52:10,715 - src.auth_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:52:10.715541
+Server timestamp: 1746226330
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:52:20,965 - src.user_service.crud - INFO - Found user None
+2025-05-03 01:52:20,967 - src.user_service.crud - INFO - Found user <src.user_service.models.User object at 0x000001855499B710>
+2025-05-03 01:52:21,152 - src.user_service.crud - INFO - Authenticated user {'id': 2, 'email': 'kirillgod6@gmail.com', 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-05-02T21:47:48.880313+00:00', 'updated_at': '2025-05-02T21:57:20.107151+00:00'}
+2025-05-03 01:52:21,152 - src.user_service.router - INFO - Authenticated user using <src.user_service.models.User object at 0x000001855499B710>
+2025-05-03 01:52:21,158 - src.auth_service.external_functions - INFO - Authenticated user response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False}
+2025-05-03 01:52:21,159 - src.shared.common_functions - INFO - Verified response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False} successfully
+2025-05-03 01:52:21,162 - src.auth_service.router - INFO - User john22_doe is found
+2025-05-03 01:52:21,162 - src.auth_service.router - INFO - User id=2 username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' is_active=True is_superuser=False logged in
+2025-05-03 01:52:21,162 - src.auth_service.auth_functions - INFO - Access token created for user: kirillgod6@gmail.com with expiration: 2025-05-03 01:52:31.162283
+2025-05-03 01:52:21,165 - src.auth_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImQyYjQ2ZWY1LThkZGYtNDVjOC05YzFkLTc0ZDhmMGNmNzQ0MiIsImV4cCI6MTc0NjIyNjM1MS4xNjIyODMsImlhdCI6MTc0NjIyNjM0MX0.LE0x3Y0gbdhlI4ieU2k1DI92HMigoBR4z_h5_l5KgfA
+2025-05-03 01:52:21,165 - src.auth_service.router - INFO - User john22_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImQyYjQ2ZWY1LThkZGYtNDVjOC05YzFkLTc0ZDhmMGNmNzQ0MiIsImV4cCI6MTc0NjIyNjM1MS4xNjIyODMsImlhdCI6MTc0NjIyNjM0MX0.LE0x3Y0gbdhlI4ieU2k1DI92HMigoBR4z_h5_l5KgfA
+2025-05-03 01:52:21,165 - src.auth_service.external_functions - INFO - Creating session with data: user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImQyYjQ2ZWY1LThkZGYtNDVjOC05YzFkLTc0ZDhmMGNmNzQ0MiIsImV4cCI6MTc0NjIyNjM1MS4xNjIyODMsImlhdCI6MTc0NjIyNjM0MX0.LE0x3Y0gbdhlI4ieU2k1DI92HMigoBR4z_h5_l5KgfA' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:52:21,362 - src.session_service.router - WARNING - user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImQyYjQ2ZWY1LThkZGYtNDVjOC05YzFkLTc0ZDhmMGNmNzQ0MiIsImV4cCI6MTc0NjIyNjM1MS4xNjIyODMsImlhdCI6MTc0NjIyNjM0MX0.LE0x3Y0gbdhlI4ieU2k1DI92HMigoBR4z_h5_l5KgfA' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:52:21,362 - src.session_service.crud - INFO - Storing session with expires_at: 2025-05-03 01:52:31.362389
+2025-05-03 01:52:21,362 - src.session_service.crud - WARNING - {'session_id': '971e0801-b6aa-4ef1-9387-a7d5cfccea61', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImQyYjQ2ZWY1LThkZGYtNDVjOC05YzFkLTc0ZDhmMGNmNzQ0MiIsImV4cCI6MTc0NjIyNjM1MS4xNjIyODMsImlhdCI6MTc0NjIyNjM0MX0.LE0x3Y0gbdhlI4ieU2k1DI92HMigoBR4z_h5_l5KgfA', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:52:21.362389', 'expires_at': '2025-05-03T01:52:31.362389'}
+2025-05-03 01:52:21,368 - src.auth_service.external_functions - INFO - Created session with response: {'session_id': '971e0801-b6aa-4ef1-9387-a7d5cfccea61', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImQyYjQ2ZWY1LThkZGYtNDVjOC05YzFkLTc0ZDhmMGNmNzQ0MiIsImV4cCI6MTc0NjIyNjM1MS4xNjIyODMsImlhdCI6MTc0NjIyNjM0MX0.LE0x3Y0gbdhlI4ieU2k1DI92HMigoBR4z_h5_l5KgfA', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:52:21.362389', 'expires_at': '2025-05-03T01:52:31.362389'}
+2025-05-03 01:52:21,368 - src.shared.common_functions - INFO - Verified response {'session_id': '971e0801-b6aa-4ef1-9387-a7d5cfccea61', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImQyYjQ2ZWY1LThkZGYtNDVjOC05YzFkLTc0ZDhmMGNmNzQ0MiIsImV4cCI6MTc0NjIyNjM1MS4xNjIyODMsImlhdCI6MTc0NjIyNjM0MX0.LE0x3Y0gbdhlI4ieU2k1DI92HMigoBR4z_h5_l5KgfA', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:52:21.362389', 'expires_at': '2025-05-03T01:52:31.362389'} successfully
+2025-05-03 01:52:21,368 - src.auth_service.router - INFO - User logged in : kirillgod6@gmail.com
+2025-05-03 01:52:22,185 - src.user_service.crud - INFO - Found user None
+2025-05-03 01:52:22,187 - src.user_service.crud - INFO - Found user <src.user_service.models.User object at 0x0000018554E44210>
+2025-05-03 01:52:22,354 - src.user_service.crud - INFO - Authenticated user {'id': 2, 'email': 'kirillgod6@gmail.com', 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-05-02T21:47:48.880313+00:00', 'updated_at': '2025-05-02T21:57:20.107151+00:00'}
+2025-05-03 01:52:22,354 - src.user_service.router - INFO - Authenticated user using <src.user_service.models.User object at 0x0000018554E44210>
+2025-05-03 01:52:22,356 - src.auth_service.external_functions - INFO - Authenticated user response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False}
+2025-05-03 01:52:22,356 - src.shared.common_functions - INFO - Verified response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False} successfully
+2025-05-03 01:52:22,356 - src.auth_service.router - INFO - User john22_doe is found
+2025-05-03 01:52:22,356 - src.auth_service.router - INFO - User id=2 username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' is_active=True is_superuser=False logged in
+2025-05-03 01:52:22,357 - src.auth_service.auth_functions - INFO - Access token created for user: kirillgod6@gmail.com with expiration: 2025-05-03 01:52:32.357078
+2025-05-03 01:52:22,357 - src.auth_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImJhYTczYjA5LWE2MjctNGUwNS1hMDNmLWRmNzg5NDM4M2JjZCIsImV4cCI6MTc0NjIyNjM1Mi4zNTcwNzgsImlhdCI6MTc0NjIyNjM0Mn0.E63cq6y1JrV4nH1f2pct9YMhQlC2yudz-UMHbmJvQjg
+2025-05-03 01:52:22,357 - src.auth_service.router - INFO - User john22_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImJhYTczYjA5LWE2MjctNGUwNS1hMDNmLWRmNzg5NDM4M2JjZCIsImV4cCI6MTc0NjIyNjM1Mi4zNTcwNzgsImlhdCI6MTc0NjIyNjM0Mn0.E63cq6y1JrV4nH1f2pct9YMhQlC2yudz-UMHbmJvQjg
+2025-05-03 01:52:22,357 - src.auth_service.external_functions - INFO - Creating session with data: user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImJhYTczYjA5LWE2MjctNGUwNS1hMDNmLWRmNzg5NDM4M2JjZCIsImV4cCI6MTc0NjIyNjM1Mi4zNTcwNzgsImlhdCI6MTc0NjIyNjM0Mn0.E63cq6y1JrV4nH1f2pct9YMhQlC2yudz-UMHbmJvQjg' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:52:22,555 - src.session_service.router - WARNING - user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImJhYTczYjA5LWE2MjctNGUwNS1hMDNmLWRmNzg5NDM4M2JjZCIsImV4cCI6MTc0NjIyNjM1Mi4zNTcwNzgsImlhdCI6MTc0NjIyNjM0Mn0.E63cq6y1JrV4nH1f2pct9YMhQlC2yudz-UMHbmJvQjg' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:52:22,555 - src.session_service.crud - INFO - Storing session with expires_at: 2025-05-03 01:52:32.555649
+2025-05-03 01:52:22,555 - src.session_service.crud - WARNING - {'session_id': 'a128892d-dc03-41cd-9212-acd503ed8f22', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImJhYTczYjA5LWE2MjctNGUwNS1hMDNmLWRmNzg5NDM4M2JjZCIsImV4cCI6MTc0NjIyNjM1Mi4zNTcwNzgsImlhdCI6MTc0NjIyNjM0Mn0.E63cq6y1JrV4nH1f2pct9YMhQlC2yudz-UMHbmJvQjg', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:52:22.555649', 'expires_at': '2025-05-03T01:52:32.555649'}
+2025-05-03 01:52:22,558 - src.auth_service.external_functions - INFO - Created session with response: {'session_id': 'a128892d-dc03-41cd-9212-acd503ed8f22', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImJhYTczYjA5LWE2MjctNGUwNS1hMDNmLWRmNzg5NDM4M2JjZCIsImV4cCI6MTc0NjIyNjM1Mi4zNTcwNzgsImlhdCI6MTc0NjIyNjM0Mn0.E63cq6y1JrV4nH1f2pct9YMhQlC2yudz-UMHbmJvQjg', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:52:22.555649', 'expires_at': '2025-05-03T01:52:32.555649'}
+2025-05-03 01:52:22,558 - src.shared.common_functions - INFO - Verified response {'session_id': 'a128892d-dc03-41cd-9212-acd503ed8f22', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6ImJhYTczYjA5LWE2MjctNGUwNS1hMDNmLWRmNzg5NDM4M2JjZCIsImV4cCI6MTc0NjIyNjM1Mi4zNTcwNzgsImlhdCI6MTc0NjIyNjM0Mn0.E63cq6y1JrV4nH1f2pct9YMhQlC2yudz-UMHbmJvQjg', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:52:22.555649', 'expires_at': '2025-05-03T01:52:32.555649'} successfully
+2025-05-03 01:52:22,558 - src.auth_service.router - INFO - User logged in : kirillgod6@gmail.com
+2025-05-03 01:52:31,565 - src.session_service.as_tasks - INFO - Expired key detected: session:971e0801-b6aa-4ef1-9387-a7d5cfccea61
+2025-05-03 01:52:32,676 - src.session_service.as_tasks - INFO - Expired key detected: session:a128892d-dc03-41cd-9212-acd503ed8f22
+2025-05-03 01:54:00,825 - src.session_service.main - INFO - Stopped session expiration listener
+2025-05-03 01:54:02,612 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:54:02.612957
+Server timestamp: 1746226442
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:54:04,988 - src.auth_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:54:04.988752
+Server timestamp: 1746226444
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:54:06,556 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:54:06.556129
+Server timestamp: 1746226446
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:54:06,561 - src.session_service.main - INFO - Started session expiration listener
+2025-05-03 01:54:06,577 - src.session_service.as_tasks - INFO - Subscribed to key expiration events
+2025-05-03 01:54:11,528 - src.user_service.crud - INFO - Found user None
+2025-05-03 01:54:11,529 - src.user_service.crud - INFO - Found user <src.user_service.models.User object at 0x000001CCB3E7B590>
+2025-05-03 01:54:11,704 - src.user_service.crud - INFO - Authenticated user {'id': 2, 'email': 'kirillgod6@gmail.com', 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-05-02T21:47:48.880313+00:00', 'updated_at': '2025-05-02T21:57:20.107151+00:00'}
+2025-05-03 01:54:11,704 - src.user_service.router - INFO - Authenticated user using <src.user_service.models.User object at 0x000001CCB3E7B590>
+2025-05-03 01:54:11,709 - src.auth_service.external_functions - INFO - Authenticated user response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False}
+2025-05-03 01:54:11,710 - src.shared.common_functions - INFO - Verified response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False} successfully
+2025-05-03 01:54:11,712 - src.auth_service.router - INFO - User john22_doe is found
+2025-05-03 01:54:11,713 - src.auth_service.router - INFO - User id=2 username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' is_active=True is_superuser=False logged in
+2025-05-03 01:54:11,713 - src.auth_service.auth_functions - INFO - Access token created for user: kirillgod6@gmail.com with expiration: 2025-05-03 01:54:21.713009
+2025-05-03 01:54:11,715 - src.auth_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjJkMDM1Yjk1LTM4YzMtNGM4ZC1iNGQzLWE5ZGZmZDVhMTFkOCIsImV4cCI6MTc0NjIyNjQ2MS43MTMwMDksImlhdCI6MTc0NjIyNjQ1MX0.YjU7NvCXg1TpM4T1k1_cD9URU8lvXJlVHQ9mqrlNp8M
+2025-05-03 01:54:11,715 - src.auth_service.router - INFO - User john22_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjJkMDM1Yjk1LTM4YzMtNGM4ZC1iNGQzLWE5ZGZmZDVhMTFkOCIsImV4cCI6MTc0NjIyNjQ2MS43MTMwMDksImlhdCI6MTc0NjIyNjQ1MX0.YjU7NvCXg1TpM4T1k1_cD9URU8lvXJlVHQ9mqrlNp8M
+2025-05-03 01:54:11,715 - src.auth_service.external_functions - INFO - Creating session with data: user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjJkMDM1Yjk1LTM4YzMtNGM4ZC1iNGQzLWE5ZGZmZDVhMTFkOCIsImV4cCI6MTc0NjIyNjQ2MS43MTMwMDksImlhdCI6MTc0NjIyNjQ1MX0.YjU7NvCXg1TpM4T1k1_cD9URU8lvXJlVHQ9mqrlNp8M' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:54:11,897 - src.session_service.router - WARNING - user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjJkMDM1Yjk1LTM4YzMtNGM4ZC1iNGQzLWE5ZGZmZDVhMTFkOCIsImV4cCI6MTc0NjIyNjQ2MS43MTMwMDksImlhdCI6MTc0NjIyNjQ1MX0.YjU7NvCXg1TpM4T1k1_cD9URU8lvXJlVHQ9mqrlNp8M' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:54:11,897 - src.session_service.crud - INFO - Storing session with expires_at: 2025-05-03 01:54:21.897281
+2025-05-03 01:54:11,897 - src.session_service.crud - WARNING - {'session_id': 'eb366907-55b8-4d27-ba02-f4fc6b16b9c1', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjJkMDM1Yjk1LTM4YzMtNGM4ZC1iNGQzLWE5ZGZmZDVhMTFkOCIsImV4cCI6MTc0NjIyNjQ2MS43MTMwMDksImlhdCI6MTc0NjIyNjQ1MX0.YjU7NvCXg1TpM4T1k1_cD9URU8lvXJlVHQ9mqrlNp8M', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:54:11.897281', 'expires_at': '2025-05-03T01:54:21.897281'}
+2025-05-03 01:54:11,902 - src.auth_service.external_functions - INFO - Created session with response: {'session_id': 'eb366907-55b8-4d27-ba02-f4fc6b16b9c1', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjJkMDM1Yjk1LTM4YzMtNGM4ZC1iNGQzLWE5ZGZmZDVhMTFkOCIsImV4cCI6MTc0NjIyNjQ2MS43MTMwMDksImlhdCI6MTc0NjIyNjQ1MX0.YjU7NvCXg1TpM4T1k1_cD9URU8lvXJlVHQ9mqrlNp8M', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:54:11.897281', 'expires_at': '2025-05-03T01:54:21.897281'}
+2025-05-03 01:54:11,902 - src.shared.common_functions - INFO - Verified response {'session_id': 'eb366907-55b8-4d27-ba02-f4fc6b16b9c1', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjJkMDM1Yjk1LTM4YzMtNGM4ZC1iNGQzLWE5ZGZmZDVhMTFkOCIsImV4cCI6MTc0NjIyNjQ2MS43MTMwMDksImlhdCI6MTc0NjIyNjQ1MX0.YjU7NvCXg1TpM4T1k1_cD9URU8lvXJlVHQ9mqrlNp8M', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:54:11.897281', 'expires_at': '2025-05-03T01:54:21.897281'} successfully
+2025-05-03 01:54:11,902 - src.auth_service.router - INFO - User logged in : kirillgod6@gmail.com
+2025-05-03 01:54:12,750 - src.user_service.crud - INFO - Found user None
+2025-05-03 01:54:12,751 - src.user_service.crud - INFO - Found user <src.user_service.models.User object at 0x000001CCB43241D0>
+2025-05-03 01:54:12,918 - src.user_service.crud - INFO - Authenticated user {'id': 2, 'email': 'kirillgod6@gmail.com', 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'is_active': True, 'is_superuser': False, 'created_at': '2025-05-02T21:47:48.880313+00:00', 'updated_at': '2025-05-02T21:57:20.107151+00:00'}
+2025-05-03 01:54:12,918 - src.user_service.router - INFO - Authenticated user using <src.user_service.models.User object at 0x000001CCB43241D0>
+2025-05-03 01:54:12,920 - src.auth_service.external_functions - INFO - Authenticated user response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False}
+2025-05-03 01:54:12,920 - src.shared.common_functions - INFO - Verified response {'id': 2, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': True, 'is_superuser': False} successfully
+2025-05-03 01:54:12,920 - src.auth_service.router - INFO - User john22_doe is found
+2025-05-03 01:54:12,920 - src.auth_service.router - INFO - User id=2 username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' is_active=True is_superuser=False logged in
+2025-05-03 01:54:12,920 - src.auth_service.auth_functions - INFO - Access token created for user: kirillgod6@gmail.com with expiration: 2025-05-03 01:54:22.920824
+2025-05-03 01:54:12,920 - src.auth_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjZlOTYyMmJiLTg1YzItNDgyZS05Mzk1LWU2YTMxODYwMmQ5NSIsImV4cCI6MTc0NjIyNjQ2Mi45MjA4MjQsImlhdCI6MTc0NjIyNjQ1Mn0.Le-5Dj4DNHKFwpG431CwX_eh_oXXf1IjG2ubLwTq1qU
+2025-05-03 01:54:12,920 - src.auth_service.router - INFO - User john22_doe logged in with access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjZlOTYyMmJiLTg1YzItNDgyZS05Mzk1LWU2YTMxODYwMmQ5NSIsImV4cCI6MTc0NjIyNjQ2Mi45MjA4MjQsImlhdCI6MTc0NjIyNjQ1Mn0.Le-5Dj4DNHKFwpG431CwX_eh_oXXf1IjG2ubLwTq1qU
+2025-05-03 01:54:12,920 - src.auth_service.external_functions - INFO - Creating session with data: user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjZlOTYyMmJiLTg1YzItNDgyZS05Mzk1LWU2YTMxODYwMmQ5NSIsImV4cCI6MTc0NjIyNjQ2Mi45MjA4MjQsImlhdCI6MTc0NjIyNjQ1Mn0.Le-5Dj4DNHKFwpG431CwX_eh_oXXf1IjG2ubLwTq1qU' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:54:13,110 - src.session_service.router - WARNING - user_id=2 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjZlOTYyMmJiLTg1YzItNDgyZS05Mzk1LWU2YTMxODYwMmQ5NSIsImV4cCI6MTc0NjIyNjQ2Mi45MjA4MjQsImlhdCI6MTc0NjIyNjQ1Mn0.Le-5Dj4DNHKFwpG431CwX_eh_oXXf1IjG2ubLwTq1qU' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 01:54:13,110 - src.session_service.crud - INFO - Storing session with expires_at: 2025-05-03 01:54:23.110123
+2025-05-03 01:54:13,110 - src.session_service.crud - WARNING - {'session_id': '7d814376-0472-4e00-a1a9-43602c829360', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjZlOTYyMmJiLTg1YzItNDgyZS05Mzk1LWU2YTMxODYwMmQ5NSIsImV4cCI6MTc0NjIyNjQ2Mi45MjA4MjQsImlhdCI6MTc0NjIyNjQ1Mn0.Le-5Dj4DNHKFwpG431CwX_eh_oXXf1IjG2ubLwTq1qU', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:54:13.110123', 'expires_at': '2025-05-03T01:54:23.110123'}
+2025-05-03 01:54:13,114 - src.auth_service.external_functions - INFO - Created session with response: {'session_id': '7d814376-0472-4e00-a1a9-43602c829360', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjZlOTYyMmJiLTg1YzItNDgyZS05Mzk1LWU2YTMxODYwMmQ5NSIsImV4cCI6MTc0NjIyNjQ2Mi45MjA4MjQsImlhdCI6MTc0NjIyNjQ1Mn0.Le-5Dj4DNHKFwpG431CwX_eh_oXXf1IjG2ubLwTq1qU', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:54:13.110123', 'expires_at': '2025-05-03T01:54:23.110123'}
+2025-05-03 01:54:13,114 - src.shared.common_functions - INFO - Verified response {'session_id': '7d814376-0472-4e00-a1a9-43602c829360', 'user_id': 2, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjZlOTYyMmJiLTg1YzItNDgyZS05Mzk1LWU2YTMxODYwMmQ5NSIsImV4cCI6MTc0NjIyNjQ2Mi45MjA4MjQsImlhdCI6MTc0NjIyNjQ1Mn0.Le-5Dj4DNHKFwpG431CwX_eh_oXXf1IjG2ubLwTq1qU', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T01:54:13.110123', 'expires_at': '2025-05-03T01:54:23.110123'} successfully
+2025-05-03 01:54:13,114 - src.auth_service.router - INFO - User logged in : kirillgod6@gmail.com
+2025-05-03 01:54:22,090 - src.session_service.as_tasks - INFO - Expired key detected: session:eb366907-55b8-4d27-ba02-f4fc6b16b9c1
+2025-05-03 01:54:22,093 - src.session_service.as_tasks - INFO - Removed expired session session:eb366907-55b8-4d27-ba02-f4fc6b16b9c1 from user:2:sessions
+2025-05-03 01:54:23,210 - src.session_service.as_tasks - INFO - Expired key detected: session:7d814376-0472-4e00-a1a9-43602c829360
+2025-05-03 01:54:23,211 - src.session_service.as_tasks - INFO - Removed expired session session:7d814376-0472-4e00-a1a9-43602c829360 from user:2:sessions
+2025-05-03 01:59:02,979 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:59:02.979394
+Server timestamp: 1746226742
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:59:05,163 - src.auth_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:59:05.163200
+Server timestamp: 1746226745
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:59:06,088 - src.session_service.main - INFO - Stopped session expiration listener
+2025-05-03 01:59:06,582 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-05-03 01:59:06.582500
+Server timestamp: 1746226746
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 01:59:06,588 - src.session_service.main - INFO - Started session expiration listener
+2025-05-03 01:59:06,605 - src.session_service.as_tasks - INFO - Subscribed to key expiration events
+2025-05-03 02:04:05,362 - src.auth_service.router - INFO - 
+Server start time (UTC): 2025-05-03 02:04:05.362337
+Server timestamp: 1746227045
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 02:09:05,533 - src.auth_service.router - INFO - 
+Server start time (UTC): 2025-05-03 02:09:05.533169
+Server timestamp: 1746227345
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 02:09:17,413 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-05-03 02:09:17.413726
+Server timestamp: 1746227357
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 02:14:05,868 - src.auth_service.router - INFO - 
+Server start time (UTC): 2025-05-03 02:14:05.868166
+Server timestamp: 1746227645
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 02:14:17,643 - src.user_service.router - INFO - 
+Server start time (UTC): 2025-05-03 02:14:17.643919
+Server timestamp: 1746227657
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 02:16:03,519 - src.user_service.router - INFO - Creating new user using username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' password='Securepassword123='
+2025-05-03 02:16:03,570 - src.user_service.crud - INFO - Found user None
+2025-05-03 02:16:03,572 - src.user_service.crud - INFO - Found user None
+2025-05-03 02:16:03,748 - src.user_service.crud - INFO - User create data <src.shared.models.User object at 0x00000223CED42D50>
+2025-05-03 02:16:03,754 - src.user_service.crud - INFO - User created data <src.shared.models.User object at 0x00000223CED42D50>
+2025-05-03 02:16:03,754 - src.user_service.router - INFO - Created new user using <src.shared.models.User object at 0x00000223CED42D50>
+2025-05-03 02:16:03,758 - src.auth_service.external_functions - INFO - Created new user: username='john22_doe' first_name='John' last_name='Doe' email='kirillgod6@gmail.com' password='Securepassword123='
+2025-05-03 02:16:03,758 - src.shared.common_functions - INFO - Verified response {'id': 1, 'username': 'john22_doe', 'first_name': 'John', 'last_name': 'Doe', 'email': 'kirillgod6@gmail.com', 'is_active': False, 'is_superuser': False} successfully
+2025-05-03 02:16:03,758 - src.auth_service.router - INFO - User john22_doe registered
+2025-05-03 02:16:03,758 - src.auth_service.auth_functions - INFO - Access token created for user: kirillgod6@gmail.com with expiration: 2025-05-03 02:16:13.758090
+2025-05-03 02:16:03,772 - src.auth_service.auth_functions - INFO - Access token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjIxMGQyMjc3LWY1NDctNDY4YS04NDlkLWYwYmM1NjUzYTE4OCIsImV4cCI6MTc0NjIyNzc3My43NTgwOSwiaWF0IjoxNzQ2MjI3NzYzfQ.JEBvsQboA-4FNkfvYGi7-Sx1-q0I2kRJiC2ZACHlUxQ
+2025-05-03 02:16:03,772 - src.auth_service.external_functions - INFO - Creating session with data: user_id=1 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjIxMGQyMjc3LWY1NDctNDY4YS04NDlkLWYwYmM1NjUzYTE4OCIsImV4cCI6MTc0NjIyNzc3My43NTgwOSwiaWF0IjoxNzQ2MjI3NzYzfQ.JEBvsQboA-4FNkfvYGi7-Sx1-q0I2kRJiC2ZACHlUxQ' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 02:16:03,945 - src.session_service.router - WARNING - user_id=1 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjIxMGQyMjc3LWY1NDctNDY4YS04NDlkLWYwYmM1NjUzYTE4OCIsImV4cCI6MTc0NjIyNzc3My43NTgwOSwiaWF0IjoxNzQ2MjI3NzYzfQ.JEBvsQboA-4FNkfvYGi7-Sx1-q0I2kRJiC2ZACHlUxQ' refresh_token=None device='unknown' ip_address='unknown'
+2025-05-03 02:16:03,945 - src.session_service.crud - INFO - Storing session with expires_at: 2025-05-03 02:16:13.945352
+2025-05-03 02:16:03,945 - src.session_service.crud - WARNING - {'session_id': 'd675a03c-9847-41b8-b23c-9e54c07a9abe', 'user_id': 1, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjIxMGQyMjc3LWY1NDctNDY4YS04NDlkLWYwYmM1NjUzYTE4OCIsImV4cCI6MTc0NjIyNzc3My43NTgwOSwiaWF0IjoxNzQ2MjI3NzYzfQ.JEBvsQboA-4FNkfvYGi7-Sx1-q0I2kRJiC2ZACHlUxQ', 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T02:16:03.945352', 'expires_at': '2025-05-03T02:16:13.945352'}
+2025-05-03 02:16:03,960 - src.auth_service.external_functions - INFO - Created session with response: {'session_id': 'd675a03c-9847-41b8-b23c-9e54c07a9abe', 'user_id': 1, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjIxMGQyMjc3LWY1NDctNDY4YS04NDlkLWYwYmM1NjUzYTE4OCIsImV4cCI6MTc0NjIyNzc3My43NTgwOSwiaWF0IjoxNzQ2MjI3NzYzfQ.JEBvsQboA-4FNkfvYGi7-Sx1-q0I2kRJiC2ZACHlUxQ', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T02:16:03.945352', 'expires_at': '2025-05-03T02:16:13.945352'}
+2025-05-03 02:16:03,960 - src.shared.common_functions - INFO - Verified response {'session_id': 'd675a03c-9847-41b8-b23c-9e54c07a9abe', 'user_id': 1, 'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjIxMGQyMjc3LWY1NDctNDY4YS04NDlkLWYwYmM1NjUzYTE4OCIsImV4cCI6MTc0NjIyNzc3My43NTgwOSwiaWF0IjoxNzQ2MjI3NzYzfQ.JEBvsQboA-4FNkfvYGi7-Sx1-q0I2kRJiC2ZACHlUxQ', 'refresh_token': None, 'device': 'unknown', 'ip_address': 'unknown', 'created_at': '2025-05-03T02:16:03.945352', 'expires_at': '2025-05-03T02:16:13.945352'} successfully
+2025-05-03 02:16:03,960 - src.auth_service.router - INFO - Register session: session_id='d675a03c-9847-41b8-b23c-9e54c07a9abe' user_id=1 access_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjIxMGQyMjc3LWY1NDctNDY4YS04NDlkLWYwYmM1NjUzYTE4OCIsImV4cCI6MTc0NjIyNzc3My43NTgwOSwiaWF0IjoxNzQ2MjI3NzYzfQ.JEBvsQboA-4FNkfvYGi7-Sx1-q0I2kRJiC2ZACHlUxQ' refresh_token=None device='unknown' ip_address='unknown' created_at=datetime.datetime(2025, 5, 3, 2, 16, 3, 945352) expires_at=datetime.datetime(2025, 5, 3, 2, 16, 13, 945352) was created
+2025-05-03 02:16:03,984 - src.auth_service.auth_functions - INFO - Send register_email email signal sent for kirillgod6@gmail.com
+2025-05-03 02:16:03,991 - src.email_service.kafka_consumer - INFO - Received message: {'message_type': 'register_email', 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLXNlcnZpY2UiLCJzdWIiOiJraXJpbGxnb2Q2QGdtYWlsLmNvbSIsImp0aSI6IjIxMGQyMjc3LWY1NDctNDY4YS04NDlkLWYwYmM1NjUzYTE4OCIsImV4cCI6MTc0NjIyNzc3My43NTgwOSwiaWF0IjoxNzQ2MjI3NzYzfQ.JEBvsQboA-4FNkfvYGi7-Sx1-q0I2kRJiC2ZACHlUxQ', 'email': 'kirillgod6@gmail.com'}
+2025-05-03 02:16:04,155 - src.session_service.main - INFO - Stopped session expiration listener
+2025-05-03 02:16:04,657 - src.session_service.router - INFO - 
+Server start time (UTC): 2025-05-03 02:16:04.657951
+Server timestamp: 1746227764
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 02:16:04,663 - src.session_service.main - INFO - Started session expiration listener
+2025-05-03 02:16:04,668 - src.auth_service.router - INFO - 
+Server start time (UTC): 2025-05-03 02:16:04.668959
+Server timestamp: 1746227764
+System timezone: ('RTZ 2 (зима)', 'RTZ 2 (лето)')
+Environment timezone: Not set
+
+2025-05-03 02:16:04,678 - src.session_service.as_tasks - INFO - Subscribed to key expiration events
+2025-05-03 02:16:06,178 - src.email_service.send_functions - INFO - Email sent to kirillgod6@gmail.com
+2025-05-03 02:16:14,115 - src.session_service.as_tasks - INFO - Expired key detected: session:d675a03c-9847-41b8-b23c-9e54c07a9abe
+2025-05-03 02:16:14,118 - src.session_service.as_tasks - INFO - Removed expired session session:d675a03c-9847-41b8-b23c-9e54c07a9abe from user:1:sessions
