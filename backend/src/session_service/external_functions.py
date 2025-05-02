@@ -1,7 +1,5 @@
 import httpx
-from jose import jwt, JWTError
 
-from src.shared.config import settings
 from src.session_service.endpoints import GET_USERS, CHECK_AUTH, FIND_USER_BY_EMAIL
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import TokenModelResponse, UserDTO
@@ -32,16 +30,18 @@ async def get_users_from_external_service():
     return None
 
 
-async def check_auth_from_external_service(access_token: str) -> TokenModelResponse | None:
+async def check_auth_from_external_service(access_token: str, skip_auth: bool = False) -> TokenModelResponse | None:
     """
     Check auth
+    :param skip_auth:
     :param access_token:
     :return: json - token old or new
     """
     try:
         headers = {
             "content-type": "application/json",
-            "authorization": f"Bearer {access_token}"
+            "authorization": f"Bearer {access_token}",
+            "X-Skip-Auth" : str(skip_auth)
         }
 
         async with httpx.AsyncClient() as client:
@@ -75,19 +75,3 @@ async def find_user_by_email(email:str) -> UserDTO | None:
     except httpx.RequestError as e:
         logger.error(f"Request error: {e}")
     return None
-
-def decode_token(token: str, is_refresh: bool = False) -> dict[str, any] | None:
-    """
-    Decode token
-    :param token: Token for decode
-    :param is_refresh: True if it is refresh token
-    :return: dict[str, any] | None: Decoded token payload or None if error
-    """
-    try:
-        payload = jwt.decode(token, settings.jwt_secret_refresh if is_refresh else settings.jwt_secret,
-                             algorithms=settings.jwt_algorithm, options={"verify_exp": False})
-        logger.info(f"Token decoded successfully: {payload}")
-        return payload
-    except JWTError as e:
-        logger.warning(f"JWTError: {e}")
-        return None

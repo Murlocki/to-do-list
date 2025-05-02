@@ -1,5 +1,6 @@
-import redis.asyncio as aioredis
 import redis
+import redis.asyncio as aioredis
+
 from src.shared.config import settings
 
 

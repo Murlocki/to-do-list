@@ -1,10 +1,9 @@
 import httpx
-from jose import jwt, JWTError
+from httpx import Response
+
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import TokenModelResponse
-from src.shared.config import settings
 from src.user_service.endpoints import CHECK_AUTH, DELETE_USER_SESSIONS
-from httpx import Response
 
 logger = setup_logger(__name__)
 
@@ -51,19 +50,3 @@ async def delete_user_sessions(access_token: str) -> Response:
         logger.info(f"Deleted user sessions with response {response}")
         return response
 
-
-def decode_token(token: str, is_refresh: bool = False) -> dict[str, any] | None:
-    """
-    Decode token
-    :param token: Token for decode
-    :param is_refresh: True if it is refresh token
-    :return: dict[str, any] | None: Decoded token payload or None if error
-    """
-    try:
-        payload = jwt.decode(token, settings.jwt_secret_refresh if is_refresh else settings.jwt_secret,
-                             algorithms=settings.jwt_algorithm, options={"verify_exp": False})
-        logger.info(f"Token decoded successfully: {payload}")
-        return payload
-    except JWTError as e:
-        logger.warning(f"JWTError: {e}")
-        return None

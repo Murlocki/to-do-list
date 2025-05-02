@@ -2,9 +2,6 @@ from confluent_kafka.admin import AdminClient, NewTopic
 
 from src.shared.config import settings
 
-
-
-
 admin = AdminClient({'bootstrap.servers': settings.kafka_broker})
 
 topic_list = [NewTopic(settings.kafka_email_send_topic_name, settings.kafka_email_send_topic_partitions, 1)]

@@ -1,7 +1,8 @@
 import re
-from passlib.context import CryptContext
-from src.shared.logger_setup import setup_logger
 
+from passlib.context import CryptContext
+
+from src.shared.logger_setup import setup_logger
 
 logger = setup_logger(__name__)
 def validate_password(password: str) -> bool:

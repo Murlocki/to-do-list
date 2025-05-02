@@ -1,9 +1,9 @@
 # CRUD сессией
-from datetime import datetime, timedelta
 import uuid
+from datetime import datetime, timedelta
 
-from src.shared.config import settings
 from src.session_service.redis_base import redis_client
+from src.shared.config import settings
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import SessionDTO
 
@@ -125,7 +125,7 @@ async def delete_session_by_access_token(token: str, token_type: str = "access_t
     return None
 
 
-async def update_session_access_token(old_token: str, new_token: str, session_obj: dict = None)-> SessionDTO | None:
+async def update_session_access_token(old_token: str, new_token: str, session_obj: SessionDTO = None)-> SessionDTO | None:
     """
     Update session access token
     :param old_token: Old access token
@@ -135,7 +135,7 @@ async def update_session_access_token(old_token: str, new_token: str, session_ob
     """
     session = session_obj if session_obj else await get_session_by_token(old_token)
     if session:
-        await redis_client.hset(f"session:{session['session_id']}", "access_token", new_token)
+        await redis_client.hset(f"session:{session.session_id}", "access_token", new_token)
         session = await get_session_by_token(new_token)
         return session
     return None

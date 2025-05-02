@@ -8,11 +8,11 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from src.session_service import crud
 from src.session_service.crud import create_and_store_session, delete_inactive_sessions, update_session_access_token, \
     delete_sessions_by_user_id
-from src.session_service.external_functions import check_auth_from_external_service, decode_token, find_user_by_email
+from src.session_service.external_functions import check_auth_from_external_service, find_user_by_email
 from src.shared import logger_setup
+from src.shared.common_functions import decode_token
 from src.shared.schemas import SessionDTO, AccessTokenUpdate, AuthResponse
 from src.shared.schemas import SessionSchema
-
 
 session_router = APIRouter()
 logger = logger_setup.setup_logger(__name__)
@@ -27,7 +27,7 @@ bearer = HTTPBearer()
 
 
 async def get_valid_token(request: Request, credentials: HTTPAuthorizationCredentials = Depends(bearer)) -> str:
-    if request.headers.get("X-Skip-Auth") == "true":
+    if request.headers.get("X-Skip-Auth") == "True":
         logger.info("Skip authentication check")
         return credentials.credentials
     verify_result = await check_auth_from_external_service(credentials.credentials)
@@ -122,14 +122,14 @@ async def update_session_token(session_id: str, access_token_update_data: Access
     :param session_id: Session ID
     :return: New session entity
     """
-    session = await get_session_by_token(access_token_update_data.old_access_token)
+    session = await crud.get_session_by_token(access_token_update_data.old_access_token)
     if not session:
         logger.warning("Session not found")
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
     if session.session_id != session_id:
         logger.warning("Session ID does not match")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Session ID does not match")
-    session = await update_session_access_token(access_token_update_data.old_access_token,
+    session = await crud.update_session_access_token(access_token_update_data.old_access_token,
                                                 access_token_update_data.new_access_token)
     if not session:
         logger.warning("Session not found")

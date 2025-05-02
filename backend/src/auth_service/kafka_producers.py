@@ -1,5 +1,6 @@
-from aiokafka import AIOKafkaProducer
 import json
+
+from aiokafka import AIOKafkaProducer
 
 from src.shared.config import settings
 from src.shared.logger_setup import setup_logger

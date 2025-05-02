@@ -1,7 +1,8 @@
 import logging
-import sys
 import os
+import sys
 from logging.handlers import TimedRotatingFileHandler
+
 from src.shared.config import settings
 
 

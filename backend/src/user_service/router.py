@@ -3,19 +3,20 @@ import time
 from datetime import datetime
 
 from fastapi import HTTPException, status, APIRouter, Depends, Request
-from httpx import Response
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from httpx import Response
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.shared.schemas import SessionSchema, AuthResponse, SessionDTO, UserDTO, UserAuthDTO
+
+from src.shared.common_functions import decode_token
 from src.shared.logger_setup import setup_logger
+from src.shared.schemas import AuthResponse, UserAuthDTO
+from src.shared.schemas import UserDTO, PasswordForm
 from src.user_service import crud, auth_functions
-from src.user_service.auth_functions import validate_password, get_password_hash, verify_password
-from src.user_service.crud import authenticate_user
+from src.user_service.auth_functions import validate_password, get_password_hash
 from src.user_service.database import SessionLocal
-from src.user_service.external_functions import check_auth_from_external_service, decode_token, delete_user_sessions
+from src.user_service.external_functions import check_auth_from_external_service, delete_user_sessions
 from src.user_service.models import User
 from src.user_service.schemas import UserCreate, UserUpdate
-from src.shared.schemas import UserDTO, PasswordForm
 
 user_router = APIRouter()
 logger = setup_logger(__name__)
@@ -30,7 +31,7 @@ bearer = HTTPBearer()
 
 
 async def get_valid_token(request:Request, credentials: HTTPAuthorizationCredentials = Depends(bearer)) -> str:
-    if request.headers.get("X-Skip-Auth") == "true":
+    if request.headers.get("X-Skip-Auth") == "True":
         logger.info("Skip authentication check")
         return credentials.credentials
     verify_result = await check_auth_from_external_service(credentials.credentials)
@@ -51,7 +52,7 @@ async def get_db():
 bearer = HTTPBearer()
 
 
-@user_router.post("/user/crud")
+@user_router.post("/user/crud", status_code=status.HTTP_201_CREATED, response_model=UserDTO)
 async def create_user(user_in: UserCreate, db: AsyncSession = Depends(get_db)) -> UserDTO:
     """
     Create a new user
@@ -68,7 +69,7 @@ async def create_user(user_in: UserCreate, db: AsyncSession = Depends(get_db)) -
     if db_user:
         logger.error(f"User with username {user_in.username} already exists")
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Username already registered")
-    if not validate_password(user_in.password):
+    if not auth_functions.validate_password(user_in.password):
         logger.warning("Password does not meet complexity requirements")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password error")
     user = await crud.create_user(db, user_in)
@@ -80,7 +81,7 @@ async def create_user(user_in: UserCreate, db: AsyncSession = Depends(get_db)) -
 
 @user_router.post("/user/authenticate", response_model=UserDTO, status_code=status.HTTP_200_OK)
 async def auth_user(user_auth_data: UserAuthDTO, db: AsyncSession = Depends(get_db)):
-    user = await authenticate_user(db, user_auth_data.identifier, user_auth_data.password)
+    user = await crud.authenticate_user(db, user_auth_data.identifier, user_auth_data.password)
     if not user:
         logger.info("User authentication failed")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect identifier or password")

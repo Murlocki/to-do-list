@@ -1,5 +1,3 @@
-import asyncio
-
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, func
 
 from src.user_service.database import Base, engine

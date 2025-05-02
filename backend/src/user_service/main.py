@@ -1,6 +1,3 @@
-import asyncio
-from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
 
 from src.shared.logger_setup import setup_logger
