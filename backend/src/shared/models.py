@@ -35,7 +35,6 @@ class User(Base):
             "is_superuser": self.is_superuser,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
-            "tasks": [task.to_dict() for task in self.tasks] if self.tasks else [],
         }
 class TaskStatus(Enum):
     IN_PROGRESS = "in_progress"
@@ -47,8 +46,9 @@ class Task(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=True)
-    status: Mapped[int] = mapped_column(default=TaskStatus.IN_PROGRESS)
+    status: Mapped[TaskStatus] = mapped_column(default=TaskStatus.IN_PROGRESS)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=True)
+    fulfilled_date: Mapped[DateTime] = mapped_column(DateTime(timezone=True), nullable=True, default=None)
 
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
@@ -61,6 +61,7 @@ class Task(Base):
             "status": self.status,
             "title": self.title,
             "description": self.description,
+            "fulfilled_date": self.fulfilled_date.isoformat() if self.fulfilled_date else None,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }
