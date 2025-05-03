@@ -74,5 +74,33 @@ async def create_task(task_data: TaskCreate, token = Depends(get_valid_token), d
         token=token,
         data=task.to_dict(),
     ).model_dump()
+@task_router.get("/task/me", status_code=status.HTTP_200_OK, response_model=AuthResponse)
+async def get_tasks_me(token:str = Depends(get_valid_token),db: AsyncSession = Depends(get_db)):
+    """
+    Get tasks for the current user
+    :param token: User token
+    :param db: session
+    :return: list of TaskDTO
+    """
+    payload = decode_token(token)
+    if not payload or not payload["sub"]:
+        logger.error("Invalid token payload")
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    logger.info(f"Decoded token payload: {payload}")
+
+    response = await find_user_by_email(payload["sub"])
+    error = verify_response(response)
+    if error:
+        logger.error(f"Error finding user by email: {error}")
+        raise HTTPException(status_code=404, detail="User not found")
+    user = UserDTO(**response.json())
+    logger.info(f"User found: {user}")
+
+    tasks = await crud.get_tasks_by_user_id(db, user.id)
+    logger.info(f"Tasks retrieved: {tasks}")
+    return AuthResponse(
+        token=token,
+        data=[task.to_dict() for task in tasks],
+    ).model_dump()
 
 

@@ -1,4 +1,5 @@
 # CRUD сессией
+from sqlalchemy import select
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,3 +21,10 @@ async def create_task(task_create: TaskCreate, user_id:int,  db:AsyncSession):
         logger.info(f"Created task {task.to_dict()}")
     await db.refresh(task)
     return task
+
+async def get_tasks_by_user_id(db:AsyncSession, user_id:int):
+    async with db.begin():
+        tasks = await db.execute(select(Task).filter(Task.user_id == user_id))
+        tasks = tasks.scalars().all()
+        logger.info(f"Get tasks {tasks}")
+    return tasks
