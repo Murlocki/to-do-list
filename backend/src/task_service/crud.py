@@ -28,3 +28,29 @@ async def get_tasks_by_user_id(db:AsyncSession, user_id:int):
         tasks = tasks.scalars().all()
         logger.info(f"Get tasks {tasks}")
     return tasks
+
+async def delete_task_by_id(db:AsyncSession, task_id:int):
+    async with db.begin():
+        task = await db.execute(select(Task).filter(Task.id == task_id))
+        task = task.scalar_one_or_none()
+        if not task:
+            logger.warning(f"Task {task_id} not found.")
+            return None
+        logger.info(f"Deleted task {task.to_dict()}")
+        await db.delete(task)
+    return task
+
+async def update_task_by_id(db:AsyncSession, task_id:int, task_create:TaskCreate):
+    async with db.begin():
+        task = await db.execute(select(Task).filter(Task.id == task_id))
+        task = task.scalar_one_or_none()
+        if not task:
+            logger.warning(f"Task {task_id} not found.")
+            return None
+        logger.info(f"Found old task {task.to_dict()}")
+        update_data = task_create.model_dump(exclude_unset=True)
+        logger.info(f"Updating task {update_data}")
+        for key, value in update_data.items():
+            setattr(task, key, value)
+    await db.refresh(task)
+    return task

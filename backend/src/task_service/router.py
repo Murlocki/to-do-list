@@ -52,23 +52,27 @@ async def create_task(task_data: TaskCreate, token = Depends(get_valid_token), d
     :return: new TaskDTO
     """
     payload = decode_token(token)
+    result = AuthResponse(token=token, data={"message":""})
     if not payload or not payload["sub"]:
         logger.error("Invalid token payload")
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
+        result.data = {"message": "Invalid token payload"}
+        raise HTTPException(status_code=401, detail=result.model_dump())
     logger.info(f"Decoded token payload: {payload}")
 
     response = await find_user_by_email(payload["sub"])
     error = verify_response(response)
     if error:
         logger.error(f"Error finding user by email: {error}")
-        raise HTTPException(status_code=404, detail="User not found")
+        result.data = {"message": f"Error finding user by email: {error['detail']}"}
+        raise HTTPException(status_code=error["status"], detail=result.model_dump())
     user = UserDTO(**response.json())
     logger.info(f"User found: {user}")
 
     task = await crud.create_task(task_data, user.id, db)
     if not task:
         logger.error("Task creation failed")
-        raise HTTPException(status_code=500, detail="Task creation failed")
+        result.data = {"message": "Task creation failed"}
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=result.model_dump())
     logger.info(f"Task created: {task}")
     return AuthResponse(
         token=token,
@@ -83,16 +87,19 @@ async def get_tasks_me(token:str = Depends(get_valid_token),db: AsyncSession = D
     :return: list of TaskDTO
     """
     payload = decode_token(token)
+    result = AuthResponse(token=token, data={"message": ""})
     if not payload or not payload["sub"]:
+        result.data = {"message": "Invalid or expired token"}
         logger.error("Invalid token payload")
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
+        raise HTTPException(status_code=401, detail=result.model_dump())
     logger.info(f"Decoded token payload: {payload}")
 
     response = await find_user_by_email(payload["sub"])
     error = verify_response(response)
     if error:
         logger.error(f"Error finding user by email: {error}")
-        raise HTTPException(status_code=404, detail="User not found")
+        result.data = {"message": f"Error finding user by email: {error['detail']}"}
+        raise HTTPException(status_code=error["status"], detail=result.model_dump())
     user = UserDTO(**response.json())
     logger.info(f"User found: {user}")
 
@@ -103,4 +110,77 @@ async def get_tasks_me(token:str = Depends(get_valid_token),db: AsyncSession = D
         data=[task.to_dict() for task in tasks],
     ).model_dump()
 
+@task_router.delete("/task/me/{task_id}", status_code=status.HTTP_200_OK, response_model=AuthResponse)
+async def delete_task_by_id(task_id: int, token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
+    """
+    Delete task by ID
+    :param task_id: Task ID
+    :param token: User token
+    :param db: session
+    :return: deleted TaskDTO
+    """
+    payload = decode_token(token)
+    if not payload or not payload["sub"]:
+        logger.error("Invalid token payload")
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    logger.info(f"Decoded token payload: {payload}")
 
+    result = AuthResponse(token=token, data={"message": ""})
+
+    response = await find_user_by_email(payload["sub"])
+    error = verify_response(response)
+    if error:
+        logger.error(f"Error finding user by email: {error}")
+        result.data = {"message": f"Error finding user by email: {error['detail']}"}
+        raise HTTPException(status_code=error["status"], detail=result.model_dump())
+    user = UserDTO(**response.json())
+    logger.info(f"User found: {user}")
+
+    task = await crud.delete_task_by_id(db, task_id)
+    if not task:
+        logger.error("Task deletion failed")
+        result.data = {"message": "Task deletion failed"}
+        raise HTTPException(status_code=404, detail=result.model_dump())
+    logger.info(f"Task deleted: {task}")
+    return AuthResponse(
+        token=token,
+        data=task.to_dict(),
+    ).model_dump()
+
+@task_router.patch("/task/me/{task_id}", status_code=status.HTTP_200_OK, response_model=AuthResponse)
+async def update_task_by_id(task_id: int, task_data: TaskCreate, token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
+    """
+    Update task by ID
+    :param task_id: Task ID
+    :param task_data: Task data to update
+    :param token: User token
+    :param db: session
+    :return: updated TaskDTO
+    """
+    payload = decode_token(token)
+    if not payload or not payload["sub"]:
+        logger.error("Invalid token payload")
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    logger.info(f"Decoded token payload: {payload}")
+
+    result = AuthResponse(token=token, data={"message": ""})
+
+    response = await find_user_by_email(payload["sub"])
+    error = verify_response(response)
+    if error:
+        logger.error(f"Error finding user by email: {error}")
+        result.data = {"message": f"Error finding user by email: {error['detail']}"}
+        raise HTTPException(status_code=error["status"], detail=result.model_dump())
+    user = UserDTO(**response.json())
+    logger.info(f"User found: {user}")
+
+    task = await crud.update_task_by_id(db, task_id, task_data)
+    if not task:
+        logger.error("Task update failed")
+        result.data = {"message": "Task update failed"}
+        raise HTTPException(status_code=404, detail=result.model_dump())
+    logger.info(f"Task updated: {task}")
+    return AuthResponse(
+        token=token,
+        data=task.to_dict(),
+    ).model_dump()
