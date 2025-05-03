@@ -124,7 +124,7 @@ async def get_profile(token: str = Depends(get_valid_token), db: AsyncSession = 
     return result.model_dump()
 
 
-@user_router.delete("/user/me", status_code=status.HTTP_200_OK)
+@user_router.delete("/user/me", status_code=status.HTTP_200_OK, response_model=AuthResponse)
 async def delete_me(token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
     """
     Delete of my self
@@ -133,16 +133,20 @@ async def delete_me(token: str = Depends(get_valid_token), db: AsyncSession = De
     :return: None
     """
     decoded_token = decode_token(token)
+    result = AuthResponse(token=token, data={"message": ""})
     user: User = await crud.get_user_by_email(db, email=decoded_token["sub"])
     if not user:
-        logger.warning("User not found 141")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        logger.warning("User not found")
+        result.data["message"] = "User not found"
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result.model_dump())
     user = await crud.delete_user(db, user)
     if not user:
         logger.warning("User not found")
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        result.data["message"] = "User not found"
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result.model_dump())
     logger.info(f"User {user.username} deleted")
-    return {"message": "User deleted"}
+    result.data = UserDTO.model_validate(user)
+    return result.model_dump()
 
 
 @user_router.patch("/user/me/password", status_code=status.HTTP_200_OK, response_model=AuthResponse)
@@ -176,13 +180,13 @@ async def update_password(password_form: PasswordForm, token: str = Depends(get_
     user_update = await crud.update_user(db, user.username, user_update)
     logger.info(f"User {user_update.username} updated password {user_update.hashed_password}")
 
-    response = await delete_user_sessions(token)
+    response = await delete_user_sessions(token, skip_auth=True)
     error = verify_response(response)
     if error:
         logger.error(f"Error {error}")
-        raise HTTPException(status_code=error["status"], detail=error["detail"])
+        result.data["message"] = error["detail"]["message"]
+        raise HTTPException(status_code=error["status"], detail=result.model_dump())
     logger.info(f"User sessions deleted {response.json()}")
-
     return AuthResponse(data=UserDTO(**user_update.to_dict()), token=token).model_dump()
 
 
@@ -201,6 +205,6 @@ async def update_my_account(user: UserUpdate, token: str = Depends(get_valid_tok
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=AuthResponse(token=token,
                                                 data={
-                                                    "message": "User not found"}).model_dump_json())
+                                                    "message": "User not found"}).model_dump())
     logger.info(f"User {user.username} updated")
     return AuthResponse(token=token, data=UserDTO(**db_user.to_dict()))

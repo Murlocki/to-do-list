@@ -4,12 +4,12 @@ from datetime import timedelta, datetime
 
 from jose import jwt, JWTError
 
-from src.auth_service.external_functions import get_session_by_token, update_session_token
+from src.auth_service.external_functions import get_session_by_token, update_session_token, create_session
 from src.auth_service.kafka_producers import send_kafka_message
 from src.shared.common_functions import decode_token, verify_response
 from src.shared.config import settings
 from src.shared.logger_setup import setup_logger
-from src.shared.schemas import SessionDTO, AccessTokenUpdate
+from src.shared.schemas import SessionDTO, AccessTokenUpdate, SessionSchema
 
 logger = setup_logger(__name__)
 
@@ -174,8 +174,30 @@ async def refresh_access_token(refresh_token: str):
             logger.error("Failed to create new access token")
             return None
 
-        # Update session token
-        response = await update_session_token(session.session_id, AccessTokenUpdate(old_access_token=session.access_token,
+        #If refresh token is expired, create new refresh token session
+        exp_time: datetime = datetime.fromtimestamp(payload.get("exp"))
+        logger.info(f"Token expires at: {exp_time}")
+        about_to_expire: bool = is_about_to_expire(exp_time)
+
+        if about_to_expire or exp_time <= datetime.now():
+            logger.warning("Refresh token is about to expire" if about_to_expire else f"Refresh token expired at: {exp_time}")
+            # Create new refresh token
+            new_refresh_token = create_new_token(email, is_refresh=True)
+            if not new_refresh_token:
+                logger.error("Failed to create new refresh token")
+                return None
+            # Update session with new refresh token
+            response = await create_session(
+                SessionSchema(
+                    user_id=session.user_id,
+                    access_token=new_access_token,
+                    refresh_token=new_refresh_token,
+                    device=session.device,
+                    ip_address=session.ip_address)
+            )
+
+        # Otherwise Update session token
+        else: response = await update_session_token(session.session_id, AccessTokenUpdate(old_access_token=session.access_token,
                                                                       new_access_token=new_access_token))
         error = verify_response(response)
         if error:

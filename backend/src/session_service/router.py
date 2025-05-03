@@ -46,12 +46,14 @@ async def get_sessions(token: str = Depends(get_valid_token)):
     """
     decoded_token = decode_token(token)
     logger.info(f"Decoded token: {decoded_token}")
+    result = AuthResponse(token=token, data={"message": ""})
     # Find user by email
     response = await find_user_by_email(email=decoded_token["sub"])
     error = verify_response(response)
     if error:
         logger.error(f"Error: {error}")
-        raise HTTPException(status_code=error["status"], detail=error["detail"])
+        result.data = {"message": f"Error finding user by email: {error['detail']}"}
+        raise HTTPException(status_code=error["status"], detail=result.model_dump())
     user = UserDTO(**response.json())
     logger.info(f"Found user: {user}")
     # Delete his sessions
@@ -63,7 +65,7 @@ async def get_sessions(token: str = Depends(get_valid_token)):
     return AuthResponse(data=session_dtos, token=token).model_dump()
 
 @session_router.delete("/session/crud/me/search", response_model=AuthResponse, status_code=status.HTTP_200_OK)
-async def delete_session(token:str,access_token=Depends(get_valid_token)):
+async def delete_session_by_token(token:str,access_token=Depends(get_valid_token)):
 
     """
     Delete session by ID
@@ -82,7 +84,7 @@ async def delete_session(token:str,access_token=Depends(get_valid_token)):
     return AuthResponse(data=session, token=access_token).model_dump()
 
 @session_router.delete("/session/crud/me/{session_id}", response_model=AuthResponse, status_code=status.HTTP_200_OK)
-async def delete_session(session_id: str, token=Depends(get_valid_token)):
+async def delete_session_by_id(session_id: str, token=Depends(get_valid_token)):
     """
     Delete session by ID
     :param token: JWT Token
@@ -99,7 +101,7 @@ async def delete_session(session_id: str, token=Depends(get_valid_token)):
     logger.info(f"Session {session_id} was deleted")
     return AuthResponse(data=session, token=token).model_dump()
 
-@session_router.delete("/session/crud/me")
+@session_router.delete("/session/crud/me", response_model=AuthResponse, status_code=status.HTTP_200_OK)
 async def delete_sessions(token=Depends(get_valid_token)):
     """
     Delete all sessions for user
@@ -108,11 +110,13 @@ async def delete_sessions(token=Depends(get_valid_token)):
     """
     decoded_token = decode_token(token)
     logger.info(f"Decoded token: {decoded_token}")
+    result = AuthResponse(token=token, data={"message": ""})
     response = await find_user_by_email(email=decoded_token["sub"])
     error = verify_response(response)
     if error:
         logger.error(f"Error: {error}")
-        raise HTTPException(status_code=error["status"], detail=error["detail"])
+        result.data = {"message": f"Error finding user by email: {error['detail']}"}
+        raise HTTPException(status_code=error["status"], detail=result.model_dump())
     user = UserDTO(**response.json())
     logger.info(f"Sessions deleting for user {user.username}")
     result = await delete_sessions_by_user_id(user.id)
@@ -161,7 +165,6 @@ async def create_session(session_create_data: SessionSchema):
     :param session_create_data:
     :return: Created session
     """
-    logger.warning(session_create_data)
     session = await create_and_store_session(
         user_id=session_create_data.user_id,
         access_token=session_create_data.access_token,
@@ -169,6 +172,7 @@ async def create_session(session_create_data: SessionSchema):
         device=session_create_data.device,
         ip_address=session_create_data.ip_address
     )
+    logger.info(f"Created session with data {session}")
     return session.model_dump()
 
 

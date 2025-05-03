@@ -97,7 +97,7 @@ async def activate_account(credentials: HTTPAuthorizationCredentials = Depends(b
     error = verify_response(response,200)
     if error:
         logger.error(error)
-        raise HTTPException(status_code=error["status_code"], detail=error["detail"])
+        raise HTTPException(status_code=error["status_code"], detail=error["detail"]["data"])
     logger.info(f"User {user.username} is updated by token {token_verified['token']}")
 
     # Delete activation session
@@ -106,7 +106,7 @@ async def activate_account(credentials: HTTPAuthorizationCredentials = Depends(b
     error = verify_response(response,200)
     if error:
         logger.error(error)
-        raise HTTPException(status_code=error["status_code"], detail=error["detail"])
+        logger.warning("Session may expired before deleting, but user is activated and session existence was checked at the beginning")
     logger.info(f"Successfully activated user {user.username}")
     return user_activated.data
 
@@ -210,7 +210,7 @@ async def get_forgot_password(email: str):
     return {"message": message}
 
 
-@auth_router.post("/auth/forgot_password", status_code=status.HTTP_200_OK)
+@auth_router.post("/auth/forgot_password", status_code=status.HTTP_200_OK, response_model=AuthResponse)
 async def forgot_password(new_password_form: PasswordForm, credentials: HTTPAuthorizationCredentials = Depends(bearer)):
     """
     Reset user password
@@ -247,7 +247,7 @@ async def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer
     if not token_verified or not token_verified["token"]:
         logger.warning("Invalid token")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                            detail=AuthResponse(data={"message": "Invalid token"}, token=credentials.credentials))
+                            detail={"message": "Invalid token"})
     token = token_verified["token"]
     logger.info(f"Valid Token: {token}")
     # Get session by token
@@ -255,11 +255,11 @@ async def logout_user(credentials: HTTPAuthorizationCredentials = Depends(bearer
     error = verify_response(response)
     if error:
         logger.error(error)
-        raise HTTPException(status_code=error["status_code"], detail=error["detail"])
+        raise HTTPException(status_code=error["status_code"], detail=AuthResponse(token=token,data=error["detail"]).model_dump())
     session = SessionDTO(**response.json())
     logger.info(f"Found session {session}")
     # Delete session
-    response = await delete_session_by_id(session.session_id, token)
+    response = await delete_session_by_id(session.session_id, token, True)
     error = verify_response(response)
     if error:
         logger.error(error)

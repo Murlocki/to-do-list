@@ -120,12 +120,12 @@ async def delete_task_by_id(task_id: int, token: str = Depends(get_valid_token),
     :return: deleted TaskDTO
     """
     payload = decode_token(token)
-    if not payload or not payload["sub"]:
-        logger.error("Invalid token payload")
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
-    logger.info(f"Decoded token payload: {payload}")
-
     result = AuthResponse(token=token, data={"message": ""})
+    if not payload or not payload["sub"]:
+        result.data = {"message": "Invalid or expired token"}
+        logger.error("Invalid token payload")
+        raise HTTPException(status_code=401, detail=result)
+    logger.info(f"Decoded token payload: {payload}")
 
     response = await find_user_by_email(payload["sub"])
     error = verify_response(response)
@@ -158,12 +158,13 @@ async def update_task_by_id(task_id: int, task_data: TaskCreate, token: str = De
     :return: updated TaskDTO
     """
     payload = decode_token(token)
+    result = AuthResponse(token=token, data={"message": ""})
     if not payload or not payload["sub"]:
+        result.data = {"message": "Invalid or expired token"}
         logger.error("Invalid token payload")
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
+        raise HTTPException(status_code=401, detail=result.model_dump())
     logger.info(f"Decoded token payload: {payload}")
 
-    result = AuthResponse(token=token, data={"message": ""})
 
     response = await find_user_by_email(payload["sub"])
     error = verify_response(response)

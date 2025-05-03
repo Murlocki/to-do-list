@@ -35,7 +35,7 @@ async def check_auth_from_external_service(access_token: str, skip_auth: bool = 
     return None
 
 
-async def delete_user_sessions(access_token: str) -> Response:
+async def delete_user_sessions(access_token: str, skip_auth: bool = False) -> Response:
     """
     Check auth
     :param access_token:
@@ -43,7 +43,8 @@ async def delete_user_sessions(access_token: str) -> Response:
     """
     headers = {
         "content-type": "application/json",
-        "authorization": f"Bearer {access_token}"
+        "authorization": f"Bearer {access_token}",
+        "X-Skip-Auth": str(skip_auth)
     }
 
     async with httpx.AsyncClient() as client:

@@ -67,7 +67,6 @@ async def update_session_token(session_id: str, access_token_update_data: Access
             headers=headers,
             content=access_token_update_data.model_dump_json()
         )
-        response.raise_for_status()
         logger.info(f"Updated session token: {response.json()}")
         return response
 
@@ -190,7 +189,6 @@ async def update_user(user: UserDTO, access_token: str, skip_auth: bool = False)
             headers=headers,
             content=user.model_dump_json()
         )
-        response.raise_for_status()
         logger.info(f"Update user {user.username} by token {access_token} with response {response.json()}")
         return response
 
