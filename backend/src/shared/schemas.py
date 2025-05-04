@@ -3,6 +3,8 @@ from typing import Optional, Any
 
 from pydantic import BaseModel, Field, EmailStr
 
+from src.shared.models import TaskStatus
+
 
 class AuthForm(BaseModel):
     identifier: str
@@ -59,3 +61,17 @@ class UserAuthDTO(BaseModel):
     password: str
 class PasswordForm(BaseModel):
     new_password: str
+
+class TaskDTO(BaseModel):
+    id: int
+    title: str
+    description: str | None = Field(None)
+    status: int = Field(TaskStatus.IN_PROGRESS.value)
+    user_id: int
+    fulfilled_date: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            datetime: lambda v: v.isoformat(),  # Преобразование datetime в ISO строку
+        }

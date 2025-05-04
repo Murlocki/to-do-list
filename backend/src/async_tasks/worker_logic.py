@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from src.async_tasks.kafka_producer import send_to_kafka
 from src.shared.config import settings
 from src.shared.logger_setup import setup_logger
+from src.shared.schemas import TaskDTO
 
 logger = setup_logger(__name__)
 
@@ -83,7 +84,7 @@ def process_users_chunk(chunk_index):
                     message = {
                         "event": "task_due",
                         "user": user.id,
-                        "tasks": [task.to_dict() for task in tasks]
+                        "tasks": [TaskDTO(**task.to_dict()).model_dump() for task in tasks]
                     }
                     sync_send_to_kafka(message)
                     logger.info("Sent tasks to Kafka for user %s", user.id)

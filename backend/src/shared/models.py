@@ -50,7 +50,7 @@ class Task(Base):
     title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=True)
     status: Mapped[TaskStatus] = mapped_column(default=TaskStatus.IN_PROGRESS)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     fulfilled_date: Mapped[DateTime] = mapped_column(DateTime(timezone=True), nullable=True, default=None)
 
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
@@ -64,6 +64,7 @@ class Task(Base):
             "status": self.status.value,
             "title": self.title,
             "description": self.description,
+            "user_id": self.user_id,
             "fulfilled_date": self.fulfilled_date.isoformat() if self.fulfilled_date else None,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
