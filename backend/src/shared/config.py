@@ -37,7 +37,9 @@ class Settings(BaseSettings):
     auth_service_url: str = Field("http://127.0.0.1:8000")
     kafka_broker: str = Field("localhost:9093")
     kafka_email_send_topic_name: str = "email_send"
-    kafka_email_send_topic_partitions: int = 1
+    kafka_email_send_topic_partitions: int = 2
+    kafka_task_remind_topic_name: str = "task_remind"
+    kafka_task_remind_topic_partitions: int = 2
     email_host: str = "smtp.gmail.com"
     email_port: int = 587
     email_send_retries: int = 3

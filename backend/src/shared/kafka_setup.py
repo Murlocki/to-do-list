@@ -48,4 +48,5 @@ async def recreate_kafka(topic_configs: dict[str, int], replication_factor: int 
 if __name__ == "__main__":
     asyncio.run(recreate_kafka({
         settings.kafka_email_send_topic_name: int(settings.kafka_email_send_topic_partitions),
+        settings.kafka_task_remind_topic_name: int(settings.kafka_task_remind_topic_partitions),
     }))

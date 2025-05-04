@@ -37,8 +37,11 @@ class User(Base):
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }
 class TaskStatus(Enum):
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
+    IN_PROGRESS = 0
+    COMPLETED = 1
+
+    def __json__(self):
+        return self.value
 
 class Task(Base):
     __tablename__ = "tasks"
@@ -58,7 +61,7 @@ class Task(Base):
     def to_dict(self) -> dict:
         return {
             "id": self.id,
-            "status": self.status,
+            "status": self.status.value,
             "title": self.title,
             "description": self.description,
             "fulfilled_date": self.fulfilled_date.isoformat() if self.fulfilled_date else None,
