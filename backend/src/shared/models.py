@@ -61,7 +61,7 @@ class Task(Base):
     def to_dict(self) -> dict:
         return {
             "id": self.id,
-            "status": self.status.value,
+            "status": self.status.__json__(),
             "title": self.title,
             "description": self.description,
             "user_id": self.user_id,
