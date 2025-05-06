@@ -9,5 +9,5 @@ def process_chunk(self, chunk_index):
 
 @app.task(name='src.async_tasks.tasks.dispatch_chunks')
 def dispatch_chunks():
-    for i in range(4):
+    for i in range(1):
         process_chunk.delay(i)

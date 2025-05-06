@@ -10,7 +10,7 @@ app = Celery(
 )
 
 app.conf.update(
-    worker_concurrency=4,
+    worker_concurrency=1,
     task_serializer='json',
     result_serializer='json',
     timezone='UTC',

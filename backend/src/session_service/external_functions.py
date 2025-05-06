@@ -1,36 +1,11 @@
 import httpx
 from httpx import Response
 
-from src.session_service.endpoints import GET_USERS, CHECK_AUTH, FIND_USER_BY_EMAIL
+from src.session_service.endpoints import CHECK_AUTH, FIND_USER_BY_EMAIL
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import TokenModelResponse
 
 logger = setup_logger(__name__)
-
-
-async def get_users_from_external_service():
-    """
-    Get all users from external service
-    :return: list of users
-    """
-    try:
-        headers = {
-            "content-type": "application/json",
-        }
-
-        async with httpx.AsyncClient() as client:
-            response = await client.get(GET_USERS, headers=headers)
-            response.raise_for_status()
-            json_data = response.json()
-            return json_data
-    except httpx.RequestError as e:
-        logger.error(f"An error occurred while requesting {e.request.url!r}.")
-    except httpx.HTTPStatusError as e:
-        logger.error(f"Error response {e.response.status_code} while requesting {e.request.url!r}.")
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-    return None
-
 
 async def check_auth_from_external_service(access_token: str, skip_auth: bool = False) -> TokenModelResponse | None:
     """

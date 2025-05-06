@@ -1,6 +1,5 @@
 # CRUD сессией
 from sqlalchemy import select
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.shared.logger_setup import setup_logger

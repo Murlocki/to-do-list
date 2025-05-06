@@ -1,35 +1,13 @@
 import httpx
 from httpx import Response
 
-from src.session_service.endpoints import GET_USERS, CHECK_AUTH, FIND_USER_BY_EMAIL
+from src.session_service.endpoints import CHECK_AUTH
 from src.shared.logger_setup import setup_logger
 from src.shared.schemas import TokenModelResponse
+from src.task_service.endpoints import GET_SESSION_BY_TOKEN
 
 logger = setup_logger(__name__)
 
-
-async def get_users_from_external_service():
-    """
-    Get all users from external service
-    :return: list of users
-    """
-    try:
-        headers = {
-            "content-type": "application/json",
-        }
-
-        async with httpx.AsyncClient() as client:
-            response = await client.get(GET_USERS, headers=headers)
-            response.raise_for_status()
-            json_data = response.json()
-            return json_data
-    except httpx.RequestError as e:
-        logger.error(f"An error occurred while requesting {e.request.url!r}.")
-    except httpx.HTTPStatusError as e:
-        logger.error(f"Error response {e.response.status_code} while requesting {e.request.url!r}.")
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-    return None
 
 
 async def check_auth_from_external_service(access_token: str, skip_auth: bool = False) -> TokenModelResponse | None:
@@ -59,20 +37,20 @@ async def check_auth_from_external_service(access_token: str, skip_auth: bool = 
         logger.error(f"Unexpected error: {str(e)}")
     return None
 
-
-async def find_user_by_email(email: str) -> Response:
+async def get_session_by_token(token: str, token_type: str = "access_token") -> Response:
     """
-    Find user by email
-    :param email: email to find
-    :return: response from external service
+    Получить сессию по токену из внешнего сервиса.
+    :param token: Token for finding session
+    :param token_type: Token type for finding session
+    :return response: Response from external service
     """
     headers = {
         "content-type": "application/json",
     }
     async with httpx.AsyncClient() as client:
         response = await client.get(
-            f"{FIND_USER_BY_EMAIL}?email={email}",
-            headers=headers,
+            f"{GET_SESSION_BY_TOKEN}?token={token}&token_type={token_type}",
+            headers=headers
         )
-        logger.info(f"Find user by email: {email} with response {response.json()}")
+        logger.info(f"Get session by token {token} with type {token_type} with response: {response.json()}")
         return response

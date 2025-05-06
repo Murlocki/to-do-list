@@ -1,6 +1,7 @@
+import redis.asyncio as aioredis
+
 from src.shared.config import settings
 from src.shared.logger_setup import setup_logger
-import redis.asyncio as aioredis
 
 logger = setup_logger(__name__)
 

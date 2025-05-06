@@ -6,12 +6,12 @@ from fastapi import HTTPException, status, APIRouter, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.task_service import crud
 from src.session_service.external_functions import check_auth_from_external_service, find_user_by_email
 from src.shared import logger_setup
 from src.shared.common_functions import decode_token, verify_response
 from src.shared.database import SessionLocal
 from src.shared.schemas import AuthResponse, UserDTO
+from src.task_service import crud
 from src.task_service.schemas import TaskCreate
 
 task_router = APIRouter()
