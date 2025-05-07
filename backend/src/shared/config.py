@@ -35,6 +35,7 @@ class Settings(BaseSettings):
     user_service_url: str = Field("http://127.0.0.1:8002")
     session_service_url: str = Field("http://127.0.0.1:8001")
     auth_service_url: str = Field("http://127.0.0.1:8000")
+    task_service_url: str = Field("http://127.0.1:8003")
     kafka_broker: str = Field("localhost:9093")
     kafka_email_send_topic_name: str = "email_send"
     kafka_email_send_topic_partitions: int = 2
@@ -46,6 +47,10 @@ class Settings(BaseSettings):
     email_send_delay: int = 5
     email_send_address: str = ""
     email_send_password: str = ""
+    task_remind_timer_seconds: int = 0
+    task_remind_timer_minutes: int = 5
+    task_remind_timer_hours: int = 0
+    task_remind_timer_workers: int = 1
 
 
 settings = Settings()
