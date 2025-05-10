@@ -30,8 +30,8 @@ const elems = [
 </script>
 
 <template>
-  <v-navigation-drawer v-model="headerStore.menuIsOpen" temporary position-sticky class="w-auto h-auto" rail
-                       rail-width="0">
+  <v-navigation-drawer v-model="headerStore.menuIsOpen" temporary class="w-auto h-auto" rail
+                       rail-width="0" app>
     <v-list-item class="d-flex flex-column h-auto pa-3 bg-teal-accent-2">
       <template #prepend >
         <div class="w-auto h-auto">
@@ -48,7 +48,7 @@ const elems = [
           />
         </div>
       </template>
-      <v-list-item-title class="text-lg-h3 text-md-h4 text-h5 font-italic text-center">TO-DO app</v-list-item-title>
+      <v-list-item-title class="text-lg-h3 text-md-h4 text-h5 text-center font-italic" style="font-family: 'JetBrains Mono',serif">To Do app</v-list-item-title>
       <v-list-item-subtitle class="text-sm-h5 text-h6 py-2">App for your to-do-list</v-list-item-subtitle>
     </v-list-item>
     <div v-for="elem in elems">

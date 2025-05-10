@@ -1,17 +1,30 @@
-<script setup lang="ts">
-
-import Header from "@/components/Header/Header.vue";
-import SideMenu from "@/components/Header/SideMenu.vue";
-</script>
-
 <template>
-  <v-app class="w-100">
-    <SideMenu class="ma-0 pa-0"/>
-    <Header class="h-auto"/>
-    <v-main class="bg-blue w-100" style="height: 500px;"></v-main>
+  <!-- App.vue -->
+
+  <v-app>
+    <SideMenu />
+    <Header />
+
+    <!-- Sizes your content based upon application components -->
+    <v-main app>
+
+      <!-- Provides the application the proper gutter -->
+      <v-container fluid class="pt-10 px-0 h-auto">
+
+        <!-- If using vue-router -->
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      <!-- -->
+    </v-footer>
   </v-app>
 </template>
 
-<style scoped>
 
-</style>
+<script setup lang="ts">
+import Header from "@/components/Header/Header.vue";
+import SideMenu from "@/components/Header/SideMenu.vue";
+import MainPage from "@/components/MainPage/MainPage.vue";
+</script>

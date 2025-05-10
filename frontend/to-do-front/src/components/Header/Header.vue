@@ -2,28 +2,28 @@
 import icon from "@/assets/icon.svg"
 import {useHeaderStore} from "@/store/headerStore.ts";
 import {useAuthStore} from "@/store/authStore.ts";
-
+import '@/style.css'
 const headerStore = useHeaderStore();
 const authStore = useAuthStore();
 </script>
 
 <template>
-  <v-app-bar :elevation="2" app class="bg-teal-accent-2 py-md-4 py-2" height="auto">
+  <v-app-bar :elevation="2" app class="bg-teal-accent-2 py-2 " height="100">
     <template v-slot:prepend>
       <v-app-bar-nav-icon size="x-large" @click="headerStore.changeMenuStatus(true)" />
     </template>
 
-    <v-app-bar-title>
-      <div class="d-flex align-center">
+    <v-app-bar-title height="auto">
+      <div class="d-flex align-center h-100" >
         <v-img
             :src="icon"
             alt="Logo"
-            class="rounded-circle me-4"
+            class="rounded-circle me-4 "
             max-width="100"
             max-height="100"
-            style="object-fit: contain"
+            style="object-fit: fill"
         />
-        <span class="text-lg-h3 text-md-h4 text-h5 font-italic">TO-DO App</span>
+        <span class="text-lg-h3 text-md-h4 text-h5 font-italic" style="font-family: 'JetBrains Mono',serif">To Do App</span>
       </div>
     </v-app-bar-title>
 
@@ -48,5 +48,4 @@ const authStore = useAuthStore();
 </template>
 
 <style scoped>
-
 </style>
