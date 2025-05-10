@@ -40,8 +40,9 @@ async def update_user(db: AsyncSession, user_name: str, user: UserUpdate):
         update_data = user.model_dump(exclude_unset=True)
         logger.info(f"Updating user {update_data}")
         if "password" in update_data:
-            update_data["hashed_password"] = get_password_hash(update_data.pop("password"))
-            logger.info(f"Updated password {update_data['hashed_password']}")
+            password = update_data.pop("password")
+            update_data["hashed_password"] = get_password_hash(password)
+            logger.info(f"Updated password {update_data['hashed_password']} {password}")
         for key, value in update_data.items():
             setattr(db_user, key, value)
     await db.refresh(db_user)
@@ -86,11 +87,12 @@ async def get_users(db: AsyncSession):
 
 async def authenticate_user(db: AsyncSession, identifier: str, password: str):
     user = await get_user_by_email(db, identifier) or await get_user_by_username(db, identifier)
+    logger.info(f"{user.to_dict()}")
     if not user:
         logger.error(f"User {identifier} not found.")
         return None
     if not verify_password(password, user.hashed_password):
-        logger.error(f"User {identifier} not found.")
+        logger.error(f"User {identifier} dont have correct password.")
         return None
     logger.info(f"Authenticated user {user.to_dict()}")
     return user

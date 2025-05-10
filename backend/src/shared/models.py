@@ -29,6 +29,7 @@ class User(Base):
             "id": self.id,
             "email": self.email,
             "username": self.username,
+            "hashed_password": self.hashed_password,
             "first_name": self.first_name,
             "last_name": self.last_name,
             "is_active": self.is_active,

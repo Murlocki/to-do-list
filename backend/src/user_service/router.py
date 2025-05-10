@@ -173,9 +173,9 @@ async def update_password(password_form: PasswordForm, token: str = Depends(get_
         logger.warning("Password does not meet complexity requirements")
         result.data["message"] = "Password does not meet complexity requirements"
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=result.model_dump())
-    logger.info(f"Password validated{password_form.new_password}")
+    logger.info(f"Password validated {password_form.new_password}")
     # Update user password
-    user_update = UserUpdate(**user.to_dict(), password=get_password_hash(password_form.new_password))
+    user_update = UserUpdate(**user.to_dict(), password=password_form.new_password)
     logger.info(f"Update user:{user_update}")
     user_update = await crud.update_user(db, user.username, user_update)
     logger.info(f"User {user_update.username} updated password {user_update.hashed_password}")

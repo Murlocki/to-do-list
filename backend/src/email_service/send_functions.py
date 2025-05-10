@@ -16,12 +16,14 @@ async def send_email_with_retry(subject, reset_link, to_email, retries=settings.
         with open("register_email.html", "r", encoding="utf-8") as file:
             subject = "Registration Confirmation in to-do list"
             html_content = file.read()
+            link = f"{settings.register_link}/{reset_link}"
     else:
         with open("recover_password.html", "r", encoding="utf-8") as file:
             subject = "Recovery Confirmation in to-do list"
             html_content = file.read()
+            link = f"{settings.reset_password_link}/{reset_link}"
     # Форматирование шаблона
-    html_content = html_content.strip().replace("{name}", to_email).replace("{link}", reset_link)
+    html_content = html_content.strip().replace("{name}", to_email).replace("{link}", link)
     # Создание MIME-сообщения
     msg = MIMEMultipart("alternative")
     msg["From"] = settings.email_send_address
