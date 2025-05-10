@@ -64,6 +64,7 @@ const onSubmit = async () => {
     const response_json = await response.json();
     error.value = response_json['detail'];
     console.log(response_json);
+    loading.value = false;
   } else {
     error.value = "Please correct the errors above."
   }

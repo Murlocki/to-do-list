@@ -96,6 +96,10 @@ const onSubmit = async () => {
                :loading="loading">Login
         </v-btn>
       </div>
+      <div class="w-100 h-auto pa-2 d-flex align-center justify-center flex-column">
+        <router-link class="text-h6 text-blue-darken-2 mb-5" to="/login/forgot-password">Forgot password?</router-link>
+      </div>
+
     </v-form>
   </div>
 </template>

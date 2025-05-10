@@ -3,6 +3,8 @@ import MainPage from "../components/MainPage/MainPage.vue";
 import RegisterForm from "../components/Register/RegisterForm.vue";
 import RegisterSubmittion from "../components/Register/RegisterSubmittion.vue";
 import LoginPage from "../components/Login/LoginPage.vue";
+import ResetEmailForm from "../components/RestorePassword/ResetEmailForm.vue";
+import ChangePasswordForm from "../components/RestorePassword/ChangePasswordForm.vue";
 
 const routes = [
     {
@@ -20,6 +22,15 @@ const routes = [
         path:'/register/submit/:token',
         component: RegisterSubmittion,
         props: true
+    },
+    {
+        path: '/login/forgot-password',
+        component: ResetEmailForm
+    },
+    {
+        path:'/login/forgot-password/:token',
+        component: ChangePasswordForm,
+        props: true,
     }
 ]
 export const router = createRouter({

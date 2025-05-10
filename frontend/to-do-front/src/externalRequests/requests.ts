@@ -1,5 +1,5 @@
 
-import {register, activateAcc, login, logout} from "./endpoints.ts";
+import {register, activateAcc, login, logout, getForgotPasswordEmail, resetPassword} from "./endpoints.ts";
 import type {UserCreate} from "@/models/UserCreate.ts";
 import type {AuthForm} from "@/models/AuthForm.ts"
 
@@ -37,5 +37,23 @@ export async function loginOut(token: string) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
+    })
+}
+export async function getForgotEmail(email: string) {
+    return await fetch(`${getForgotPasswordEmail}/${email}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+}
+export async function updatePassword(token: string, password: string) {
+    return await fetch(`${resetPassword}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({"new_password": password})
     })
 }

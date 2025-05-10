@@ -27,7 +27,7 @@ async def consume():
         to_email = data.get("email", "")
         message_type = data.get("message_type", "")
         if to_email:
-            await send_email_with_retry(message_type, f"{settings.register_link}/{body}", to_email)
+            await send_email_with_retry(message_type, body, to_email)
         else:
             logger.error("Missing 'to' field in message")
 
