@@ -2,7 +2,8 @@
   import image1 from '@/assets/1.jpeg'
   import image2 from '@/assets/2.jpg'
   import {useRouter} from 'vue-router'
-
+  import {useAuthStore} from "@/store/authStore.ts";
+  const authStore = useAuthStore();
   const images = [image1, image2]
 
   const router = useRouter()
@@ -34,8 +35,8 @@
           <span class="text-h4 font-italic">To do application for your daily to-do-plans. Plans your day ahead and track your progress between several devices.</span>
         </div>
         <div class="d-flex flex-sm-row flex-column justify-space-around w-100 h-md-50 h-100 mt-10 ga-5">
-          <v-btn class="w-sm-50 w-100 h-100 pa-5 text-lg-h4 text-h5 rounded-xl bg-teal-darken-1" @click="loginPage">Login</v-btn>
-          <v-btn class="w-sm-50 w-100 h-100 pa-5 text-lg-h4 text-h5 rounded-xl bg-teal-accent-2" @click="registerPage">Register</v-btn>
+          <v-btn class="w-sm-50 w-100 h-100 pa-5 text-lg-h4 text-h5 rounded-xl bg-teal-darken-1" @click="loginPage" :disabled="authStore.isLoggedIn">Login</v-btn>
+          <v-btn class="w-sm-50 w-100 h-100 pa-5 text-lg-h4 text-h5 rounded-xl bg-teal-accent-2" @click="registerPage" :disabled="authStore.isLoggedIn">Register</v-btn>
         </div>
       </div>
     </div>

@@ -1,10 +1,20 @@
 <script setup lang="ts">
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {nameRegex, emailRegex, passwordRegex, userNameRegex} from "@/regex.ts";
 import type { VForm } from 'vuetify/components';
 import {UserCreate} from "@/models/UserCreate.js";
 import {registerUser} from "@/externalRequests/requests.ts";
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/store/authStore.ts";
+
+const router = useRouter()
+const store = useAuthStore();
+onMounted(() => {
+  console.log(store.isLoggedIn);
+  if (store.isLoggedIn) {
+    router.push("/");
+  }
+})
 
 const valid = ref(false);
 const form = ref<VForm | null>(null)
@@ -38,7 +48,6 @@ const userNameRules = [
 
 const error = ref("");
 const loading = ref(false);
-const router = useRouter()
 const onSubmit = async () => {
   loading.value = true;
   const isValid = await form.value?.validate()
@@ -64,7 +73,7 @@ const onSubmit = async () => {
 
 <template>
   <div style="min-width: 100vw;" class="d-flex align-center justify-center pa-md-0 px-2">
-    <v-form v-model="valid" class="d-flex flex-column align-center pa-md-4 pa-2 ga-4 elevation-4 w-lg-50 w-100" style="border-radius: 100px" ref="form">
+    <v-form v-model="valid" class="d-flex flex-column align-center pa-md-4 pa-2 ga-4 elevation-4 w-lg-50 w-md-75 w-100" style="border-radius: 100px" ref="form">
       <div class="bg-teal-darken-1 rounded-pill pa-4 my-6">
         <span style="font-family: 'JetBrains Mono',serif" class="text-md-h3 text-sm-h4 text-h5">Register your to-do-list</span>
       </div>
