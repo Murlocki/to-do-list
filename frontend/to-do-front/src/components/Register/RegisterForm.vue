@@ -9,10 +9,10 @@ import {useAuthStore} from "@/store/authStore.ts";
 
 const router = useRouter()
 const store = useAuthStore();
-onMounted(() => {
+onMounted(async () => {
   console.log(store.isLoggedIn);
   if (store.isLoggedIn) {
-    router.push("/");
+    await router.push("/");
   }
 })
 
@@ -56,7 +56,7 @@ const onSubmit = async () => {
     const user: UserCreate = new UserCreate(email.value, firstName.value, lastName.value, userName.value, password.value);
     const response: Response = await registerUser(user);
     if(response.status === 201){
-      router.push('/login');
+      await router.push('/login');
       loading.value = false;
       return;
     }

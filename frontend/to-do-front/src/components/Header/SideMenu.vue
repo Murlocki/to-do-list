@@ -2,6 +2,9 @@
 import {useHeaderStore} from "@/store/headerStore.ts";
 import icon from '@/assets/icon.svg'
 import {useAuthStore} from "@/store/authStore.ts";
+import {useRouter} from "vue-router";
+import {loginOut} from "@/externalRequests/requests.ts";
+import {ref} from "vue";
 const headerStore = useHeaderStore();
 const authStore = useAuthStore();
 const elems = [
@@ -27,6 +30,20 @@ const elems = [
     'showBeforeLogin':true
   }
 ]
+
+const router = useRouter();
+const isLoading = ref(false);
+const logoutFunction = async function (){
+  isLoading.value = true;
+  const token = authStore.$state.token;
+  const response = await loginOut(token);
+  if(response.status === 200){
+    authStore.clearToken()
+    await router.push('/');
+  }
+  await headerStore.changeMenuStatus(false);
+  isLoading.value = false;
+}
 </script>
 
 <template>
@@ -62,8 +79,8 @@ const elems = [
     </div>
     <template #append>
       <div class="w-100 h-100 pa-2">
-        <v-btn size="x-large" class="w-100 bg-teal-darken-1 text-md-h4 test-h5" v-if="authStore.isLoggedIn">Logout</v-btn>
-        <v-btn size="x-large" class="w-100 bg-teal-darken-1 text-md-h4 test-h5" v-if="!authStore.isLoggedIn">Login</v-btn>
+        <v-btn size="x-large" class="w-100 bg-teal-darken-1 text-md-h4 test-h5" v-if="authStore.isLoggedIn" @click="logoutFunction" :loading="isLoading">Logout</v-btn>
+        <v-btn size="x-large" class="w-100 bg-teal-darken-1 text-md-h4 test-h5" v-if="!authStore.isLoggedIn" @click="router.push('/login')">Login</v-btn>
       </div>
     </template>
   </v-navigation-drawer>

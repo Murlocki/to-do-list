@@ -1,5 +1,5 @@
 
-import {register, activateAcc, login} from "./endpoints.ts";
+import {register, activateAcc, login, logout} from "./endpoints.ts";
 import type {UserCreate} from "@/models/UserCreate.ts";
 import type {AuthForm} from "@/models/AuthForm.ts"
 
@@ -28,5 +28,14 @@ export async function loginUser(authForm: AuthForm) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(authForm)
+    })
+}
+export async function loginOut(token: string) {
+    return await fetch(logout, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
     })
 }

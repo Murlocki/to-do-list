@@ -49,7 +49,7 @@ const onSubmit = async () => {
     if (response.status === 200) {
       const response_json = await response.json();
       authStore.setToken(response_json["token"]);
-      router.push('/');
+      await router.push('/');
       loading.value = false;
       return;
     }
