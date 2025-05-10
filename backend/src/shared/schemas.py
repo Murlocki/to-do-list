@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, Any
 
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, AliasChoices
 
 from src.shared.models import TaskStatus
 
@@ -48,12 +48,12 @@ class AuthResponse(BaseModel):
 
 class UserDTO(BaseModel):
     id: int
-    username: str
-    first_name: str
-    last_name: str
+    username: str = Field(validation_alias=AliasChoices('username', 'userName'))
+    first_name: str = Field(validation_alias=AliasChoices('first_name', 'firstName'))
+    last_name: str = Field(validation_alias=AliasChoices('last_name', 'lastName'))
     email: EmailStr
-    is_active: bool = Field(False)
-    is_superuser: bool = Field(False)
+    is_active: bool = Field(False, validation_alias=AliasChoices('is_active', 'isActive'))
+    is_superuser: bool = Field(False, validation_alias=AliasChoices('is_superuser', 'isSuperuser'))
     class Config:
         from_attributes = True
 class UserAuthDTO(BaseModel):

@@ -47,6 +47,7 @@ class Settings(BaseSettings):
     email_send_delay: int = 5
     email_send_address: str = ""
     email_send_password: str = ""
+    register_link: str = ""
     task_remind_timer_seconds: int = 0
     task_remind_timer_minutes: int = 5
     task_remind_timer_hours: int = 0

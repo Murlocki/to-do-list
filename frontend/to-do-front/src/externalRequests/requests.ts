@@ -1,5 +1,5 @@
 
-import {register} from "./endpoints.ts";
+import {register, activateAcc} from "./endpoints.ts";
 import type {UserCreate} from "@/models/UserCreate.ts";
 
 export async function registerUser(user: UserCreate) {
@@ -9,5 +9,14 @@ export async function registerUser(user: UserCreate) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
+    })
+}
+export async function activateAccount(token: string) {
+    return await fetch(activateAcc, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
     })
 }

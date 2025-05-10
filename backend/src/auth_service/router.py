@@ -66,7 +66,7 @@ async def register_user(user_data: UserCreate):
     return result
 
 
-@auth_router.post("/auth/activate_account")
+@auth_router.post("/auth/activate_account", status_code=status.HTTP_200_OK)
 async def activate_account(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
     """
     Activate a user
