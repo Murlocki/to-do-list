@@ -14,6 +14,7 @@ async def create_task(task_create: TaskCreate, user_id:int,  db:AsyncSession):
             user_id=user_id,
             title=task_create.title,
             description=task_create.description,
+            status=task_create.status,
             fulfilled_date=task_create.fulfilled_date,
         )
         db.add(task)

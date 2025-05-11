@@ -10,14 +10,14 @@ const authStore = useAuthStore();
 const elems = [
   {
     'id': 1,
-    'link':'',
+    'link':'/',
     'title':'Main',
     'icon':'mdi-home',
     'showBeforeLogin':true
   },
   {
     'id': 2,
-    'link':'',
+    'link':'/tasks',
     'title':'Tasks',
     'icon':'mdi-post',
     'showBeforeLogin':true
@@ -36,9 +36,9 @@ const isLoading = ref(false);
 const logoutFunction = async function (){
   isLoading.value = true;
   const token = authStore.$state.token;
+  authStore.clearToken()
   const response = await loginOut(token);
   if(response.status === 200){
-    authStore.clearToken()
     await router.push('/');
   }
   await headerStore.changeMenuStatus(false);

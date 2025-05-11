@@ -2,6 +2,7 @@ import asyncio
 from enum import Enum
 from typing import List
 
+import sqlalchemy
 from sqlalchemy import String, Boolean, DateTime, func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, declarative_base, relationship
 
@@ -50,7 +51,7 @@ class Task(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=True)
-    status: Mapped[TaskStatus] = mapped_column(default=TaskStatus.IN_PROGRESS)
+    status: Mapped[TaskStatus] = mapped_column(sqlalchemy.Enum(TaskStatus),default=TaskStatus.IN_PROGRESS, nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     fulfilled_date: Mapped[DateTime] = mapped_column(DateTime(timezone=True), nullable=True, default=None)
 

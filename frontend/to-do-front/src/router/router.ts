@@ -5,6 +5,7 @@ import RegisterSubmittion from "../components/Register/RegisterSubmittion.vue";
 import LoginPage from "../components/Login/LoginPage.vue";
 import ResetEmailForm from "../components/RestorePassword/ResetEmailForm.vue";
 import ChangePasswordForm from "../components/RestorePassword/ChangePasswordForm.vue";
+import TaskView from "../components/TaskView/TaskView.vue";
 
 const routes = [
     {
@@ -31,6 +32,10 @@ const routes = [
         path:'/login/forgot-password/:token',
         component: ChangePasswordForm,
         props: true,
+    },
+    {
+        path:'/tasks',
+        component: TaskView
     }
 ]
 export const router = createRouter({

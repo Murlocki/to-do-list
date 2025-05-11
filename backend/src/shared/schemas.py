@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Optional, Any
 
 from pydantic import BaseModel, Field, EmailStr, AliasChoices
+from pydantic.alias_generators import to_camel
 
 from src.shared.models import TaskStatus
 
@@ -67,11 +68,13 @@ class TaskDTO(BaseModel):
     title: str
     description: str | None = Field(None)
     status: int = Field(TaskStatus.IN_PROGRESS.value)
-    user_id: int
-    fulfilled_date: Optional[datetime] = None
+    user_id: int = Field(validation_alias=AliasChoices('user_id', 'userId'))
+    fulfilled_date: Optional[datetime] | None = Field(None,validation_alias=AliasChoices('fulfilled_date', 'fulfilledDate'))
 
     class Config:
         from_attributes = True
         json_encoders = {
             datetime: lambda v: v.isoformat(),  # Преобразование datetime в ISO строку
         }
+        alias_generator = to_camel
+        validate_by_name = True

@@ -10,7 +10,7 @@ from src.session_service.external_functions import check_auth_from_external_serv
 from src.shared import logger_setup
 from src.shared.common_functions import decode_token, verify_response
 from src.shared.database import SessionLocal
-from src.shared.schemas import AuthResponse, UserDTO
+from src.shared.schemas import AuthResponse, UserDTO, TaskDTO
 from src.task_service import crud
 from src.task_service.schemas import TaskCreate
 
@@ -77,7 +77,7 @@ async def create_task(task_data: TaskCreate, token = Depends(get_valid_token), d
     return AuthResponse(
         token=token,
         data=task.to_dict(),
-    ).model_dump()
+    ).model_dump(by_alias=True)
 @task_router.get("/task/me", status_code=status.HTTP_200_OK, response_model=AuthResponse)
 async def get_tasks_me(token:str = Depends(get_valid_token),db: AsyncSession = Depends(get_db)):
     """
@@ -107,8 +107,8 @@ async def get_tasks_me(token:str = Depends(get_valid_token),db: AsyncSession = D
     logger.info(f"Tasks retrieved: {tasks}")
     return AuthResponse(
         token=token,
-        data=[task.to_dict() for task in tasks],
-    ).model_dump()
+        data=[TaskDTO(**task.to_dict()) for task in tasks],
+    ).model_dump(by_alias=True)
 
 @task_router.delete("/task/me/{task_id}", status_code=status.HTTP_200_OK, response_model=AuthResponse)
 async def delete_task_by_id(task_id: int, token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
@@ -145,7 +145,7 @@ async def delete_task_by_id(task_id: int, token: str = Depends(get_valid_token),
     return AuthResponse(
         token=token,
         data=task.to_dict(),
-    ).model_dump()
+    ).model_dump(by_alias=True)
 
 @task_router.patch("/task/me/{task_id}", status_code=status.HTTP_200_OK, response_model=AuthResponse)
 async def update_task_by_id(task_id: int, task_data: TaskCreate, token: str = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
@@ -184,4 +184,4 @@ async def update_task_by_id(task_id: int, task_data: TaskCreate, token: str = De
     return AuthResponse(
         token=token,
         data=task.to_dict(),
-    ).model_dump()
+    ).model_dump(by_alias=True)

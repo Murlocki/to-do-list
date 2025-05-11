@@ -87,7 +87,6 @@ async def get_users(db: AsyncSession):
 
 async def authenticate_user(db: AsyncSession, identifier: str, password: str):
     user = await get_user_by_email(db, identifier) or await get_user_by_username(db, identifier)
-    logger.info(f"{user.to_dict()}")
     if not user:
         logger.error(f"User {identifier} not found.")
         return None
