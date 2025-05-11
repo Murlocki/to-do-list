@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 import Task from "@/models/Task.ts"
+import TaskUpdate from "@/models/TaskUpdate.ts"
 
 export const useTaskStore = defineStore('task', {
     state: () => ({
@@ -17,6 +18,11 @@ export const useTaskStore = defineStore('task', {
                 })
             }
             console.log(this.$state.tasks)
+        },
+        async updateTaskById(id: string, task: TaskUpdate) {
+            const oldTask = await this.$state.tasks.find((task: Task) => task.id === id) as Task;
+            await oldTask.updateByTask(task)
+            console.log(oldTask)
         }
     }
 })

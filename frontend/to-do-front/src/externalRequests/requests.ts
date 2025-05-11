@@ -1,7 +1,8 @@
 
-import {register, activateAcc, login, logout, getForgotPasswordEmail, resetPassword, getMyTasks} from "./endpoints.ts";
+import {register, activateAcc, login, logout, getForgotPasswordEmail, resetPassword, getMyTasks, updateTask} from "./endpoints.ts";
 import type {UserCreate} from "@/models/UserCreate.ts";
 import type {AuthForm} from "@/models/AuthForm.ts"
+import type {TaskUpdate} from "@/models/TaskUpdate.ts"
 
 export async function registerUser(user: UserCreate) {
     return await fetch(register, {
@@ -65,5 +66,15 @@ export async function getAllTasks(token: string) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
+    })
+}
+export async function updateTaskById(taskId:number, newTask: TaskUpdate, token: string) {
+    return await fetch(`${updateTask}/${taskId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(newTask)
     })
 }

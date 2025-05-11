@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useAuthStore } from "@/store/authStore.ts";
-import { getAllTasks } from "@/externalRequests/requests.ts";
-import { useRouter } from "vue-router";
-import { useTaskStore } from "@/store/taskStore.ts";
+import {onMounted, ref, reactive} from "vue";
+import {useAuthStore} from "@/store/authStore.ts";
+import {getAllTasks, updateTaskById} from "@/externalRequests/requests.ts";
+import {useRouter} from "vue-router";
+import {useTaskStore} from "@/store/taskStore.ts";
 import Task from "@/models/Task.ts";
+import TaskUpdate from "@/models/TaskUpdate.ts";
+import {Status} from "@/models/Task.ts"
+
 
 const authStore = useAuthStore();
 const taskStore = useTaskStore();
@@ -25,24 +28,64 @@ onMounted(async () => {
   console.log(response_json["data"]);
   await authStore.setToken(response_json["token"]);
   await taskStore.fetchTasks(response_json["data"]);
+
+  taskStore.$state.tasks.forEach((item: Task) => {
+    scrollerRefs.set(item.id, {
+      checked: item.status === Status.COMPLETED,
+      loading: false,
+    })
+  })
+  console.log(scrollerRefs)
+  console.log(scrollerRefs.get(1)?.checked)
   loading.value = false;
 })
 
-// Заглушка для создания новой задачи
-function addTask() {
-  // Здесь можно открыть модальное окно с формой или сразу добавить новую задачу
-  // Например, добавим пустую задачу в список (для демонстрации)
-  const newTask = new Task(
-      Date.now(), // id
-      "New Task",
-      null,
-      0, // статус (например, IN_PROGRESS)
-      1, // userId (пример)
-      null
-  );
-  taskStore.$state.tasks.unshift(newTask); // добавляем в начало списка
-  // Можно добавить логику редактирования сразу после создания
+type ScrollerRef = {
+  checked: boolean
+  loading: boolean
 }
+
+const scrollerRefs = reactive(new Map<number, ScrollerRef>());
+function getRef(taskId: number) {
+  return scrollerRefs.get(taskId) ?? { checked: false, loading: false };
+}
+const error = ref('');
+
+async function toggleComplete(task: Task) {
+  const refItem = scrollerRefs.get(task.id);
+  if (!refItem) return;
+
+  refItem.loading = true;
+
+  try {
+    const taskUpdate = new TaskUpdate(
+        task.title,
+        task.description,
+        refItem.checked ? Status.COMPLETED : Status.IN_PROGRESS,
+        task.fulfilledDate
+    );
+    const response = await updateTaskById(task.id, taskUpdate, authStore.token);
+    const response_json = await response.json();
+
+    if (response.ok) {
+      await authStore.setToken(response_json.token);
+      error.value = "";
+      await taskStore.updateTaskById(task.id, taskUpdate);
+    } else if (response.status === 401 || response.status === 403) {
+      authStore.clearToken();
+      await router.push("/");
+    } else {
+      authStore.setToken(response_json.detail?.token);
+      error.value = response_json.detail?.error || "Unknown error";
+    }
+  } catch (e) {
+    console.error("Ошибка при обновлении задачи:", e);
+    error.value = "Ошибка сети или сервера";
+  } finally {
+    refItem.loading = false;
+  }
+}
+
 </script>
 
 <template>
@@ -53,13 +96,14 @@ function addTask() {
         <v-btn
             class="bg-teal-darken-1"
             rounded
-            @click="addTask"
             aria-label="Add new task"
         >
           <v-icon left>mdi-plus</v-icon>
         </v-btn>
       </div>
-
+      <div v-if="error">
+        <span class="text-error text-h3">{{ error }}</span>
+      </div>
       <v-virtual-scroll
           :items="taskStore.$state.tasks"
           class="w-100 h-auto"
@@ -67,25 +111,30 @@ function addTask() {
       >
         <template #default="{ item }">
           <v-card class="pa-3 mb-2" outlined>
-            <v-row align="center" justify="space-between" no-gutters>
+            <v-progress-linear v-if="getRef((item as Task).id).loading" height="40" indeterminate></v-progress-linear>
+            <v-row align="center" justify="space-between" no-gutters v-if="!getRef((item as Task).id).loading">
               <v-col cols="auto">
                 <v-checkbox
                     :aria-label="`Mark ${(item as Task).title} as completed`"
-                    @change="toggleCompleted(item)"
+                    v-model="getRef((item as Task).id).checked"
+                    @change="toggleComplete(item)"
+
                 />
               </v-col>
 
               <v-col>
                 <div class="text-md-h5 text-h6">{{ (item as Task).title }}</div>
-                <div class="text-md-body-1 text-body-2 text--secondary text-break">FFPFPEPFEPFPFPEFPEPFEPFPEPEFPFPFPEPFPFP</div>
+                <div class="text-md-body-1 text-body-2 text--secondary text-break">
+                  FFPFPEPFEPFPFPEFPEPFEPFPEPEFPFPFPEPFPFP
+                </div>
                 <div class="text-md-body-1 text-body-2 text--secondary">{{ (item as Task).prettyFulfilledDate }}</div>
               </v-col>
 
               <v-col cols="auto" class="d-flex flex-column gap-4 h-100">
-                <v-btn icon @click="editTask(item)" aria-label="Edit task">
+                <v-btn icon  aria-label="Edit task">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn icon @click="deleteTask(item)" aria-label="Delete task">
+                <v-btn icon aria-label="Delete task">
                   <v-icon color="red">mdi-delete</v-icon>
                 </v-btn>
               </v-col>

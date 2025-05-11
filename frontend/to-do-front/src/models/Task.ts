@@ -1,10 +1,12 @@
-const Status = {
+import type TaskUpdate from "@/models/TaskUpdate.ts";
+
+export const Status = {
     IN_PROGRESS: 0,
     COMPLETED: 1,
 } as const;
 
 type Status = typeof Status[keyof typeof Status];
-export const StatusLabels: Record<StatusType, string> = {
+export const StatusLabels: Record<Status, string> = {
     [Status.IN_PROGRESS]: "In Progress",
     [Status.COMPLETED]: "Completed",
 };
@@ -74,5 +76,18 @@ export default class Task {
             });
         }
         return null;
+    }
+    public set status(value: Status) {
+        this._status = value;
+    }
+    /**
+     * Update task by taskUpdate
+     * @param {TaskUpdate} task
+     */
+    public updateByTask(task: TaskUpdate) {
+        this._status = task.status;
+        this._description = task.description;
+        this._title = task.title;
+        this._fulfilledDate = task.fulfilledDate
     }
 }

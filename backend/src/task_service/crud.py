@@ -24,7 +24,7 @@ async def create_task(task_create: TaskCreate, user_id:int,  db:AsyncSession):
 
 async def get_tasks_by_user_id(db:AsyncSession, user_id:int):
     async with db.begin():
-        tasks = await db.execute(select(Task).filter(Task.user_id == user_id))
+        tasks = await db.execute(select(Task).filter(Task.user_id == user_id).order_by(Task.id))
         tasks = tasks.scalars().all()
         logger.info(f"Get tasks {tasks}")
     return tasks
