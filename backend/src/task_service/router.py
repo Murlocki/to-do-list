@@ -47,10 +47,12 @@ async def get_db():
 async def create_task(task_data: TaskCreate, token = Depends(get_valid_token), db: AsyncSession = Depends(get_db)):
     """
     Create a new task
+    :param task_data:
     :param token: User token
     :param db: session
     :return: new TaskDTO
     """
+    logger.info(task_data)
     payload = decode_token(token)
     result = AuthResponse(token=token, data={"message":""})
     if not payload or not payload["sub"]:
@@ -174,6 +176,12 @@ async def update_task_by_id(task_id: int, task_data: TaskCreate, token: str = De
         raise HTTPException(status_code=error["status"], detail=result.model_dump())
     user = UserDTO(**response.json())
     logger.info(f"User found: {user}")
+
+    task = await crud.get_task_by_id(db, task_id)
+    if task.version > task_data.version:
+        logger.error(f"Task {task.to_dict()} was already updated")
+        result.data = {"message": f"Task was already updated"}
+        raise HTTPException(status_code=400, detail=result.model_dump())
 
     task = await crud.update_task_by_id(db, task_id, task_data)
     if not task:

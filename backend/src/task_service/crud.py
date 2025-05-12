@@ -52,5 +52,16 @@ async def update_task_by_id(db:AsyncSession, task_id:int, task_create:TaskCreate
         logger.info(f"Updating task {update_data}")
         for key, value in update_data.items():
             setattr(task, key, value)
+        task.version = task.version + 1
     await db.refresh(task)
     return task
+
+async def get_task_by_id(db:AsyncSession, task_id:int):
+    async with db.begin():
+        task = await db.execute(select(Task).filter(Task.id == task_id))
+        task = task.scalar_one_or_none()
+        if not task:
+            logger.error(f"Task {task_id} not found.")
+            return None
+        logger.info(f"Found task {task.to_dict()}")
+        return task

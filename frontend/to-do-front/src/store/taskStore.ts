@@ -9,13 +9,18 @@ export const useTaskStore = defineStore('task', {
     getters: {},
     actions: {
         async fetchTasks(tasks: Task[]) {
-            console.log(tasks)
             if (tasks && tasks.length > 0) {
-                tasks.forEach((task: Task): void => {
-                    this.$state.tasks.push(new Task(
-                        task.id,task.title,task.description,task.status,task.userId,task.fulfilledDate
-                    ))
-                })
+                this.$state.tasks = tasks.map(task => new Task(
+                    task.id,
+                    task.title,
+                    task.description,
+                    task.status,
+                    task.userId,
+                    task.fulfilledDate,
+                    task.version
+                ));
+            } else {
+                this.$state.tasks = [];
             }
             console.log(this.$state.tasks)
         },
@@ -23,6 +28,9 @@ export const useTaskStore = defineStore('task', {
             const oldTask = await this.$state.tasks.find((task: Task) => task.id === id) as Task;
             await oldTask.updateByTask(task)
             console.log(oldTask)
+        },
+        async clearTasks() {
+            this.$state.tasks = []
         }
     }
 })

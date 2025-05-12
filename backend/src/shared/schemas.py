@@ -55,6 +55,7 @@ class UserDTO(BaseModel):
     email: EmailStr
     is_active: bool = Field(False, validation_alias=AliasChoices('is_active', 'isActive'))
     is_superuser: bool = Field(False, validation_alias=AliasChoices('is_superuser', 'isSuperuser'))
+    version: int = Field(0)
     class Config:
         from_attributes = True
 class UserAuthDTO(BaseModel):
@@ -70,7 +71,7 @@ class TaskDTO(BaseModel):
     status: int = Field(TaskStatus.IN_PROGRESS.value)
     user_id: int = Field(validation_alias=AliasChoices('user_id', 'userId'))
     fulfilled_date: Optional[datetime] | None = Field(None,validation_alias=AliasChoices('fulfilled_date', 'fulfilledDate'))
-
+    version: int = Field(0)
     class Config:
         from_attributes = True
         json_encoders = {

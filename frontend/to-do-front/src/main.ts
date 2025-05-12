@@ -6,18 +6,21 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
-
+import { VTimePicker } from 'vuetify/labs/VTimePicker'
 import {createPinia} from "pinia";
 import {router} from "./router/router.ts";
 const vuetify = createVuetify({
-    components,
+    components: {
+        ...components,
+        VTimePicker, // добавляем сюда
+    },
     directives,
     icons: {
         defaultSet: 'mdi',
     },
     theme: {
-        defaultTheme: 'light'
-    }
+        defaultTheme: 'light',
+    },
 })
 
 

@@ -27,6 +27,7 @@ export default class Task {
     _status: Status = Status.IN_PROGRESS
     _userId: number
     _fulfilledDate: Date|null = null
+    _version: number = 0
     /**
      * Класс для получения данных о задачах
      * @param {number} id - task id from bd
@@ -35,14 +36,16 @@ export default class Task {
      * @param {Status} status - task status
      * @param {number} userId - task user id
      * @param {Date|null} fulfilledDate - task fulfilled date
+     * @param {int} version
      * */
-    constructor(id:number, title:string, description:string|null,status:Status,userId:number,fulfilledDate:string|null=null) {
+    constructor(id:number, title:string, description:string|null,status:Status,userId:number,fulfilledDate:string|null=null ,version:number = 0) {
         this._id = id
         this._title = title
         this._description = description
         this._status = status
         this._userId = userId
         this._fulfilledDate = fulfilledDate? new Date(fulfilledDate): null
+        this._version = version
     }
     public get title(): string {
         return this._title
@@ -64,6 +67,9 @@ export default class Task {
     }
     public get statusName(): string {
         return StatusLabels[this._status]
+    }
+    public get version(): number {
+        return this._version
     }
     public get prettyFulfilledDate():string|null {
         if (this.fulfilledDate instanceof Date) {
@@ -89,5 +95,6 @@ export default class Task {
         this._description = task.description;
         this._title = task.title;
         this._fulfilledDate = task.fulfilledDate
+        this._version = task.version
     }
 }
