@@ -16,6 +16,7 @@ class UserUpdate(BaseModel):
     email: EmailStr
     password: str | None = Field(None)
     is_active: bool = Field(False)
+    version: int = Field(0)
 class AuthForm(BaseModel):
     identifier: str
     password: str
