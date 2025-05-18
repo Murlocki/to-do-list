@@ -6,7 +6,11 @@ export const useTaskStore = defineStore('task', {
     state: () => ({
         tasks: [] as Task[],
     }),
-    getters: {},
+    getters: {
+        getTaskById: (state)=>{
+            return (taskId:number) => state.tasks.find((it:Task)=>it.id===taskId)
+        }
+    },
     actions: {
         async fetchTasks(tasks: Task[]) {
             if (tasks && tasks.length > 0) {

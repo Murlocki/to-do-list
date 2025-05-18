@@ -10,4 +10,5 @@ export const resetPassword = `${apiUrl}/auth/forgot_password`
 export const getMyTasks = `${apiUrl}/task/me`
 export const updateTask = `${apiUrl}/task/me`
 export const createTask = `${apiUrl}/task/me`
+export const deleteTask = `${apiUrl}/task/me`
 

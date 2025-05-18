@@ -4,9 +4,15 @@ import {useTaskFormStore} from "@/store/taskFormStore.ts";
 import type {VForm} from "vuetify/components";
 import {ref, defineEmits} from "vue";
 import TaskUpdate from "@/models/TaskUpdate.ts";
-import {createNewTask} from "@/externalRequests/requests.ts";
+import {createNewTask, updateTaskById} from "@/externalRequests/requests.ts";
 import {useAuthStore} from "@/store/authStore.ts";
 
+const props = defineProps({
+  isUpdate: {
+    type:Boolean,
+    default: false
+  },
+})
 
 const taskFormStore = useTaskFormStore();
 const authStore = useAuthStore();
@@ -19,7 +25,7 @@ const titleRules = [
 const emit = defineEmits(['task-added'])
 const loading = ref(false);
 const error = ref("")
-async function onSubmit() {
+async function onAdd() {
   loading.value = true;
   const isValid = await form.value?.validate()
   if (!isValid?.valid) {
@@ -60,6 +66,41 @@ function onReset() {
 }
 
 const timePicker = ref(false)
+
+async function onUpdate() {
+  loading.value = true;
+  const isValid = await form.value?.validate()
+  if (!isValid?.valid) {
+    error.value = "Please correct the errors above."
+    loading.value = false
+    return;
+  }
+  console.log(taskFormStore.title);
+  console.log(taskFormStore.description);
+  console.log(taskFormStore.fulfilledDate);
+  console.log(taskFormStore.time)
+  console.log(taskFormStore.fullDate);
+  const newTask = new TaskUpdate(taskFormStore.title, taskFormStore.description, taskFormStore.status, taskFormStore.fullDate, taskFormStore.version);
+  console.log(newTask);
+  const response = await updateTaskById(taskFormStore.id,newTask,authStore.token);
+  const response_json = await response.json();
+  if(response.status === 200) {
+    console.log(response_json);
+    authStore.setToken(response_json["token"]);
+    loading.value = false;
+    await taskFormStore.setIsOpen(false);
+    emit("task-added");
+    return;
+  }
+
+  error.value = response_json["detail"]["message"];
+  authStore.setToken(response_json["detail"]["token"]);
+  loading.value = false;
+}
+
+
+
+
 </script>
 
 <template>
@@ -133,10 +174,10 @@ const timePicker = ref(false)
         <span v-if="error" class="text-h6 text-red mb-5">{{error}}</span>
         <div class="w-100 d-flex flex-row justify-space-between">
           <v-btn icon="mdi-account" class="w-lg-25 w-50 h-100 rounded-lg py-4 bg-teal-accent-3"
-                 @click="onSubmit"
+                 @click="props.isUpdate? onUpdate(): onAdd()"
                  :loading="loading"
                  :disabled="loading"
-                 >Register
+                 >{{props.isUpdate? "Update": "Register"}}
           </v-btn>
           <v-btn
               class="w-lg-25 w-50 h-100 rounded-lg py-4"

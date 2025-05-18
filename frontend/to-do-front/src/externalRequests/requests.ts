@@ -1,5 +1,16 @@
 
-import {createTask, register, activateAcc, login, logout, getForgotPasswordEmail, resetPassword, getMyTasks, updateTask} from "./endpoints.ts";
+import {
+    createTask,
+    register,
+    activateAcc,
+    login,
+    logout,
+    getForgotPasswordEmail,
+    resetPassword,
+    getMyTasks,
+    updateTask,
+    deleteTask
+} from "./endpoints.ts";
 import type {UserCreate} from "@/models/UserCreate.ts";
 import type {AuthForm} from "@/models/AuthForm.ts"
 import type {TaskUpdate} from "@/models/TaskUpdate.ts"
@@ -86,6 +97,15 @@ export async function createNewTask(newTask: TaskUpdate, token: string) {
             'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(newTask)
+    })
+}
+export async function deleteTaskById(taskId:number, token: string) {
+    return await fetch(`${deleteTask}/${taskId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
     })
 }
 

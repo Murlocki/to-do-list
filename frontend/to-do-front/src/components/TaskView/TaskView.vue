@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref, reactive} from "vue";
 import {useAuthStore} from "@/store/authStore.ts";
-import {getAllTasks, updateTaskById} from "@/externalRequests/requests.ts";
+import {deleteTaskById, getAllTasks, updateTaskById} from "@/externalRequests/requests.ts";
 import {useRouter} from "vue-router";
 import {useTaskStore} from "@/store/taskStore.ts";
 import Task from "@/models/Task.ts";
@@ -38,7 +38,6 @@ async function loadTasks(){
   taskStore.$state.tasks.forEach((item: Task) => {
     scrollerRefs[item.id] = {
       checked: item.status === Status.COMPLETED,
-      loading: false,
     }
   })
   console.log(scrollerRefs)
@@ -49,13 +48,12 @@ onMounted(loadTasks);
 
 type ScrollerRef = {
   checked: boolean
-  loading: boolean
 }
 
 const scrollerRefs = reactive<Record<number, ScrollerRef>>({})
 
 function getRef(taskId: number) {
-  return scrollerRefs[taskId] ?? {checked: false, loading: false};
+  return scrollerRefs[taskId] ?? {checked: false};
 }
 
 const error = ref('');
@@ -64,8 +62,7 @@ async function toggleComplete(task: Task) {
   const refItem = scrollerRefs[task.id];
   if (!refItem) return;
 
-  refItem.loading = true;
-
+  loading.value = true;
   try {
     const taskUpdate = new TaskUpdate(
         task.title,
@@ -95,18 +92,57 @@ async function toggleComplete(task: Task) {
     console.error("Ошибка при обновлении задачи:", e);
     error.value = "Ошибка сети или сервера";
   } finally {
-    refItem.loading = false;
+    loading.value = false;
+  }
+}
+
+
+async function deleteTask(id: number) {
+  const refItem = scrollerRefs[id];
+  if (!refItem) return;
+
+  loading.value = true;
+  await taskStore.clearTasks()
+  try {
+    const response = await deleteTaskById(id, authStore.token);
+    const response_json = await response.json();
+
+    if (response.ok) {
+      await authStore.setToken(response_json.token);
+      error.value = "";
+      await loadTasks()
+    } else if (response.status === 401 || response.status === 403) {
+      authStore.clearToken();
+      await router.push("/");
+    } else {
+      authStore.setToken(response_json.detail?.token);
+      error.value = response_json.detail?.error || "Unknown error";
+    }
+  } catch (e) {
+    console.error("Ошибка при обновлении задачи:", e);
+    error.value = "Network or server error";
+  } finally {
+    loading.value = false;
   }
 }
 
 const taskFormStore = useTaskFormStore();
-
+async function toggleUpdate(id: number) {
+  const task = taskStore.getTaskById(id);
+  console.log(id)
+  console.log(task);
+  await taskFormStore.setTask(task);
+  await taskFormStore.setIsOpen(true);
+}
 
 </script>
 
 <template>
   <v-dialog v-model="taskFormStore.isOpen" class="d-flex align-center justify-center w-lg-50 w-md-75 w-100">
-    <TaskForm @task-added="loadTasks"/>
+    <TaskForm @task-added="loadTasks" :is-update="taskFormStore.isUpdating"/>
+  </v-dialog>
+  <v-dialog v-model="loading">
+    <v-progress-linear :loading="loading" height="40" indeterminate></v-progress-linear>
   </v-dialog>
   <div style="min-width: 100vw;" class="d-flex flex-column align-center justify-center pa-md-0 px-2">
     <v-card class="w-md-75 w-100 d-flex flex-column align-center justify-center py-2">
@@ -133,13 +169,11 @@ const taskFormStore = useTaskFormStore();
       <v-virtual-scroll
           :items="taskStore.$state.tasks"
           class="w-100 h-auto"
-          :loading="loading"
           :key="tasksKey"
       >
         <template #default="{ item }">
           <v-card class="pa-3 mb-2" outlined :key="(item as Task).id">
-            <v-progress-linear v-if="getRef((item as Task).id).loading" height="40" indeterminate></v-progress-linear>
-            <v-row align="center" justify="space-between" no-gutters v-if="!getRef((item as Task).id).loading">
+             <v-row align="center" justify="space-between" no-gutters>
               <v-col cols="auto">
                 <v-checkbox
                     :aria-label="`Mark ${(item as Task).title} as completed`"
@@ -152,16 +186,16 @@ const taskFormStore = useTaskFormStore();
               <v-col>
                 <div class="text-md-h5 text-h6">{{ (item as Task).title }}</div>
                 <div class="text-md-body-1 text-body-2 text--secondary text-break">
-                  FFPFPEPFEPFPFPEFPEPFEPFPEPEFPFPFPEPFPFP
+                  {{ (item as Task).description }}
                 </div>
                 <div class="text-md-body-1 text-body-2 text--secondary">{{ (item as Task).prettyFulfilledDate }}</div>
               </v-col>
 
               <v-col cols="auto" class="d-flex flex-column gap-4 h-100">
-                <v-btn icon aria-label="Edit task">
+                <v-btn icon aria-label="Edit task" @click="toggleUpdate((item as Task).id)">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn icon aria-label="Delete task">
+                <v-btn icon aria-label="Delete task" @click="deleteTask((item as Task).id)">
                   <v-icon color="red">mdi-delete</v-icon>
                 </v-btn>
               </v-col>
