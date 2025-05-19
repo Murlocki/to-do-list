@@ -35,36 +35,42 @@ async def register_user(user_data: UserCreate):
     Register a new user
     :param user_data: User data from create form
     :return: UserDTO object
+    :raises HTTPException: With appropriate status code and detail
     """
-    # Create new user
+    # 1. Создание пользователя
     response = await create_user(user=user_data)
-    error  = verify_response(response,201)
-    if error:
-        logger.error(error)
+    if error := verify_response(response, 201):
+        logger.error(f"User creation failed: {error}")
         raise HTTPException(status_code=error["status_code"], detail=error["detail"])
 
-    result = UserDTO(**response.json())
-    logger.info(f"User {result.username} registered")
+    user = UserDTO(**response.json())
+    logger.info(f"User {user.username} registered")
 
-    # Create token and session for registration
-    register_token = auth_functions.create_new_token(result.email)
+    # 2. Создание сессии
+    register_token = auth_functions.create_new_token(user.email)
     response = await create_session(
         SessionSchema(
-            user_id=result.id,
-            access_token=register_token))
-    error = verify_response(response,201)
-    if error:
-        logger.warning(error)
+            user_id=user.id,
+            access_token=register_token
+        )
+    )
+
+    if error := verify_response(response, 201):
+        logger.warning(f"Session creation failed: {error}")
         raise HTTPException(status_code=error["status_code"], detail=error["detail"])
+
     session_data = SessionDTO(**response.json())
-    logger.info(f"Register session: {session_data} was created")
+    logger.info(f"Register session created: {session_data}")
 
-    # Send email activation
-    message = await send_email_signal(register_token, result.email)
-    if not message:
-        logger.warning(f"Could not send email for user {user_data.username}, but he is registered")
-    return result
+    # 3. Отправка email (не критично для регистрации)
+    try:
+        if not await send_email_signal(register_token, user.email):
+            logger.warning(f"Email not sent for user {user.username}")
+    except Exception as e:
+        logger.error(f"Email sending error: {str(e)}", exc_info=True)
+        # Продолжаем работу, так как email не критичен
 
+    return user
 
 @auth_router.post("/auth/activate_account", status_code=status.HTTP_200_OK)
 async def activate_account(credentials: HTTPAuthorizationCredentials = Depends(bearer)):
