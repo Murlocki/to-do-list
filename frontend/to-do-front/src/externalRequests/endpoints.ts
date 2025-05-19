@@ -11,4 +11,4 @@ export const getMyTasks = `${apiUrl}/task/me`
 export const updateTask = `${apiUrl}/task/me`
 export const createTask = `${apiUrl}/task/me`
 export const deleteTask = `${apiUrl}/task/me`
-
+export const getMyProfile = `${apiUrl}/user/me`

@@ -203,12 +203,6 @@ async function toggleUpdate(id: number) {
           </v-card>
         </template>
       </v-virtual-scroll>
-      <v-progress-linear
-          v-if="loading"
-          indeterminate
-          class="bg-teal-darken-1"
-          height="5"
-      />
     </v-card>
   </div>
 </template>

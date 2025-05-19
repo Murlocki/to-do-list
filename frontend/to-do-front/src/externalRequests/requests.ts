@@ -9,7 +9,7 @@ import {
     resetPassword,
     getMyTasks,
     updateTask,
-    deleteTask
+    deleteTask, getMyProfile
 } from "./endpoints.ts";
 import type {UserCreate} from "@/models/UserCreate.ts";
 import type {AuthForm} from "@/models/AuthForm.ts"
@@ -109,3 +109,12 @@ export async function deleteTaskById(taskId:number, token: string) {
     })
 }
 
+export async function getUserProfile(token: string) {
+    return await fetch(`${getMyProfile}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}

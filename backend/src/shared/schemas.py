@@ -57,6 +57,7 @@ class UserDTO(BaseModel):
     is_superuser: bool = Field(False, validation_alias=AliasChoices('is_superuser', 'isSuperuser'))
     version: int = Field(0)
     class Config:
+        alias_generator = to_camel
         from_attributes = True
 class UserAuthDTO(BaseModel):
     identifier: str

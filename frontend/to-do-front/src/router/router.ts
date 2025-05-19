@@ -1,11 +1,12 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import MainPage from "../components/MainPage/MainPage.vue";
-import RegisterForm from "../components/Register/RegisterForm.vue";
-import RegisterSubmittion from "../components/Register/RegisterSubmittion.vue";
-import LoginPage from "../components/Login/LoginPage.vue";
-import ResetEmailForm from "../components/RestorePassword/ResetEmailForm.vue";
-import ChangePasswordForm from "../components/RestorePassword/ChangePasswordForm.vue";
-import TaskView from "../components/TaskView/TaskView.vue";
+import MainPage from "@/components/MainPage/MainPage.vue";
+import RegisterForm from "@/components/Register/RegisterForm.vue";
+import RegisterSubmittion from "@/components/Register/RegisterSubmittion.vue";
+import LoginPage from "@/components/Login/LoginPage.vue";
+import ResetEmailForm from "@/components/RestorePassword/ResetEmailForm.vue";
+import ChangePasswordForm from "@/components/RestorePassword/ChangePasswordForm.vue";
+import TaskView from "@/components/TaskView/TaskView.vue";
+import ProfileView from "@/components/ProfileView/ProfileView.vue";
 
 const routes = [
     {
@@ -36,6 +37,10 @@ const routes = [
     {
         path:'/tasks',
         component: TaskView
+    },
+    {
+        path:'/profile',
+        component: ProfileView
     }
 ]
 export const router = createRouter({

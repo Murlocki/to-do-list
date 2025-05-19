@@ -24,7 +24,7 @@ const elems = [
   },
   {
     'id': 3,
-    'link':'',
+    'link':'/profile',
     'title':'Profile',
     'icon':'mdi-account',
     'showBeforeLogin':true
