@@ -16,7 +16,7 @@ onMounted(async () => {
   const token = authStore.token;
   console.log(token);
   const response = await getUserProfile(token)
-  if (response.status === 401) {
+  if (response.status === 401 || response.status === 403) {
     authStore.clearToken();
     await router.push("/login");
     loading.value = false;
