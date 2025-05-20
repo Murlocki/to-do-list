@@ -3,8 +3,9 @@
 import {ref} from "vue";
 import type {VForm} from "vuetify/components";
 import {passwordRegex} from "@/regex.ts";
-import {updatePassword} from "@/externalRequests/requests.ts";
+import {loginOut, updatePassword} from "@/externalRequests/requests.ts";
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/store/authStore.ts";
 
 const router = useRouter();
 const props = defineProps({
@@ -23,6 +24,7 @@ const showPassword = ref(false)
 const showPasswordRepeat = ref(false)
 const error = ref("");
 const loading = ref(false);
+const authStore = useAuthStore();
 const onSubmit = async () => {
   loading.value = true;
   if(password.value !== repeatPassword.value) {
@@ -35,6 +37,9 @@ const onSubmit = async () => {
   if (isValid?.valid) {
     const response: Response = await updatePassword(props.token,password.value);
     if(response.status === 200){
+      if(authStore.isLoggedIn){
+          authStore.clearToken()
+      }
       await router.push('/login');
       loading.value = false;
       return;

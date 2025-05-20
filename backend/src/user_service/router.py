@@ -121,7 +121,7 @@ async def get_profile(token: str = Depends(get_valid_token), db: AsyncSession = 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result.model_dump())
     logger.info(f"User {user.username} found")
     result.data = UserDTO.model_validate(user)
-    return result.model_dump()
+    return result.model_dump(by_alias=True)
 
 
 @user_router.delete("/user/me", status_code=status.HTTP_200_OK, response_model=AuthResponse)

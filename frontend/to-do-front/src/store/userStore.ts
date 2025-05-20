@@ -1,20 +1,19 @@
-import { defineStore } from 'pinia'
-import type {UserDTO} from "@/models/UserDTO.ts";
+import {defineStore} from 'pinia'
+import {UserDTO} from "@/models/UserDTO.ts";
 
 type State = {
-    user: UserDTO | null
+    user: UserDTO | null,
 }
 
 export const useUserStore = defineStore('user', {
-    state: ():State => ({
+    state: (): State => ({
         user: null,
     }),
-    getters: {
-
-    },
+    getters: {},
     actions: {
-        setUser(user: UserDTO){
+        setUser(user: UserDTO) {
             this.$state.user = user;
-        }
+        },
+
     }
 })

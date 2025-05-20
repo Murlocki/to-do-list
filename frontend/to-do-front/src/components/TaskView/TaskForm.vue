@@ -173,11 +173,13 @@ async function onUpdate() {
       <div class="w-100 h-auto pa-2 d-flex align-center justify-center flex-column">
         <span v-if="error" class="text-h6 text-red mb-5">{{error}}</span>
         <div class="w-100 d-flex flex-row justify-space-between">
-          <v-btn icon="mdi-account" class="w-lg-25 w-50 h-100 rounded-lg py-4 bg-teal-accent-3"
-                 @click="props.isUpdate? onUpdate(): onAdd()"
+          <v-btn class="w-lg-25 w-50 h-100 rounded-lg py-4 bg-teal-accent-3"
+                 @click="props.isUpdate ? onUpdate() : onAdd()"
                  :loading="loading"
                  :disabled="loading"
-                 >{{props.isUpdate? "Update": "Register"}}
+          >
+            <v-icon left>mdi-account</v-icon>
+            {{ props.isUpdate ? "Update" : "Register" }}
           </v-btn>
           <v-btn
               class="w-lg-25 w-50 h-100 rounded-lg py-4"

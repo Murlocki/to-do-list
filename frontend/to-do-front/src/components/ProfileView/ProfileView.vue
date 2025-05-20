@@ -38,6 +38,10 @@ onMounted(async () => {
     loading.value = false;
   }
 })
+function onResetPassword(){
+  const token = authStore.token;
+  router.push(`/login/forgot-password/${token}`);
+}
 </script>
 
 <template>
@@ -45,7 +49,7 @@ onMounted(async () => {
     <v-progress-linear :loading="loading" height="40" indeterminate></v-progress-linear>
   </v-dialog>
   <div style="min-width: 100vw;" class="d-flex flex-column align-center justify-center pa-md-0 px-2">
-    <v-card class="w-md-50 w-sm-75 w-100 d-flex flex-column align-center justify-center py-2">
+    <v-card class="w-md-50 w-sm-75 w-100 d-flex flex-column align-center justify-center py-2" v-if="!loading">
       <div class="py-4 bg-teal-accent-3 w-100 d-flex align-center justify-space-between flex-row mb-4">
         <span class="text-h4 font-italic text-center flex-grow-1" style="font-family: 'JetBrains Mono',serif;">
           Your to-do profile
@@ -70,10 +74,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="d-flex flex-row mt-10 w-100 pl-4 pr-4 ga-3">
-        <v-btn size="x-large" class="bg-teal-darken-1 flex-grow-1" style="flex:1 1 0; min-width:0">
-          Update Profile
-        </v-btn>
-        <v-btn size="x-large" class="bg-teal-accent-3 flex-grow-1" style="flex:1 1 0; min-width:0">
+        <v-btn size="x-large" class="bg-teal-accent-3 flex-grow-1" @click="onResetPassword">
           Update password
         </v-btn>
       </div>
